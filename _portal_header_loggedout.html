@@ -1,0 +1,241 @@
+<header class="bg-white dark:bg-gray-800 shadow-sm fixed top-0 w-full z-50">
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+            <!-- Logo -->
+            <a href="/" class="flex items-center flex-shrink-0">
+                <img src="/images/logo2.png" alt="ValueAlign Logo" class="h-10 mr-2">
+                <span class="font-bold font-montserrat text-2xl">
+                    <span class="text-va-primary">Value</span><span class="text-va-accent">Align</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation & Actions -->
+            <div class="hidden md:flex md:items-center md:space-x-1 lg:space-x-3">
+                <a href="/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">Home</a>
+                <a href="/features/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">Features</a>
+                <a href="/discover/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">Discover</a>
+                <a href="/blog/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">Blog</a>
+                <a href="/about/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">About</a>
+                <a href="/faq/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">FAQ</a>
+                <a href="/contact/" class="nav-link text-gray-600 hover:text-va-primary px-2 py-2 font-montserrat text-sm">Contact</a>
+                
+                <!-- Auth Link and Settings Cog grouped together -->
+                <div class="ml-2 flex items-center space-x-3">
+                    <a href="/login/" id="login-join-link" class="auth-link bg-va-primary text-white hover:bg-green-700 px-3 py-2 rounded-md font-montserrat text-sm" aria-label="Login or create an account">Login / Join</a>
+                    
+                    <!-- User menu (hidden by default, shown when logged in) -->
+                    <div id="user-menu-container" class="relative hidden">
+                        <button type="button" id="user-menu-button" class="flex items-center text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-md font-montserrat" aria-expanded="false" aria-haspopup="true">
+                            <span class="sr-only">Open user menu</span>
+                            <div class="flex items-center">
+                                <div class="rounded-full bg-green-100 dark:bg-green-800 p-1 mr-2">
+                                    <svg class="h-4 w-4 text-green-600 dark:text-green-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span id="user-name-display" class="truncate max-w-[100px]"></span>
+                            </div>
+                        </button>
+                        
+                        <!-- User dropdown menu -->
+                        <div id="user-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                            <a href="/dashboard/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Dashboard</a>
+                            <a href="/account/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Account Settings</a>
+                            <a href="#" class="logout-button block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Sign out</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Settings Cog Button -->
+                    <div class="relative">
+                        <button type="button" id="desktop-settings-button" class="p-1 rounded-full text-gray-500 hover:text-va-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary" aria-expanded="false" aria-haspopup="true">
+                            <span class="sr-only">Open settings</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </button>
+                        <!-- Settings Panel -->
+                        <div id="desktop-settings-panel" class="hidden origin-top-right absolute right-0 mt-2 w-64 rounded-lg shadow-xl bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none overflow-hidden transition-all duration-200 transform" role="menu" aria-orientation="vertical" aria-labelledby="desktop-settings-button" tabindex="-1">
+                            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Theme</p>
+                            </div>
+                            <div id="theme-options-container" class="py-1" role="none">
+                                <button data-theme-value="light" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2">☀️</span> Light
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button data-theme-value="dark" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2">🌙</span> Dark
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button data-theme-value="system" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2">💻</span> System
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="border-t border-gray-200 dark:border-gray-700"></div>
+                            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Font Size</p>
+                            </div>
+                            <div id="fontsize-options-container" class="py-1" role="none">
+                                <button data-fontsize-value="sm" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2">A</span> Small
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button data-fontsize-value="base" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2">A</span> Normal
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                                <button data-fontsize-value="lg" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center" role="menuitem">
+                                    <span class="mr-2 text-lg">A</span> Large
+                                    <svg class="ml-auto h-5 w-5 text-va-accent hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 text-right border-t border-gray-200 dark:border-gray-700">
+                                <button type="button" class="text-xs text-gray-500 hover:text-va-accent dark:text-gray-400 dark:hover:text-va-accent-light transition-colors" onclick="localStorage.clear(); window.location.reload();">
+                                    Reset to Defaults
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu button (No settings cog here, only hamburger) -->
+            <div class="md:hidden flex items-center">
+                <button type="button" id="mobile-menu-button" class="rounded-lg focus:outline-none focus:shadow-outline p-2 text-gray-600 hover:text-va-primary" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle Menu">
+                    <span class="sr-only">Open main menu</span>
+                    <svg id="menu-open-icon" class="block h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg id="menu-close-icon" class="hidden h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu panel -->
+    <div class="md:hidden hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Home</a>
+            <a href="/features/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Features</a>
+            <a href="/discover/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Discover</a>
+            <a href="/blog/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Blog</a>
+            <a href="/about/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">About</a>
+            <a href="/faq/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">FAQ</a>
+            <a href="/contact/" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Contact</a>
+            <hr class="my-1 border-gray-200">
+            <a href="/login/" id="mobile-login-join-link" class="auth-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 font-montserrat">Login / Join</a>
+            <hr class="my-1 border-gray-200">
+            <!-- Mobile Settings Trigger -->
+            <button type="button" id="mobile-menu-settings-button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-montserrat">
+                Settings
+            </button>
+        </div>
+    </div>
+    <!-- Special script to handle auth state on public pages -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Public page header initializing auth state check');
+        
+        // Setup dropdown functionality
+        function setupDropdownMenu() {
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userDropdown = document.getElementById('user-dropdown');
+            
+            if (userMenuButton && userDropdown) {
+                console.log('Setting up user dropdown menu functionality');
+                
+                userMenuButton.addEventListener('click', function() {
+                    const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+                    userDropdown.classList.toggle('hidden');
+                    userMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    
+                    // Handle outside clicks to close dropdown
+                    if (!isExpanded) {
+                        setTimeout(() => {
+                            const closeDropdown = (event) => {
+                                if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                                    userDropdown.classList.add('hidden');
+                                    userMenuButton.setAttribute('aria-expanded', 'false');
+                                    document.removeEventListener('click', closeDropdown);
+                                }
+                            };
+                            document.addEventListener('click', closeDropdown);
+                        }, 10);
+                    }
+                });
+            }
+            
+            // Setup logout functionality
+            const logoutButtons = document.querySelectorAll('.logout-button');
+            logoutButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (window.authManager) {
+                        window.authManager.logout();
+                    } else {
+                        // Fallback logout if auth manager isn't available
+                        localStorage.removeItem('valuealign_authenticated');
+                        localStorage.removeItem('valuealign_user');
+                        localStorage.removeItem('valuealign_session_expiry');
+                        window.location.href = '/';
+                    }
+                });
+            });
+        }
+        
+        // Check if user is authenticated via localStorage
+        const isAuthenticated = localStorage.getItem('valuealign_authenticated') === 'true';
+        const userJson = localStorage.getItem('valuealign_user');
+        
+        if (isAuthenticated && userJson) {
+            try {
+                const user = JSON.parse(userJson);
+                console.log('User is authenticated on public page, updating UI');
+                
+                // Get references to the key UI elements
+                const loginLink = document.getElementById('login-join-link');
+                const userMenuContainer = document.getElementById('user-menu-container');
+                const userNameDisplay = document.getElementById('user-name-display');
+                
+                // Update UI to show authenticated state
+                if (loginLink && userMenuContainer) {
+                    loginLink.classList.add('hidden');
+                    userMenuContainer.classList.remove('hidden');
+                    
+                    if (userNameDisplay) {
+                        userNameDisplay.textContent = user.name || user.email.split('@')[0];
+                        userNameDisplay.setAttribute('title', user.email);
+                    }
+                    
+                    // Setup dropdown functionality now that we've shown the user menu
+                    setupDropdownMenu();
+                }
+            } catch (error) {
+                console.error('Error parsing user data on public page:', error);
+            }
+        } else {
+            console.log('User not authenticated on public page');
+        }
+        
+        // Always set up dropdown functionality even if not authenticated yet
+        // as the user might log in without page refresh
+        setupDropdownMenu();
+    });
+    </script>
+</header>

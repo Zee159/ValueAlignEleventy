@@ -1,0 +1,51 @@
+---
+layout: portal
+title: Portal Header Test - ValueAlign Portal
+description: Test page for verifying portal header functionality
+requires_auth: true
+---
+
+<header class="mb-8" role="banner">
+  <h1 id="test-page-heading" class="text-3xl font-bold text-va-primary dark:text-green-400 font-montserrat">Portal Header Test</h1>
+  <p class="text-lg text-gray-600 dark:text-gray-400 mt-1">This page confirms proper functioning of the portal header.</p>
+</header>
+
+<div class="va-card mb-8">
+  <div class="va-card-header">
+    <h2 class="va-card-title">Header Features Test</h2>
+  </div>
+  <div class="va-card-body">
+    <div class="mb-6">
+      <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">Expected Portal Header Features:</h3>
+      <ul class="list-disc ml-6 space-y-2 text-gray-700 dark:text-gray-300">
+        <li>ValueAlign logo/home button that links to homepage</li>
+        <li>User menu dropdown showing authenticated username</li>
+        <li>Settings cog with theme selection options</li>
+      </ul>
+    </div>
+
+    <div class="p-4 bg-green-50 dark:bg-green-900 rounded-md">
+      <h4 class="text-lg font-medium text-green-800 dark:text-green-200 mb-2">Authentication Status:</h4>
+      <div id="auth-status" class="font-mono text-sm p-2 bg-white dark:bg-gray-800 rounded border border-green-200 dark:border-green-700">
+        Checking authentication status...
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const authStatus = document.getElementById('auth-status');
+    
+    if (window.authManager) {
+      const status = window.authManager.isAuthenticated() ? 'Authenticated' : 'Not Authenticated';
+      const user = window.authManager.user ? JSON.stringify(window.authManager.user, null, 2) : 'No user data';
+      
+      authStatus.innerHTML = `<div>Status: <span class="font-bold">${status}</span></div>
+                             <div class="mt-2">User Data:</div>
+                             <pre class="overflow-auto max-h-40 p-2 bg-gray-50 dark:bg-gray-900 rounded">${user}</pre>`;
+    } else {
+      authStatus.textContent = 'Auth Manager not initialized';
+    }
+  });
+</script>

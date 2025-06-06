@@ -1,0 +1,56 @@
+---
+layout: base.njk
+title: Auth Test Page
+---
+
+<div class="container mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6">Authentication Test Page</h1>
+  
+  <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h2 class="text-2xl font-semibold mb-4">Current Authentication State:</h2>
+    <div id="auth-status" class="p-4 border rounded bg-gray-100">
+      <p>Checking authentication status...</p>
+    </div>
+  </div>
+  
+  <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h2 class="text-2xl font-semibold mb-4">Test Navigation:</h2>
+    <div class="flex flex-wrap gap-4">
+      <a href="/" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Home Page</a>
+      <a href="/login/" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Login Page</a>
+      <a href="/portal_dashboard/" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Portal Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if auth-shared.js is working
+  const authStatus = document.getElementById('auth-status');
+  
+  function updateAuthStatus() {
+    // Check localStorage for auth state
+    const isAuthenticated = localStorage.getItem('valuealign_authenticated') === 'true';
+    const userData = localStorage.getItem('valuealign_user') ? JSON.parse(localStorage.getItem('valuealign_user')) : null;
+    
+    let html = '<h3 class="font-bold mb-2">Authentication Details:</h3>';
+    html += `<p><strong>Authenticated:</strong> ${isAuthenticated ? 'Yes ✅' : 'No ❌'}</p>`;
+    
+    if (isAuthenticated && userData) {
+      html += `<p><strong>User:</strong> ${userData.name || userData.email}</p>`;
+      html += `<p><strong>Email:</strong> ${userData.email}</p>`;
+      html += `<p><strong>Member Type:</strong> ${userData.memberType || 'Not specified'}</p>`;
+    }
+    
+    // Check if auth-shared.js is loaded
+    html += `<p class="mt-4"><strong>auth-shared.js loaded:</strong> ${window.authSharedLoaded ? 'Yes ✅' : 'No ❌'}</p>`;
+    
+    authStatus.innerHTML = html;
+  }
+  
+  updateAuthStatus();
+  
+  // Update the status every second to see changes
+  setInterval(updateAuthStatus, 1000);
+});
+</script>

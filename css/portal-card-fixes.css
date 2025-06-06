@@ -1,0 +1,157 @@
+/* Portal Card Fixes - Standard CSS only, no Tailwind directives */
+
+/* Base Card Structure */
+.va-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dark .va-card {
+  background-color: #1f2937; /* dark:bg-gray-800 */
+}
+
+.va-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Card Header */
+.va-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .va-card-header {
+  border-bottom-color: #374151; /* dark:border-gray-700 */
+}
+
+.va-card-title {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #047857; /* text-va-primary */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dark .va-card-title {
+  color: #4ade80; /* dark:text-green-400 */
+}
+
+/* Card Body */
+.va-card-body {
+  padding: 1.5rem;
+}
+
+/* Card Footer */
+.va-card-footer {
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .va-card-footer {
+  background-color: #111827; /* dark:bg-gray-900 */
+  border-top-color: #374151; /* dark:border-gray-700 */
+}
+
+/* Card Grid Layout */
+.va-card-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .va-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .va-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Card Empty State */
+.va-card-empty {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.va-card-empty-icon {
+  margin: 0 auto;
+  height: 3rem;
+  width: 3rem;
+  color: #9ca3af; /* text-gray-400 */
+}
+
+.dark .va-card-empty-icon {
+  color: #4b5563; /* dark:text-gray-600 */
+}
+
+.va-card-empty-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280; /* text-gray-500 */
+}
+
+.dark .va-card-empty-text {
+  color: #9ca3af; /* dark:text-gray-400 */
+}
+
+/* Form Styling inside cards */
+.va-form-group {
+  margin-bottom: 1rem;
+}
+
+.va-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151; /* text-gray-700 */
+  margin-bottom: 0.25rem;
+}
+
+.dark .va-form-label {
+  color: #d1d5db; /* dark:text-gray-300 */
+}
+
+.va-form-input,
+.va-form-textarea,
+.va-form-select {
+  margin-top: 0.25rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .va-form-input,
+.dark .va-form-textarea,
+.dark .va-form-select {
+  border-color: #374151; /* dark:border-gray-700 */
+  background-color: #111827; /* dark:bg-gray-900 */
+  color: white;
+}
+
+.va-form-input:focus,
+.va-form-textarea:focus,
+.va-form-select:focus {
+  border-color: #047857; /* focus:border-va-primary */
+  box-shadow: 0 0 0 2px rgba(4, 120, 87, 0.2); /* focus:ring focus:ring-va-primary focus:ring-opacity-50 */
+}
+
+.dark .va-form-input:focus,
+.dark .va-form-textarea:focus,
+.dark .va-form-select:focus {
+  border-color: #4ade80; /* dark:focus:border-green-500 */
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2); /* dark:focus:ring-green-500 */
+}

@@ -1,0 +1,237 @@
+---
+layout: portal
+title: Acts of Alignment - ValueAlign Portal
+description: Plan and track your acts of alignment to live more closely by your values
+requires_auth: true
+---
+
+<div class="mb-6" role="banner">
+  <h1 id="acts-page-heading" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Acts of Alignment</h1>
+  <p class="text-lg text-gray-600 dark:text-gray-400">Plan and track actions aligned with your core values.</p>
+</div>
+
+  <!-- Acts of Alignment Dashboard -->
+  <section class="mb-8" aria-labelledby="dashboard-heading" role="region">
+    <h2 id="dashboard-heading" class="text-2xl font-bold text-va-primary dark:text-green-400 font-montserrat mb-4">Your Overview</h2>
+    <div class="va-card-grid grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Current Acts Card -->
+      <div class="va-card">
+        <div class="va-card-header">
+          <h3 class="va-card-title">Current Acts</h3>
+          <svg class="w-6 h-6 text-va-primary dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="va-card-body flex items-end">
+          <span id="current-acts-count" class="text-4xl font-bold text-va-text dark:text-white">0</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400 ml-2 mb-1">in progress</span>
+        </div>
+      </div>
+      
+      <!-- Completed Acts Card -->
+      <div class="va-card">
+        <div class="va-card-header">
+          <h3 class="va-card-title">Completed Acts</h3>
+          <svg class="w-6 h-6 text-va-primary dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <div class="va-card-body flex items-end">
+          <span id="completed-acts-count" class="text-4xl font-bold text-va-text dark:text-white">0</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400 ml-2 mb-1">this month</span>
+        </div>
+      </div>
+      
+      <!-- Values Covered Card -->
+      <div class="va-card p-5">
+        <div class="va-card-header mb-0">
+          <h3 class="va-card-title">Values Covered</h3>
+          <svg class="w-6 h-6 text-va-primary dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg>
+        </div>
+        <div class="flex items-end mt-2">
+          <span id="values-covered-count" class="text-4xl font-bold text-va-text dark:text-white">0/5</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400 ml-2 mb-1">this month</span>
+        </div>
+      </div>
+      
+      <!-- Streak Card -->
+      <div class="va-card p-5">
+        <div class="va-card-header mb-0">
+          <h3 class="va-card-title">Current Streak</h3>
+          <svg class="w-6 h-6 text-va-primary dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <div class="flex items-end mt-2">
+          <span id="current-streak" class="text-4xl font-bold text-va-text dark:text-white">0</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400 ml-2 mb-1">days</span>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create New Act Form -->
+  <section class="mb-8 va-card" aria-labelledby="create-act-heading" role="region">
+    <div class="va-card-header">
+      <h2 id="create-act-heading" class="va-card-title">Create New Act of Alignment</h2>
+      <svg class="w-6 h-6 text-va-primary dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    </div>
+    
+    <form id="create-act-form" class="space-y-5 mt-4">
+      <div class="va-form-group">
+        <label for="act-title" class="va-form-label">
+          Title <span class="va-required-indicator" aria-hidden="true">*</span>
+          <span class="sr-only">(required)</span>
+        </label>
+        <input type="text" id="act-title" name="act-title" 
+               class="va-form-input"
+               aria-required="true" required>
+      </div>
+      
+      <div class="va-form-group">
+        <label for="act-description" class="va-form-label">
+          Description
+        </label>
+        <textarea id="act-description" name="act-description" rows="3" 
+                  class="va-form-textarea"></textarea>
+      </div>
+      
+      <div class="va-form-group">
+        <fieldset>
+          <legend class="va-form-label">
+            Related Values <span class="va-required-indicator" aria-hidden="true">*</span>
+            <span class="sr-only">(required)</span>
+          </legend>
+          <div id="act-values-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2" role="group" aria-labelledby="values-group-label">
+            <!-- Values will be dynamically inserted here -->
+            <span id="values-group-label" class="sr-only">Select one or more values that this act relates to</span>
+          </div>
+          <p id="values-error" class="va-form-error hidden" aria-live="polite">
+            Please select at least one value
+          </p>
+        </fieldset>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="va-form-group">
+          <label for="target-date" class="va-form-label">
+            Target Date
+          </label>
+          <input type="date" id="target-date" name="target-date" 
+                 class="va-form-input" 
+                 aria-describedby="date-hint">
+          <p id="date-hint" class="va-form-hint">When do you plan to complete this act?</p>
+        </div>
+        
+        <div class="va-form-group">
+          <label for="act-priority" class="va-form-label">
+            Priority Level
+          </label>
+          <select id="act-priority" name="act-priority"
+                  class="va-form-select">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3">
+        <button type="reset" class="va-btn-outline">
+          Clear Form
+        </button>
+        <button type="submit" 
+                class="va-btn-primary flex items-center"
+                aria-describedby="create-act-status">
+          <span>Create Act of Alignment</span>
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+    
+    <div id="create-act-status" class="mt-4 hidden va-alert va-alert-success" role="status" aria-live="polite"></div>
+  </section>
+
+  <!-- Acts Listing -->
+  <section class="mb-10 va-card" aria-labelledby="acts-listing-heading" role="region">
+    <div class="va-card-header">
+      <h2 id="acts-listing-heading" class="va-card-title">
+        Your Acts of Alignment
+      </h2>
+      
+      <div class="flex items-center">
+        <!-- Filter Dropdown -->
+        <div class="flex items-center mr-4">
+          <label for="acts-filter" class="sr-only">Filter acts</label>
+          <div class="inline-flex items-center">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+            </svg>
+            <select id="acts-filter" class="va-form-select-sm bg-transparent" aria-label="Filter acts by status">
+              <option value="all">All Acts</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+              <option value="overdue">Overdue</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Sort Dropdown -->
+        <div class="flex items-center">
+          <label for="acts-sort" class="sr-only">Sort acts</label>
+          <div class="inline-flex items-center">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+            </svg>
+            <select id="acts-sort" class="va-form-select-sm bg-transparent" aria-label="Sort acts by date or priority">
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="priority-desc">Highest Priority</option>
+              <option value="priority-asc">Lowest Priority</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="acts-container" class="mt-6" role="list" aria-live="polite" aria-atomic="false">
+      <!-- Acts items will go here -->
+    </div>
+    
+    <!-- Empty State -->
+    <div id="no-acts-message" class="va-empty-state" role="status">
+      <div class="va-empty-state-icon">
+        <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+      <h3 class="va-empty-state-title">No acts created yet</h3>
+      <p class="va-empty-state-description">Get started by creating a new act of alignment.</p>
+      <button type="button" class="va-btn-primary mt-4" onclick="document.getElementById('create-act-heading').scrollIntoView({behavior: 'smooth'})" aria-label="Create your first act of alignment">
+        Create Your First Act
+      </button>
+    </div>
+    
+    <!-- Loading State -->
+    <div id="acts-loading" class="va-loading-state hidden" role="status" aria-live="polite">
+      <svg class="va-loading-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span class="sr-only">Loading acts...</span>
+    </div>
+  </section>
+
+  <!-- Status Announcer for Screen Readers -->
+  <div aria-live="assertive" class="sr-only" id="acts-status-announcer"></div>
+</main>
+
+<script src="{{ '/js/acts.js' | url }}"></script>

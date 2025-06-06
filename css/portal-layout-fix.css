@@ -1,0 +1,137 @@
+/* Portal layout fixes
+   Adding specialized CSS to properly position the portal sidebar and content area
+*/
+
+/* Create space for the fixed header */
+.portal-container {
+  padding-top: 5rem; /* Further increased padding to prevent any content overlap with header */
+}
+
+/* Additional padding for values assessment page to prevent logo overlap and welcome message overlap */
+[aria-labelledby="page-title"] {
+  padding-top: 0.5rem;
+}
+
+/* Specific fix for the welcome message in values assessment page - more targeted selector */
+.portal-container h1:first-of-type + p {
+  display: none !important; /* Hide the welcome message that's causing overlap */
+}
+
+/* Alternate approach to target the welcome message paragraph */
+.portal-content p:not([class]):first-of-type {
+  margin-top: 3rem !important; /* Add space if it's the welcome paragraph */
+}
+
+/* Target any text that appears directly in the portal container before content */
+.portal-container > .portal-layout-wrapper > p,
+.portal-content-wrapper > p {
+  display: none !important; /* Hide any direct paragraph in the container */
+}
+
+/* Public navigation styling */
+.public-navigation {
+  margin-left: 1rem;
+}
+
+/* Mobile public navigation menu styling */
+#public-mobile-menu {
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Ensure proper spacing between header elements */
+@media (min-width: 768px) {
+  .portal-header-nav-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* Adjust spacing for mobile menu when open */
+.mobile-menu-open #public-mobile-menu {
+  display: block;
+}
+
+/* Global sidebar styles */
+.portal-sidebar {
+  margin-bottom: 1.5rem;
+}
+
+.portal-sidebar-inner {
+  border-radius: 0.5rem;
+  background-color: #047857 !important; /* ValueAlign emerald primary color */
+  z-index: 10; /* Ensure sidebar appears above content but below header */
+}
+
+/* Direct fixed sidebar targeting - using ID to ensure high specificity */
+#portal-sidebar {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 5rem !important;
+  align-self: flex-start !important;
+  height: fit-content !important;
+  max-height: calc(100vh - 6rem) !important;
+  overflow-y: auto !important;
+}
+
+/* Ensure header has proper overlay */
+header.fixed, 
+header.bg-white {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 50;
+}
+
+/* Two-column layout structure */
+@media (min-width: 1024px) {
+  .portal-content-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1.5rem;
+    min-height: 100vh; /* Ensure the wrapper has enough height for scrolling */
+    align-items: flex-start; /* Critical for making sticky positioning work */
+  }
+  
+  /* Left sidebar */
+  .portal-sidebar {
+    width: 18rem !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Force sidebar color - removed duplicate since we have it globally above */
+  
+  /* Sticky sidebar */
+  .portal-sidebar-inner {
+    max-height: calc(100vh - 6rem); /* Max height for scrolling when needed */
+    overflow-y: auto; /* Allow scrolling for tall sidebar content */
+  }
+  
+  /* Main content area */
+  .portal-content {
+    flex: 1 1 0%;
+  }
+}
+
+/* Ensure proper spacing and prevent overlaps */
+.portal-header {
+  margin-bottom: 1.5rem;
+}
+
+/* Card grid for dashboard */
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

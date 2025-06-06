@@ -1,0 +1,208 @@
+---
+layout: portal
+title: My Journal - ValueAlign Portal
+meta_description: Reflect, record, and revisit your thoughts through your ValueAlign journal entries
+requires_auth: true
+---
+
+<!-- Debug script -->
+<script>
+  // This will run immediately when the page loads
+  console.log('[PORTAL_JOURNAL] Page starting to load at:', new Date().toISOString());
+  console.log('[PORTAL_JOURNAL] Current URL:', window.location.href);
+  
+  // Log all meta tags to see what's actually being rendered
+  console.log('[PORTAL_JOURNAL] Checking meta tags:');
+  const allMetaTags = document.querySelectorAll('meta');
+  allMetaTags.forEach(tag => {
+    console.log(`Meta tag: name=${tag.getAttribute('name')}, content=${tag.getAttribute('content')}`);
+  });
+  
+  // Specifically check for the requires-auth meta tag
+  const authMetaTag = document.querySelector('meta[name="requires-auth"]');
+  console.log('[PORTAL_JOURNAL] requires-auth meta tag exists:', !!authMetaTag);
+  if (authMetaTag) {
+    console.log('[PORTAL_JOURNAL] requires-auth value:', authMetaTag.getAttribute('content'));
+  }
+  
+  // Check if auth-manager.js is included
+  const scripts = document.querySelectorAll('script');
+  let authManagerFound = false;
+  scripts.forEach(script => {
+    if (script.src && script.src.includes('auth-manager.js')) {
+      authManagerFound = true;
+      console.log('[PORTAL_JOURNAL] auth-manager.js script found:', script.src);
+    }
+  });
+  console.log('[PORTAL_JOURNAL] auth-manager.js script included:', authManagerFound);
+</script>
+
+<div class="mb-6" role="banner">
+    <h1 id="journal-heading" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">My Journal</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">Reflect, record, and revisit your thoughts.</p>
+</div>
+
+    <!-- Journal Prompt Section -->
+    <section id="journal-prompt-section" class="va-card mb-8" aria-labelledby="prompt-heading">
+        <div class="va-card-header">
+            <h2 id="prompt-heading" class="va-card-title">Today's Prompt</h2>
+            <span class="va-badge-count" id="today-date">Today</span>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const options = { month: 'short', day: 'numeric' };
+                    const today = new Date().toLocaleDateString('en-US', options);
+                    document.getElementById('today-date').textContent = today;
+                });
+            </script>
+        </div>
+        <div class="bg-va-accent-light dark:bg-gray-700 rounded-md p-4 mb-4 border-l-4 border-va-primary dark:border-green-500">
+            <p class="text-base text-gray-700 dark:text-gray-300">
+                <span id="prompt-text" class="italic">"What values guided your decisions today? Reflect on a moment where your actions aligned with these values."</span>
+            </p>
+        </div>
+        <div class="flex justify-end">
+            <button id="refresh-prompt" class="va-btn-text va-btn-icon" aria-label="Get a new journal prompt">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"></path>
+                </svg>
+                New Prompt
+            </button>
+        </div>
+    </section>
+
+    <!-- Journal Entry Area -->
+    <section id="journal-entry-area" class="va-card" aria-labelledby="entry-heading">
+        <div class="va-card-header">
+            <h2 id="entry-heading" class="va-card-title">New Entry</h2>
+            <div>
+                <span id="journal-word-count" class="va-badge-count">0 words</span>
+            </div>
+        </div>
+        
+        <div class="va-form-group">
+            <label for="journal-textarea" class="sr-only">Write your journal entry</label>
+            <textarea id="journal-textarea" rows="10" class="va-form-textarea" 
+                      placeholder="Start writing your thoughts here..." 
+                      aria-describedby="journal-instructions"></textarea>
+            <p id="journal-instructions" class="sr-only">Write your journal entry based on today's prompt or your own reflection.</p>
+        </div>
+        
+        <div class="flex flex-wrap gap-4 justify-between mt-6">
+            <div class="flex items-center">
+                <button id="save-entry-btn" class="va-btn-primary va-btn-icon">
+                    <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                    </svg>
+                    Save Entry
+                </button>
+                
+                <span id="save-status" class="ml-3 text-sm text-gray-600 dark:text-gray-400 hidden" aria-live="polite"></span>
+            </div>
+            
+            <div class="flex gap-3">
+                <button id="clear-entry-btn" class="va-btn-outline">
+                    Clear
+                </button>
+                
+                <button id="generate-ai-btn" class="va-btn-secondary va-btn-icon">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    AI Assist
+                </button>
+            </div>
+        </div>
+        
+        <div id="ai-insights-section" class="mt-6 hidden" aria-labelledby="insights-heading">
+            <div class="va-card-header mb-2">
+                <h3 id="insights-heading" class="text-lg font-semibold text-va-primary dark:text-green-400">AI Insights</h3>
+                <button id="generate-insights-btn" class="va-btn-text va-btn-sm" aria-label="Generate AI insights from your journal entry">
+                    Refresh insights
+                </button>
+            </div>
+            
+            <div class="va-alert va-alert-info">
+                <p class="text-sm">AI analysis can help identify patterns and themes in your writing.</p>
+            </div>
+            
+            <div id="ai-insights-content" class="bg-gray-50 dark:bg-gray-700 p-4 rounded-md text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 mt-3">
+                <!-- AI-generated insights will appear here -->
+                <p class="text-center text-gray-500 dark:text-gray-400 py-2 text-sm">AI insights will appear here after analysis.</p>
+            </div>
+        </div>
+
+        <!-- Emotion Tagging Section (Paid Users Only) -->
+        <div id="emotion-tagging-section" class="mt-4 hidden" aria-labelledby="emotion-heading">
+            <h3 id="emotion-heading" class="text-lg font-semibold text-va-text dark:text-gray-300 mb-2">Tag your emotions (Optional):</h3>
+            <div id="emotion-tags-container" class="flex flex-wrap gap-2" role="group" aria-label="Emotion tags">
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Happy" aria-pressed="false">😊 Happy</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Grateful" aria-pressed="false">🙏 Grateful</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Inspired" aria-pressed="false">💡 Inspired</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Calm" aria-pressed="false">😌 Calm</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Sad" aria-pressed="false">😢 Sad</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Anxious" aria-pressed="false">😰 Anxious</button>
+                <button class="emotion-tag bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" data-emotion="Proud" aria-pressed="false">😊 Proud</button>
+                <button class="add-emotion-tag bg-va-primary dark:bg-green-600 text-white px-3 py-1 rounded-full text-sm hover:bg-va-primary-dark dark:hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-va-primary dark:focus:ring-green-500" aria-label="Add custom emotion tag">+ Add Custom</button>
+            </div>
+        </div>
+
+        <!-- Word count is now in the card header -->
+        <!-- No redundant save/clear buttons needed here -->
+    </section>
+
+    <!-- Previous Journal Entries -->
+    <section class="va-card mt-8" aria-labelledby="previous-entries-heading">
+        <div class="va-card-header">
+            <h2 id="previous-entries-heading" class="va-card-title">Previous Entries</h2>
+            <div class="flex items-center gap-2">
+                <label for="entries-filter" class="text-sm text-gray-600 dark:text-gray-400">Filter:</label>
+                <select id="entries-filter" class="va-form-select text-sm py-1 px-2 w-auto">
+                    <option value="recent">Most Recent</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="longest">Longest Entries</option>
+                    <option value="shortest">Shortest Entries</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4" id="previous-entries-container" role="list">
+            <!-- Entries will be populated by JS -->
+            <p id="no-entries-message" class="text-gray-600 dark:text-gray-400 col-span-2 text-center py-8">No previous entries found.</p>
+        </div>
+        
+        <div class="mt-6 text-center">
+            <button id="load-more-entries" class="va-btn-outline va-btn-sm">
+                Load More Entries
+            </button>
+        </div>
+    </section>
+<!-- Status Message for Accessibility Announcements -->
+<div id="journal-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<!-- Journal Entry Template -->
+<template id="journal-entry-template">
+    <article class="va-card mb-4 border-l-2 border-va-primary dark:border-green-500 hover:shadow-lg transition-all duration-200" role="listitem">
+        <div class="va-card-header">
+            <div>
+                <h3 class="text-lg font-semibold text-va-primary dark:text-green-400 font-montserrat entry-title"></h3>
+                <p class="va-card-subtitle entry-date"></p>
+            </div>
+            <div class="flex space-x-2">
+                <button class="edit-entry-btn va-btn-text va-btn-icon" aria-label="Edit journal entry">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                </button>
+                <button class="delete-entry-btn text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 va-focus-outline" aria-label="Delete journal entry">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="entry-content mt-3 text-gray-700 dark:text-gray-300 border-l-4 border-gray-100 dark:border-gray-700 pl-3"></div>
+        <div class="entry-emotions mt-4 flex flex-wrap gap-1"></div>
+    </article>
+</template>
+
+<script src="/js/journal.js"></script>

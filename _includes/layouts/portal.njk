@@ -1,0 +1,34 @@
+---
+layout: base
+---
+
+<div class="portal-container bg-white dark:bg-gray-800 rounded-lg shadow-lg mx-auto my-6 max-w-5xl" role="region">
+  <div class="portal-sidebar-layout flex flex-col md:flex-row">
+    <aside class="portal-sidebar w-full md:w-64 p-4 bg-gray-50 dark:bg-gray-700 rounded-l-lg" role="complementary" aria-label="Portal navigation">
+      <nav role="navigation" aria-labelledby="portal-nav-heading">
+        <h2 id="portal-nav-heading" class="text-xl font-bold mb-4 text-blue-800 dark:text-blue-300 sr-only">Portal Navigation</h2>
+        <ul class="space-y-2" role="list">
+          <li role="listitem"><a href="/portal_values_assessment/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_values_assessment/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_values_assessment/' %}page{% endif %}">Values Assessment</a></li>
+          <li role="listitem"><a href="/portal_exercises/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_exercises/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_exercises/' %}page{% endif %}">Exercises</a></li>
+          <li role="listitem"><a href="/portal_reflection/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_reflection/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_reflection/' %}page{% endif %}">Reflection</a></li>
+          <li role="listitem"><a href="/portal_journal/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_journal/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_journal/' %}page{% endif %}">Journal</a></li>
+          <li role="listitem"><a href="/portal_acts/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_acts/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_acts/' %}page{% endif %}">Value-Based Acts</a></li>
+          <li role="listitem"><a href="/portal_progress/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_progress/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_progress/' %}page{% endif %}">Progress</a></li>
+          <li role="listitem"><a href="/portal_account/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/portal_account/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/portal_account/' %}page{% endif %}">Account</a></li>
+        </ul>
+      </nav>
+    </aside>
+    
+    <div class="portal-content flex-1 p-6">
+      {{ content | safe }}
+    </div>
+  </div>
+</div>
+
+{# Portal-specific scripts #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Portal layout loaded');
+  // Any portal-specific JavaScript can go here
+});
+</script>

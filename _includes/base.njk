@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if requires_auth %}
+    <meta name="requires-auth" content="true">
+    {% endif %}
+    <title>{{ title | default("ValueAlign") }}</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/css/tailwind-output.css" rel="stylesheet">
+    <link href="/css/portal-components.css" rel="stylesheet">
+    <link href="/css/portal-card-fixes.css" rel="stylesheet">
+    <link href="/css/portal-layout-fix.css" rel="stylesheet">
+    <style>
+        /* Ensure the body takes full viewport height and accounts for fixed header */
+        html {
+            scroll-padding-top: 4rem; /* Height of the fixed header */
+        }
+        /* Force proper portal layout with sidebar */
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .portal-content-wrapper {
+                display: flex !important;
+                flex-direction: row !important;
+            }
+            .portal-sidebar {
+                width: 18rem !important;
+                flex-shrink: 0 !important;
+                position: sticky;
+                align-self: flex-start;
+            }
+            .portal-content {
+                flex: 1 1 0% !important;
+            }
+        }
+        body {
+            padding-top: 4rem; /* Adjust this value based on your header's height */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        /* Footer styling */
+        footer {
+            flex-shrink: 0;
+        }
+        /* Ensure settings panel is properly positioned and visible when toggled */
+        #desktop-settings-panel {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        #desktop-settings-panel:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        /* Ensure fixed header stays on top */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="bg-va-bg dark:bg-gray-900 text-va-text dark:text-gray-100 font-sans antialiased">
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] bg-va-primary text-white dark:bg-green-600 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500 transition-transform transform focus:translate-y-2">
+        Skip to main content
+    </a>
+    
+    <!-- Include the appropriate header based on page type -->
+    {% if requires_auth %}
+        {% include "_portal_header.html" %}
+    {% else %}
+        {% include "_portal_header_loggedout.html" %}
+    {% endif %}
+    
+    <!-- Debug header status -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('[Base Layout] requires_auth value:', {% if requires_auth %}true{% else %}false{% endif %});
+        console.log('[Base Layout] Using unified header approach for consistent auth experience');
+    });
+    </script>
+
+    <main id="main-content" class="flex-grow" tabindex="-1">
+        <div class="container mx-auto px-4 py-8">
+            {{ content | safe }}
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-800 text-center p-4 text-sm text-gray-600 dark:text-gray-400">
+        &copy; {{ currentYear }} ValueAlign. All rights reserved.
+    </footer>
+
+    <!-- Portal JS (keep for other functionality) -->
+    <script src="/js/portal.js" defer></script>
+    
+    <!-- Settings functionality -->
+    <script src="/js/settings.js" defer></script>
+    
+    <script src="/js/auth-manager.js"></script>
+    <script src="/js/auth-shared.js"></script>
+    <script src="/js/theme-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.authManager = new AuthManager();
+            // Theme manager is initialized in its own file
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing mobile menu...');
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                    mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    // Toggle menu icons
+                    const menuOpenIcon = document.getElementById('menu-open-icon');
+                    const menuCloseIcon = document.getElementById('menu-close-icon');
+                    if (menuOpenIcon && menuCloseIcon) {
+                        menuOpenIcon.classList.toggle('hidden');
+                        menuCloseIcon.classList.toggle('hidden');
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        const menuOpenIcon = document.getElementById('menu-open-icon');
+                        const menuCloseIcon = document.getElementById('menu-close-icon');
+                        if (menuOpenIcon && menuCloseIcon) {
+                            menuOpenIcon.classList.remove('hidden');
+                            menuCloseIcon.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+            
+            // Close mobile menu when clicking on a nav link
+            document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    const mobileMenuButton = document.getElementById('mobile-menu-button');
+                    if (mobileMenu && mobileMenuButton) {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        const menuOpenIcon = document.getElementById('menu-open-icon');
+                        const menuCloseIcon = document.getElementById('menu-close-icon');
+                        if (menuOpenIcon && menuCloseIcon) {
+                            menuOpenIcon.classList.remove('hidden');
+                            menuCloseIcon.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+            console.log('Mobile menu initialization complete');
+        });
+    </script>
+    
+    <!-- Base scripts -->
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/menu.js"></script>
+
+    <!-- Auth scripts for consistent behavior across all pages -->
+    <script src="/js/auth-shared.js"></script>
+    <script src="/js/auth-manager.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Ensuring auth manager is initialized on all pages');
+        // Make sure authManager is initialized on all pages
+        if (window.authManager) {
+            window.authManager.updateUI();
+        }
+    });
+    </script>
+    
+    <!-- Dashboard script (only loads on dashboard page) -->
+    {% if page.url === '/dashboard/' %}
+    <script src="/js/dashboard.js"></script>
+    {% endif %}
+</body>
+</html>

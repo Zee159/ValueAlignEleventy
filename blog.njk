@@ -1,0 +1,101 @@
+---
+layout: base.njk
+title: Blog - ValueAlign
+---
+
+<!-- Blog Content -->
+<main class="flex-grow" role="main">
+    <!-- Hero Section -->
+    <section class="py-16 bg-white dark:bg-gray-800 text-center" aria-labelledby="blog-heading">
+        <div class="container mx-auto px-6">
+        <h1 id="blog-heading" class="text-5xl font-bold text-va-primary font-montserrat dark:text-green-400">ValueAlign Insights</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mt-4 max-w-3xl mx-auto">Explore articles, tips, and stories on personal growth, intentional living, and aligning with your core values.</p>
+        </div>
+    </section>
+
+    <!-- Blog Posts Section -->
+    <section class="py-12 bg-gray-50 dark:bg-gray-700" aria-label="Blog Posts">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Main Content Column (2/3 width) -->
+        <div class="lg:w-2/3">
+            <!-- Main Blog Posts Area -->
+            <div id="blog-posts-container" class="space-y-10" role="feed" aria-label="Blog articles">
+                <!-- Blog Post Card 1 -->
+                <article class="post-card p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800" role="article">
+                    <h2 class="text-3xl font-semibold text-va-text dark:text-gray-200 mb-3 font-montserrat hover:text-va-primary transition-colors">
+                        <a href="#">The Power of Living Intentionally</a>
+                    </h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 font-montserrat">By Alex Chen | May 22, 2025</p>
+                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        Discover how making conscious choices aligned with your core values can transform your daily life, reduce stress, and increase overall fulfillment. 
+                        We explore practical steps to start living more intentionally today.
+                    </p>
+                    <a href="#" class="text-va-primary dark:text-green-400 hover:underline font-semibold font-montserrat" aria-label="Read more about this article">Read More <span aria-hidden="true">&rarr;</span></a>
+                </article>
+
+                <!-- Blog Post Card 2 -->
+                <article class="post-card p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800" role="article">
+                    <h2 class="text-3xl font-semibold text-va-text dark:text-gray-200 mb-3 font-montserrat hover:text-va-primary transition-colors">
+                        <a href="#">Identifying Your Core Values: A Beginner's Guide</a>
+                    </h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 font-montserrat">By Sarah Miller | May 15, 2025</p>
+                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        Uncovering your core values is the first step towards a more authentic life. 
+                        This guide provides simple exercises and questions to help you identify the principles that are most important to you.
+                    </p>
+                    <a href="#" class="text-va-primary dark:text-green-400 hover:underline font-semibold font-montserrat" aria-label="Read more about this article">Read More <span aria-hidden="true">&rarr;</span></a>
+                </article>
+
+                <!-- Blog Post Card 3 -->
+                <article class="post-card p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800" role="article">
+                    <h2 class="text-3xl font-semibold text-va-text dark:text-gray-200 mb-3 font-montserrat hover:text-va-primary transition-colors">
+                        <a href="#">From Values to Action: Bridging the Gap</a>
+                    </h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 font-montserrat">By David Lee | May 08, 2025</p>
+                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        Knowing your values is one thing; living by them is another. 
+                        Learn strategies to translate your core principles into daily habits and meaningful actions that drive personal growth and satisfaction.
+                    </p>
+                    <a href="#" class="text-va-primary dark:text-green-400 hover:underline font-semibold font-montserrat" aria-label="Read more about this article">Read More <span aria-hidden="true">&rarr;</span></a>
+                </article>
+                
+                <!-- Pagination Placeholder -->
+                <div class="mt-12 text-center">
+                    <span class="text-gray-500 dark:text-gray-400">More posts coming soon...</span>
+                </div>
+            </div> <!-- End of blog-posts-container -->
+        </div> <!-- End of Main Content Column -->
+
+        <!-- Sidebar -->
+        <aside class="lg:w-1/3 space-y-8" role="complementary" aria-label="Blog sidebar">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 id="categories-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Categories</h3>
+                <ul class="space-y-2" role="list">
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">Personal Growth (3)</a></li>
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">Mindfulness (0)</a></li>
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">Productivity (0)</a></li>
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">Value Alignment (3)</a></li>
+                </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 id="recent-posts-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Recent Posts</h3>
+                <ul class="space-y-2" role="list">
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">The Power of Living Intentionally</a></li>
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">Identifying Your Core Values...</a></li>
+                    <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-va-primary dark:hover:text-green-400">From Values to Action...</a></li>
+                </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 id="newsletter-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Newsletter</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-3 text-sm">Subscribe for updates and new articles.</p>
+                <form class="flex" aria-labelledby="newsletter-heading">
+                    <input type="email" placeholder="your.email@example.com" aria-label="Email address for newsletter" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-l-md focus:outline-none focus:border-va-primary text-sm" required>
+                    <button type="submit" class="bg-va-primary text-white px-4 py-2 rounded-r-md hover:bg-opacity-80 text-sm font-montserrat" aria-label="Subscribe to newsletter">Subscribe</button>
+                </form>
+            </div>
+        </aside>
+            </div>
+        </div>
+    </section>
+</main>

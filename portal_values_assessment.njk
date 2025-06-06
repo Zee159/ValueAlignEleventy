@@ -1,0 +1,74 @@
+---
+layout: portal
+title: Core Values Assessment | ValueAlign
+metaDescription: Identify and prioritize your core values to better understand what drives your decisions and actions.
+requires_auth: true
+---
+
+{# Core Values Assessment Page Header with proper spacing #}
+<div role="banner" class="mb-8 pt-6" aria-labelledby="page-title">
+  <h1 id="page-title" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Core Values Assessment</h1>
+  <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">Identify and prioritize what matters most to you.</p>
+  <p class="text-md text-gray-700 dark:text-gray-300 mt-4 mb-2">Welcome to the Values Assessment. This tool will help you identify and reflect on your core values.</p>
+</div>
+
+{# Skip navigation link for keyboard users #}
+<a href="#assessment-content" class="sr-only focus:not-sr-only focus:p-2 focus:bg-blue-100 focus:rounded">Skip to assessment</a>
+
+{# Assessment card with consistent styling #}
+<div class="va-card mb-8" role="region" aria-labelledby="assessment-heading">
+  <div class="va-card-header">
+    <h2 id="assessment-heading" class="va-card-title">Assessment Progress</h2>
+  </div>
+  
+  <div class="va-card-body">
+    {# Progress tracker #}
+    <div class="mb-6" role="navigation" aria-label="Assessment progress">
+      <div class="flex justify-between items-center relative">
+        <div class="absolute left-0 right-0 top-1/2 h-1 bg-gray-200 dark:bg-gray-700 -z-10"></div>
+        
+        <div class="step step-active flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-va-primary text-white flex items-center justify-center font-bold mb-2" aria-current="step">1</div>
+          <span class="text-sm font-medium" aria-hidden="true">Introduction</span>
+        </div>
+        
+        <div class="step flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center font-bold mb-2">2</div>
+          <span class="text-sm font-medium" aria-hidden="true">Select Values</span>
+        </div>
+        
+        <div class="step flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center font-bold mb-2">3</div>
+          <span class="text-sm font-medium" aria-hidden="true">Prioritize</span>
+        </div>
+        
+        <div class="step flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center font-bold mb-2">4</div>
+          <span class="text-sm font-medium" aria-hidden="true">Reflect</span>
+        </div>
+      </div>
+      <div class="sr-only" aria-live="polite" id="progress-announcer">Step 1 of 4: Introduction</div>
+    </div>
+    
+    {# Main content area #}
+    <div id="assessment-content" class="overflow-hidden" role="region" aria-labelledby="current-step-heading">
+      <h3 id="current-step-heading" class="sr-only">Current Assessment Step</h3>
+      {# This section will be populated with different views based on the current step #}
+      <div id="assessment-container" class="min-h-[300px]"></div>
+    </div>
+  </div>
+  
+  <div class="va-card-footer">
+    {# Navigation buttons #}
+    <div class="flex justify-between" role="group" aria-label="Assessment navigation">
+      <button id="prev-button" class="px-6 py-2 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled aria-label="Go to previous step">Previous</button>
+      <button id="next-button" class="px-6 py-2 bg-va-primary hover:bg-green-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-opacity-50 transition-colors" aria-label="Continue to next step">Continue</button>
+    </div>
+  </div>
+</div>
+
+{# Status announcer for screen readers #}
+<div class="sr-only" aria-live="assertive" id="status-announcer"></div>
+
+{# Load the JavaScript for this page #}
+<script src="/js/values-assessment.js"></script>

@@ -1,0 +1,248 @@
+---
+layout: base.njk
+title: Login - ValueAlign
+permalink: /login/
+---
+
+<!-- Login Content -->
+<main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" role="main" aria-labelledby="login-heading">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-xl shadow-2xl">
+        <div>
+            <h2 id="login-heading" class="mt-6 text-center text-3xl font-extrabold text-va-text dark:text-gray-200 font-montserrat">
+                Sign in to your account
+            </h2>
+        </div>
+        <div id="login-system-message" class="text-amber-600 dark:text-amber-400 text-sm text-center mb-4 hidden" role="status" aria-live="polite"></div>
+        <div id="login-error-message" class="text-red-500 dark:text-red-400 text-sm text-center hidden" role="alert" aria-live="assertive"></div>
+        <form class="mt-8 space-y-6" id="login-form" aria-describedby="login-error-message">
+            <input type="hidden" name="remember" value="true">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="email-address" class="sr-only">Email address</label>
+                    <input id="email-address" name="email" type="email" autocomplete="email" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white rounded-t-md focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Email address" 
+                           aria-required="true" aria-invalid="false">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white rounded-b-md focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Password"
+                           aria-required="true" aria-invalid="false">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox"
+                           class="h-4 w-4 text-va-primary focus:ring-va-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700">
+                    <label for="remember-me" class="ml-2 block text-sm text-va-text dark:text-gray-300">
+                        Remember me
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="#" class="font-medium text-va-primary dark:text-green-400 hover:text-teal-700 dark:hover:text-green-300 font-montserrat" aria-label="Reset your forgotten password">
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-va-primary dark:bg-green-600 hover:bg-teal-700 dark:hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500 transition-colors duration-150 font-montserrat"
+                        aria-label="Sign in to your account">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="text-sm text-center mt-4">
+            <p class="text-va-text dark:text-gray-300">
+                Don't have an account?
+                <a href="/register/" class="font-medium text-va-primary dark:text-green-400 hover:text-teal-700 dark:hover:text-green-300 font-montserrat" aria-label="Create a new account">
+                    Sign up
+                </a>
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Clear any previous authentication data if something got corrupted
+        // Only do this if authManager hasn't been initialized yet (to avoid conflicts)
+        if (!window.authManager) {
+            // Clear auth state if:
+            // 1. We have authenticated=true but missing user data OR
+            // 2. We have authenticated=true but session is expired 
+            const isAuthenticatedStored = localStorage.getItem('valuealign_authenticated') === 'true';
+            const userJson = localStorage.getItem('valuealign_user');
+            const sessionExpiry = localStorage.getItem('valuealign_session_expiry');
+
+            if (isAuthenticatedStored) {
+                // Check for broken/incomplete auth state
+                if (!userJson) {
+                    console.warn('[LOGIN] Found corrupted auth state - authenticated but no user data. Cleaning up.');
+                    localStorage.removeItem('valuealign_authenticated');
+                } else if (sessionExpiry) {
+                    // Check if session expired
+                    const currentTime = new Date().getTime();
+                    const expiryTime = parseInt(sessionExpiry, 10);
+                    
+                    if (isNaN(expiryTime) || currentTime > expiryTime) {
+                        console.warn('[LOGIN] Found expired session. Cleaning up.');
+                        localStorage.removeItem('valuealign_authenticated');
+                        localStorage.removeItem('valuealign_session_expiry');
+                    } else {
+                        // Valid authentication - redirect to dashboard
+                        const redirectTo = localStorage.getItem('auth_redirect_after_login') || '/dashboard/';
+                        console.log('[LOGIN] User already authenticated with valid session. Redirecting to:', redirectTo);
+                        window.location.href = redirectTo;
+                        return; // Stop further execution
+                    }
+                }
+            } else {
+                console.log('[LOGIN] Not authenticated. Showing login form.');
+            }
+        } else if (window.authManager && window.authManager.isAuthenticated()) {
+            // If authManager is initialized and says we're authenticated, redirect
+            const redirectTo = localStorage.getItem('auth_redirect_after_login') || '/dashboard/';
+            console.log('[LOGIN] authManager says user is authenticated. Redirecting to:', redirectTo);
+            window.location.href = redirectTo;
+            return; // Stop further execution
+        }
+        
+        const loginForm = document.getElementById('login-form');
+        const errorMessageDiv = document.getElementById('login-error-message');
+        const systemMessageDiv = document.getElementById('login-system-message');
+        const emailInput = document.getElementById('email-address');
+        const rememberMeCheckbox = document.getElementById('remember-me');
+        
+        // Check for system messages (like session expiration)
+        const authMessage = localStorage.getItem('auth_login_message');
+        if (authMessage) {
+            systemMessageDiv.textContent = authMessage;
+            systemMessageDiv.classList.remove('hidden');
+            systemMessageDiv.setAttribute('aria-hidden', 'false');
+            
+            // Clear the message after displaying it
+            localStorage.removeItem('auth_login_message');
+        }
+
+        // Check if we have remembered credentials and fill them in
+        const rememberedEmail = localStorage.getItem('valuealign_remembered_email');
+        if (rememberedEmail) {
+            emailInput.value = rememberedEmail;
+            rememberMeCheckbox.checked = true;
+        }
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email-address').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('remember-me').checked;
+                
+                // Simulate validation
+                let isValid = true;
+                
+                // Basic email validation
+                if (!email || !email.includes('@')) {
+                    document.getElementById('email-address').setAttribute('aria-invalid', 'true');
+                    document.getElementById('login-error-message').textContent = 'Please enter a valid email address';
+                    document.getElementById('login-error-message').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('email-address').setAttribute('aria-invalid', 'false');
+                    document.getElementById('login-error-message').classList.add('hidden');
+                }
+                
+                // Basic password validation
+                if (!password) {
+                    document.getElementById('password').setAttribute('aria-invalid', 'true');
+                    document.getElementById('login-error-message').textContent = 'Please enter your password';
+                    document.getElementById('login-error-message').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('password').setAttribute('aria-invalid', 'false');
+                    document.getElementById('login-error-message').classList.add('hidden');
+                }
+                
+                // If validation passes, simulate login using authManager
+                if (isValid) {
+                    // Create user data object
+                    const userData = {
+                        email: email,
+                        name: email.split('@')[0], // Simple name extraction for demo
+                        loginTime: new Date().toISOString()
+                    };
+                    
+                    // Use authManager for login
+                    if (typeof authManager !== 'undefined') {
+                        authManager.login(userData, rememberMe);
+                    } else {
+                        // Fallback if authManager isn't loaded
+                        console.error('Authentication manager not found!');
+                        
+                        // Basic fallback to localStorage
+                        localStorage.setItem('valuealign_authenticated', 'true');
+                        localStorage.setItem('valuealign_user', JSON.stringify(userData));
+                        
+                        // ADDED: Set session expiry for consistency
+                        const SESSION_DURATION_MS = 3600000; // 1 hour
+                        const expiresAt = new Date().getTime() + SESSION_DURATION_MS;
+                        localStorage.setItem('valuealign_session_expiry', expiresAt.toString());
+                        // END OF ADDED CODE
+                        
+                        if (rememberMe) {
+                            localStorage.setItem('valuealign_remembered_email', email);
+                            localStorage.setItem('valuealign_remember_login', 'true');
+                        }
+                    }
+                    
+                    // Show success message with ARIA live region update
+                    const messageDiv = document.getElementById('login-error-message');
+                    messageDiv.textContent = 'Login successful! Redirecting...';
+                    messageDiv.setAttribute('aria-live', 'polite');
+                    messageDiv.classList.add('text-green-600', 'dark:text-green-400');
+                    messageDiv.classList.remove('text-red-500', 'dark:text-red-400');
+                    messageDiv.classList.remove('hidden');
+                    
+                    // Debug localStorage values to ensure authentication data is set
+                    console.log('DEBUG - Before redirect, localStorage values are:', {
+                        authenticated: localStorage.getItem('valuealign_authenticated'),
+                        user: localStorage.getItem('valuealign_user'),
+                        expiry: localStorage.getItem('valuealign_session_expiry')
+                    });
+                    
+                    // Check if there's a redirect URL saved in localStorage
+                    const redirectUrl = localStorage.getItem('auth_redirect_after_login');
+                    console.log('DEBUG - Redirect URL from localStorage:', redirectUrl);
+                    
+                    // Redirect after showing success message briefly
+                    setTimeout(() => {
+                        // Re-check localStorage right before redirecting
+                        console.log('DEBUG - Right before redirect, localStorage values are:', {
+                            authenticated: localStorage.getItem('valuealign_authenticated'),
+                            user: localStorage.getItem('valuealign_user'),
+                            expiry: localStorage.getItem('valuealign_session_expiry')
+                        });
+                        
+                        if (redirectUrl) {
+                            // Clear the saved redirect URL
+                            localStorage.removeItem('auth_redirect_after_login');
+                            console.log('DEBUG - Redirecting to saved URL:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        } else {
+                            // Default redirect to dashboard
+                            console.log('DEBUG - Redirecting to default URL: /dashboard/');
+                            window.location.href = '/dashboard/';
+                        }
+                    }, 1500);
+                }
+            });
+        }
+    });
+</script>

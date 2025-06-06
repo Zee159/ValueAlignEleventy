@@ -1,0 +1,442 @@
+---
+layout: base.njk
+title: Register - ValueAlign
+permalink: /register/
+---
+
+<!-- Registration Content -->
+<main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" role="main" aria-labelledby="registration-heading">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-10 rounded-xl shadow-2xl">
+        <div>
+            <h2 id="registration-heading" class="mt-6 text-center text-3xl font-extrabold text-va-text dark:text-gray-200 font-montserrat">
+                Create your account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                Choose your path to a more aligned life.
+            </p>
+        </div>
+
+        <!-- Plan Selection -->
+        <div class="mt-8" role="radiogroup" aria-labelledby="plan-selection-heading">
+            <h3 id="plan-selection-heading" class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-200 text-center mb-4 font-montserrat">Select Your Plan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Basic Plan -->
+                <div id="plan-basic" class="plan-card relative flex flex-col p-6 bg-white dark:bg-gray-700 border-2 border-va-primary dark:border-green-500 rounded-lg shadow-sm cursor-pointer ring-2 ring-va-primary dark:ring-green-500 ring-offset-2 dark:ring-offset-gray-800" role="radio" aria-checked="true" tabindex="0">
+                    <h4 class="text-xl font-semibold text-va-primary dark:text-green-400 font-montserrat">Basic Access</h4>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Get started for free</p>
+                    <ul class="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-200 flex-grow">
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-primary dark:text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>Core Value Discovery</li>
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-primary dark:text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>Basic Journaling</li>
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-primary dark:text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>Daily Reflection Prompts</li>
+                    </ul>
+                    <p class="mt-6 text-2xl font-bold text-va-primary dark:text-green-400 font-montserrat">Free</p>
+                    <input type="radio" name="plan" value="Basic" class="sr-only" checked>
+                </div>
+                <!-- Premium Plan -->
+                <div id="plan-premium" class="plan-card relative flex flex-col p-6 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm cursor-pointer" role="radio" aria-checked="false" tabindex="0">
+                    <h4 class="text-xl font-semibold text-va-primary dark:text-green-400 font-montserrat">Premium Unlock</h4>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Elevate your journey</p>
+                    <ul class="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-200 flex-grow">
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-accent dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>All Basic Features, plus:</li>
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-accent dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>In-Depth AI Value Analysis</li>
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-accent dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>AI-Powered Journal Insights</li>
+                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-va-accent dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>Personalized AI Coaching</li>
+                    </ul>
+                    <p class="mt-6 text-2xl font-bold text-va-primary dark:text-green-400 font-montserrat">$9.99 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">/ month</span></p>
+                    <a href="/features/#premium-ai" class="mt-2 text-xs text-va-primary dark:text-green-400 hover:text-teal-700 dark:hover:text-green-300 text-center" aria-label="Learn more about Premium features">Learn more about Premium</a>
+                    <input type="radio" name="plan" value="Plus" class="sr-only">
+                </div>
+            </div>
+            <input type="hidden" id="selected-plan" name="selected-plan" value="Basic">
+        </div>
+
+        <div id="registration-message" class="text-sm text-center" style="display: none;" role="alert" aria-live="assertive"></div>
+        
+        <!-- Social Login Options -->
+        <div class="mt-6">
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Sign up with</span>
+                </div>
+            </div>
+            
+            <div class="mt-6 grid grid-cols-3 gap-3">
+                <div>
+                    <button type="button" aria-label="Sign up with Facebook" 
+                            class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500">
+                        <span class="sr-only">Sign up with Facebook</span>
+                        <svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div>
+                    <button type="button" aria-label="Sign up with X (Twitter)" 
+                            class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500">
+                        <span class="sr-only">Sign up with X (Twitter)</span>
+                        <svg class="w-5 h-5 text-black dark:text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div>
+                    <button type="button" aria-label="Sign up with Microsoft" 
+                            class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500">
+                        <span class="sr-only">Sign up with Microsoft</span>
+                        <svg class="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" aria-hidden="true">
+                            <path fill="#f35325" d="M1 1h10v10H1z"/>
+                            <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                            <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                            <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative mt-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or sign up with email</span>
+                </div>
+            </div>
+        </div>
+        
+        <form class="mt-6 space-y-6" id="registration-form" aria-labelledby="registration-heading">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="full-name" class="sr-only">Full name</label>
+                    <input id="full-name" name="full-name" type="text" autocomplete="name" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white rounded-t-md focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Full name" aria-required="true" aria-invalid="false">
+                </div>
+                <div>
+                    <label for="email-address" class="sr-only">Email address</label>
+                    <input id="email-address" name="email" type="email" autocomplete="email" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Email address" aria-required="true" aria-invalid="false">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="new-password" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Password (min. 8 characters)" aria-required="true" aria-invalid="false" minlength="8" aria-describedby="password-strength">
+                    <div id="password-strength-container" class="mt-1 rounded-md bg-gray-100 dark:bg-gray-700 p-1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="password-strength-text">
+                        <div id="password-strength-meter" class="h-1 rounded transition-all duration-300 bg-gray-300 dark:bg-gray-600" style="width: 0%"></div>
+                    </div>
+                    <p id="password-strength-text" class="mt-1 text-xs text-gray-500 dark:text-gray-400">Password strength: <span id="strength-text">Too weak</span></p>
+                </div>
+                <div>
+                    <label for="confirm-password" class="sr-only">Confirm password</label>
+                    <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required
+                           class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-va-text dark:text-white rounded-b-md focus:outline-none focus:ring-va-primary dark:focus:ring-green-500 focus:border-va-primary dark:focus:border-green-500 focus:z-10 sm:text-sm dark:bg-gray-700"
+                           placeholder="Confirm password" aria-required="true" aria-invalid="false" aria-describedby="password-match-hint">
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <div class="flex items-center h-5">
+                    <input id="terms-agreement" name="terms-agreement" type="checkbox" required
+                           class="h-4 w-4 text-va-primary focus:ring-va-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700">
+                </div>
+                <div class="ml-3 text-sm">
+                    <label for="terms-agreement" class="font-medium text-va-text dark:text-gray-300">
+                        I agree to the <a href="/terms/" class="text-va-primary dark:text-green-400 hover:text-teal-700 dark:hover:text-green-300" aria-label="Read terms and conditions">Terms and Conditions</a>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-va-primary dark:bg-green-600 hover:bg-teal-700 dark:hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary dark:focus:ring-green-500 transition-colors duration-150 font-montserrat"
+                        aria-label="Create your account">
+                    Create Account
+                </button>
+            </div>
+        </form>
+
+        <div class="text-sm text-center mt-4">
+            <p class="text-va-text dark:text-gray-300">
+                Already have an account?
+                <a href="/login/" class="font-medium text-va-primary dark:text-green-400 hover:text-teal-700 dark:hover:text-green-300 font-montserrat">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registrationForm = document.getElementById('registration-form');
+        const messageDiv = document.getElementById('registration-message');
+        const planCards = document.querySelectorAll('.plan-card');
+        const selectedPlanInput = document.getElementById('selected-plan');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const passwordStrengthMeter = document.getElementById('password-strength-meter');
+        const passwordStrengthText = document.getElementById('strength-text');
+        const passwordStrengthContainer = document.getElementById('password-strength-container');
+        const fullNameInput = document.getElementById('full-name');
+        const emailInput = document.getElementById('email-address');
+        const termsCheckbox = document.getElementById('terms-agreement');
+        const socialButtons = document.querySelectorAll('button[aria-label^="Sign up with"]');
+
+        // Social login simulation
+        socialButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const provider = this.getAttribute('aria-label').replace('Sign up with ', '');
+                messageDiv.textContent = `Connecting to ${provider}... (This is a simulation)`;
+                messageDiv.className = 'text-sm text-center';
+                messageDiv.classList.add('text-blue-600', 'dark:text-blue-400');
+                messageDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageDiv.textContent = `Successfully authenticated with ${provider}! Completing signup...`;
+                    messageDiv.classList.remove('text-blue-600', 'dark:text-blue-400');
+                    messageDiv.classList.add('text-green-600', 'dark:text-green-400');
+                    
+                    // Simulate successful registration after social login
+                    setTimeout(() => {
+                        const chosenPlan = selectedPlanInput.value;
+                        messageDiv.textContent = `Registration through ${provider} successful! You've signed up for our ${chosenPlan} plan. Redirecting...`;
+                        
+                        // Simulate redirect after registration
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2000);
+                    }, 1500);
+                }, 1500);
+            });
+        });
+
+        // Password strength meter
+        function checkPasswordStrength(password) {
+            // Calculate password strength
+            let strength = 0;
+            const patterns = [
+                /[a-z]/, // Lowercase
+                /[A-Z]/, // Uppercase
+                /[0-9]/, // Numbers
+                /[^a-zA-Z0-9]/ // Special characters
+            ];
+            
+            // Add length-based strength
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 10) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Add complexity-based strength
+            patterns.forEach(pattern => {
+                if (pattern.test(password)) strength += 1;
+            });
+            
+            return strength;
+        }
+
+        function updatePasswordStrengthUI(strength) {
+            // Map strength score (0-7) to percentage
+            const percentage = Math.min((strength / 7) * 100, 100);
+            
+            // Update visual indicator
+            passwordStrengthMeter.style.width = `${percentage}%`;
+            passwordStrengthContainer.setAttribute('aria-valuenow', percentage);
+            
+            // Update color and text
+            if (strength < 3) {
+                passwordStrengthMeter.className = 'h-1 rounded transition-all duration-300 bg-red-500';
+                passwordStrengthText.textContent = 'Too weak';
+            } else if (strength < 5) {
+                passwordStrengthMeter.className = 'h-1 rounded transition-all duration-300 bg-yellow-500';
+                passwordStrengthText.textContent = 'Moderate';
+            } else if (strength < 7) {
+                passwordStrengthMeter.className = 'h-1 rounded transition-all duration-300 bg-green-500';
+                passwordStrengthText.textContent = 'Strong';
+            } else {
+                passwordStrengthMeter.className = 'h-1 rounded transition-all duration-300 bg-green-600';
+                passwordStrengthText.textContent = 'Very strong';
+            }
+        }
+        
+        // Real-time password validation
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const strength = checkPasswordStrength(this.value);
+                updatePasswordStrengthUI(strength);
+            });
+        }
+        
+        // Real-time password confirmation validation
+        if (confirmPasswordInput && passwordInput) {
+            confirmPasswordInput.addEventListener('input', function() {
+                if (passwordInput.value !== this.value) {
+                    this.setCustomValidity('Passwords do not match');
+                    this.setAttribute('aria-invalid', 'true');
+                } else {
+                    this.setCustomValidity('');
+                    this.setAttribute('aria-invalid', 'false');
+                }
+            });
+        }
+
+        // Plan selection visual handler
+        planCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Handle dark mode classes appropriately
+                const isDarkMode = document.documentElement.classList.contains('dark');
+                
+                // Update ARIA attributes
+                planCards.forEach(c => {
+                    c.classList.remove('border-va-primary', 'dark:border-green-500', 'ring-2', 'ring-va-primary', 'dark:ring-green-500', 'ring-offset-2', 'dark:ring-offset-gray-800');
+                    c.classList.add('border-gray-300', 'dark:border-gray-600');
+                    c.querySelector('input[type="radio"]').checked = false;
+                    c.setAttribute('aria-checked', 'false');
+                });
+                
+                card.classList.add('border-2', 'border-va-primary', 'dark:border-green-500', 'ring-2', 'ring-va-primary', 'dark:ring-green-500', 'ring-offset-2');
+                card.setAttribute('aria-checked', 'true');
+                if (isDarkMode) {
+                    card.classList.add('dark:ring-offset-gray-800');
+                }
+                card.classList.remove('border-gray-300', 'dark:border-gray-600');
+                
+                const radio = card.querySelector('input[type="radio"]');
+                radio.checked = true;
+                selectedPlanInput.value = radio.value;
+            });
+            
+            // Keyboard support for plan selection
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Inline form validation
+        function validateInput(input, validationFn) {
+            const isValid = validationFn(input.value);
+            
+            if (isValid) {
+                input.classList.remove('border-red-500', 'dark:border-red-400');
+                input.classList.add('border-green-500', 'dark:border-green-400');
+                input.setAttribute('aria-invalid', 'false');
+            } else {
+                input.classList.remove('border-green-500', 'dark:border-green-400');
+                input.classList.add('border-red-500', 'dark:border-red-400');
+                input.setAttribute('aria-invalid', 'true');
+            }
+            
+            return isValid;
+        }
+        
+        if (fullNameInput) {
+            fullNameInput.addEventListener('blur', function() {
+                validateInput(this, value => value.trim().length > 0);
+            });
+        }
+        
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                validateInput(this, value => {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailPattern.test(value);
+                });
+            });
+        }
+
+        if (registrationForm) {
+            registrationForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                messageDiv.style.display = 'none';
+                messageDiv.textContent = '';
+                messageDiv.className = 'text-sm text-center'; // Reset classes
+
+                const fullName = fullNameInput.value;
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                const termsAgreement = termsCheckbox.checked;
+                const chosenPlan = selectedPlanInput.value; // Get chosen plan
+
+                // Validate all fields at once
+                let isValid = true;
+                
+                // Check required fields
+                if (!fullName || !email || !password || !confirmPassword) {
+                    messageDiv.textContent = 'Please fill in all fields.';
+                    messageDiv.classList.add('text-red-500', 'dark:text-red-400');
+                    messageDiv.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Check password match
+                if (password !== confirmPassword) {
+                    messageDiv.textContent = 'Passwords do not match.';
+                    messageDiv.classList.add('text-red-500', 'dark:text-red-400');
+                    messageDiv.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Check password strength
+                const passwordStrength = checkPasswordStrength(password);
+                if (passwordStrength < 3) {
+                    messageDiv.textContent = 'Please use a stronger password.';
+                    messageDiv.classList.add('text-red-500', 'dark:text-red-400');
+                    messageDiv.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Check terms agreement
+                if (!termsAgreement) {
+                    messageDiv.textContent = 'You must agree to the Terms and Conditions.';
+                    messageDiv.classList.add('text-red-500', 'dark:text-red-400');
+                    messageDiv.style.display = 'block';
+                    isValid = false;
+                }
+
+                // If all validation passes, show success message
+                if (isValid) {
+                    // Create user data object
+                    const userData = {
+                        name: fullName,
+                        email: email,
+                        plan: chosenPlan,
+                        registrationTime: new Date().toISOString()
+                    };
+                    
+                    // Use authManager for registration if available
+                    if (typeof authManager !== 'undefined') {
+                        // The auth manager will handle storing the user data and authentication state
+                        authManager.login(userData, false); // New registrations don't auto-check "remember me"
+                    } else {
+                        // Fallback if authManager isn't loaded
+                        console.error('Authentication manager not found!');
+                        
+                        // Basic fallback to localStorage
+                        localStorage.setItem('valuealign_authenticated', 'true');
+                        localStorage.setItem('valuealign_user', JSON.stringify(userData));
+                    }
+                    
+                    // Update ARIA live region with success message
+                    messageDiv.textContent = `Registration successful! You've signed up for our ${chosenPlan} plan. Redirecting... (This is a simulation - no actual account has been created)`;
+                    messageDiv.classList.add('text-green-600', 'dark:text-green-400');
+                    messageDiv.setAttribute('aria-live', 'polite');
+                    messageDiv.style.display = 'block';
+                    
+                    // Simulate redirect after registration
+                    setTimeout(() => {
+                        window.location.href = '/'; // For demo, we just go to home page
+                    }, 3000);
+                }
+            });
+        }
+    });
+</script>

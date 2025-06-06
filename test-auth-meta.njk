@@ -1,0 +1,36 @@
+---
+layout: base
+title: Test Auth Meta Tag
+requires_auth: true
+---
+
+<div>
+  <h1>Test Page for Auth Meta Tag</h1>
+  <p>This page should have the requires-auth meta tag in its head section.</p>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if the meta tag exists
+      const metaTag = document.querySelector('meta[name="requires-auth"]');
+      console.log('Meta tag exists:', !!metaTag);
+      if (metaTag) {
+        console.log('Meta tag content:', metaTag.getAttribute('content'));
+        
+        // Display on page
+        const resultDiv = document.createElement('div');
+        resultDiv.innerHTML = `
+          <p><strong>Meta tag found:</strong> Yes</p>
+          <p><strong>Content:</strong> ${metaTag.getAttribute('content')}</p>
+        `;
+        document.body.appendChild(resultDiv);
+      } else {
+        // Display error on page
+        const resultDiv = document.createElement('div');
+        resultDiv.innerHTML = `
+          <p style="color: red;"><strong>Meta tag NOT found!</strong></p>
+        `;
+        document.body.appendChild(resultDiv);
+      }
+    });
+  </script>
+</div>

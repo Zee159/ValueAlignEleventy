@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Values Assessment Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        button {
+            background-color: #1a56db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #test-output {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Values Assessment Test</h1>
+        <button id="test-button">Run Simple Test</button>
+        <div id="test-output">Test results will appear here.</div>
+    </div>
+    
+    <!-- Test container -->
+    <div id="test-container">
+        <div id="assessment-container"></div>
+        <div id="progress-announcer" aria-live="polite"></div>
+        <div id="status-announcer" aria-live="assertive"></div>
+    </div>
+    
+    <!-- Sample Values Data -->
+    <script>
+        // Sample values data for testing
+        window.valuesData = [
+            { id: 'honesty', name: 'Honesty', description: 'Being truthful and transparent in words and actions.' },
+            { id: 'compassion', name: 'Compassion', description: 'Showing care and concern for the suffering of others.' },
+            { id: 'creativity', name: 'Creativity', description: 'Using imagination to develop new ideas and solutions.' }
+        ];
+        
+        // Mock accessibility helpers
+        window.AccessibilityHelpers = {
+            trapFocus: function(container) {
+                console.log('Focus trapped in:', container);
+                return true;
+            },
+            releaseFocus: function() {
+                console.log('Focus released');
+                return true;
+            }
+        };
+    </script>
+    
+    <!-- Load Values Assessment Script -->
+    <script src="js/values-assessment.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testButton = document.getElementById('test-button');
+            const testOutput = document.getElementById('test-output');
+            
+            function logToOutput(message) {
+                testOutput.innerHTML += message + '\n';
+            }
+            
+            testButton.addEventListener('click', function() {
+                // Clear previous results
+                testOutput.innerHTML = '';
+                
+                try {
+                    logToOutput('Starting Values Assessment test...');
+                    
+                    // Test 1: Instantiate ValuesAssessment
+                    logToOutput('Test 1: Creating ValuesAssessment instance');
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    if (valuesAssessment) {
+                        logToOutput('✓ Successfully created ValuesAssessment instance');
+                    } else {
+                        logToOutput('✗ Failed to create ValuesAssessment instance');
+                        return;
+                    }
+                    
+                    // Test 2: Initialize ValuesAssessment
+                    logToOutput('\nTest 2: Initializing ValuesAssessment');
+                    valuesAssessment.init();
+                    logToOutput('✓ init() called without errors');
+                    
+                    // Test 3: Show Introduction Screen
+                    logToOutput('\nTest 3: Testing showIntroduction()');
+                    valuesAssessment.showIntroduction();
+                    
+                    const mainRegion = document.querySelector('[role="region"]');
+                    if (mainRegion) {
+                        logToOutput('✓ Found region element with proper role');
+                    } else {
+                        logToOutput('✗ Failed to find region element');
+                    }
+                    
+                    const heading = document.querySelector('h2');
+                    if (heading && heading.textContent.includes('Values Assessment')) {
+                        logToOutput('✓ Found heading with proper content');
+                    } else {
+                        logToOutput('✗ Failed to find proper heading');
+                    }
+                    
+                    const beginButton = document.querySelector('button.begin-button');
+                    if (beginButton) {
+                        logToOutput('✓ Found begin button');
+                    } else {
+                        logToOutput('✗ Failed to find begin button');
+                    }
+                    
+                    // Test 4: Show Values Selection Screen
+                    logToOutput('\nTest 4: Testing showValuesSelection()');
+                    valuesAssessment.showValuesSelection();
+                    
+                    const selectionHeading = document.querySelector('#selection-heading');
+                    if (selectionHeading) {
+                        logToOutput('✓ Found selection heading');
+                    } else {
+                        logToOutput('✗ Failed to find selection heading');
+                    }
+                    
+                    const valuesList = document.querySelector('.values-list');
+                    if (valuesList) {
+                        logToOutput('✓ Found values list');
+                    } else {
+                        logToOutput('✗ Failed to find values list');
+                    }
+                    
+                    // Test 5: Show Values Ranking Screen
+                    logToOutput('\nTest 5: Testing showValuesRanking()');
+                    valuesAssessment.showValuesRanking();
+                    
+                    const rankingHeading = document.querySelector('#ranking-heading');
+                    if (rankingHeading) {
+                        logToOutput('✓ Found ranking heading');
+                    } else {
+                        logToOutput('✗ Failed to find ranking heading');
+                    }
+                    
+                    const rankedValuesList = document.querySelector('[role="list"]');
+                    if (rankedValuesList) {
+                        logToOutput('✓ Found ranked values list with proper role');
+                    } else {
+                        logToOutput('✗ Failed to find ranked values list');
+                    }
+                    
+                    // Test 6: Show Reflection Screen
+                    logToOutput('\nTest 6: Testing showReflection()');
+                    valuesAssessment.showReflection();
+                    
+                    const reflectionHeading = document.querySelector('#reflection-heading');
+                    if (reflectionHeading) {
+                        logToOutput('✓ Found reflection heading');
+                    } else {
+                        logToOutput('✗ Failed to find reflection heading');
+                    }
+                    
+                    const textareas = document.querySelectorAll('textarea');
+                    if (textareas.length > 0) {
+                        logToOutput(`✓ Found ${textareas.length} reflection textareas`);
+                    } else {
+                        logToOutput('✗ Failed to find reflection textareas');
+                    }
+                    
+                    // Test 7: Export as PDF
+                    logToOutput('\nTest 7: Testing exportValuesAsPDF()');
+                    valuesAssessment.exportValuesAsPDF();
+                    
+                    setTimeout(() => {
+                        const modal = document.querySelector('[role="dialog"]');
+                        if (modal) {
+                            logToOutput('✓ Found export modal with proper dialog role');
+                        } else {
+                            logToOutput('✗ Failed to find export modal');
+                        }
+                        
+                        const progressBar = document.querySelector('[role="progressbar"]');
+                        if (progressBar) {
+                            logToOutput('✓ Found progress bar with proper role');
+                        } else {
+                            logToOutput('✗ Failed to find progress bar');
+                        }
+                        
+                        logToOutput('\nAll tests completed!');
+                    }, 500);
+                    
+                } catch (error) {
+                    logToOutput(`\nError running tests: ${error.message}`);
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

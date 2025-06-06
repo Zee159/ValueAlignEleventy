@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Values Assessment Accessibility Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        button {
+            background-color: #1a56db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #test-output {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .pass {
+            color: #047857;
+            font-weight: bold;
+        }
+        .fail {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+        #assessment-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Values Assessment Accessibility Test</h1>
+        <button id="test-button">Run Full Test</button>
+        <div>
+            <button id="test-intro">Test Introduction</button>
+            <button id="test-selection">Test Values Selection</button>
+            <button id="test-ranking">Test Values Ranking</button>
+            <button id="test-reflection">Test Reflection</button>
+            <button id="test-export">Test PDF Export</button>
+        </div>
+        
+        <div id="test-output">Test results will appear here.</div>
+        
+        <!-- Test container -->
+        <div id="assessment-container"></div>
+        <div id="progress-announcer" aria-live="polite"></div>
+        <div id="status-announcer" aria-live="assertive"></div>
+    </div>
+    
+    <!-- Sample Values Data -->
+    <script>
+        // Sample values data for testing
+        window.valuesData = [
+            { id: 'honesty', name: 'Honesty', description: 'Being truthful and transparent in words and actions.' },
+            { id: 'compassion', name: 'Compassion', description: 'Showing care and concern for the suffering of others.' },
+            { id: 'creativity', name: 'Creativity', description: 'Using imagination to develop new ideas and solutions.' },
+            { id: 'courage', name: 'Courage', description: 'Facing fear and challenges with strength and resolve.' },
+            { id: 'growth', name: 'Growth', description: 'Continuously improving and developing oneself.' }
+        ];
+        
+        // Mock accessibility helpers
+        window.AccessibilityHelpers = {
+            trapFocus: function(container) {
+                console.log('Focus trapped in:', container);
+                return true;
+            },
+            releaseFocus: function() {
+                console.log('Focus released');
+                return true;
+            }
+        };
+    </script>
+    
+    <!-- Load Values Assessment Script -->
+    <script src="js/values-assessment.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testButton = document.getElementById('test-button');
+            const testIntroButton = document.getElementById('test-intro');
+            const testSelectionButton = document.getElementById('test-selection');
+            const testRankingButton = document.getElementById('test-ranking');
+            const testReflectionButton = document.getElementById('test-reflection');
+            const testExportButton = document.getElementById('test-export');
+            const testOutput = document.getElementById('test-output');
+            
+            function logToOutput(message, isPass = null) {
+                let msgClass = '';
+                if (isPass === true) msgClass = 'class="pass"';
+                if (isPass === false) msgClass = 'class="fail"';
+                
+                testOutput.innerHTML += `<div ${msgClass}>${message}</div>`;
+                testOutput.scrollTop = testOutput.scrollHeight;
+            }
+            
+            function clearOutput() {
+                testOutput.innerHTML = '';
+            }
+            
+            // Test individual ValuesAssessment methods
+            testIntroButton.addEventListener('click', function() {
+                clearOutput();
+                try {
+                    logToOutput('Testing Introduction Screen...');
+                    
+                    // Create instance
+                    const valuesAssessment = new window.ValuesAssessment();
+                    logToOutput('✓ Created ValuesAssessment instance', true);
+                    
+                    // Show Introduction
+                    valuesAssessment.showIntroduction();
+                    logToOutput('✓ Called showIntroduction()', true);
+                    
+                    // Test accessibility elements
+                    const region = document.querySelector('[role="region"]');
+                    logToOutput(region ? '✓ Found region with proper role' : '✗ Missing region with role', !!region);
+                    
+                    const heading = document.querySelector('h2');
+                    logToOutput(heading ? '✓ Found heading' : '✗ Missing heading', !!heading);
+                    
+                    const beginButton = document.querySelector('.begin-button');
+                    logToOutput(beginButton ? '✓ Found begin button' : '✗ Missing begin button', !!beginButton);
+                    
+                    const announcer = document.querySelector('[aria-live]');
+                    logToOutput(announcer ? '✓ Found live region for announcements' : '✗ Missing live region', !!announcer);
+                    
+                } catch (error) {
+                    logToOutput(`Error testing introduction: ${error.message}`, false);
+                    console.error(error);
+                }
+            });
+            
+            testSelectionButton.addEventListener('click', function() {
+                clearOutput();
+                try {
+                    logToOutput('Testing Values Selection Screen...');
+                    
+                    // Create instance
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    // Show Values Selection
+                    valuesAssessment.showValuesSelection();
+                    logToOutput('✓ Called showValuesSelection()', true);
+                    
+                    // Test accessibility elements
+                    const heading = document.querySelector('#selection-heading');
+                    logToOutput(heading ? '✓ Found selection heading with ID' : '✗ Missing selection heading with ID', !!heading);
+                    
+                    const valuesList = document.querySelector('.values-list[role="list"]');
+                    logToOutput(valuesList ? '✓ Found values list with list role' : '✗ Missing values list with list role', !!valuesList);
+                    
+                    const valueItems = document.querySelectorAll('li.value-item');
+                    logToOutput(valueItems.length > 0 ? `✓ Found ${valueItems.length} value items` : '✗ No value items found', valueItems.length > 0);
+                    
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    logToOutput(checkboxes.length > 0 ? `✓ Found ${checkboxes.length} checkboxes` : '✗ No checkboxes found', checkboxes.length > 0);
+                    
+                    const counter = document.querySelector('[aria-live]');
+                    logToOutput(counter ? '✓ Found live counter region' : '✗ Missing live counter region', !!counter);
+                    
+                } catch (error) {
+                    logToOutput(`Error testing values selection: ${error.message}`, false);
+                    console.error(error);
+                }
+            });
+            
+            testRankingButton.addEventListener('click', function() {
+                clearOutput();
+                try {
+                    logToOutput('Testing Values Ranking Screen...');
+                    
+                    // Create instance
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    // Show Values Ranking
+                    valuesAssessment.showValuesRanking();
+                    logToOutput('✓ Called showValuesRanking()', true);
+                    
+                    // Test accessibility elements
+                    const rankingHeading = document.querySelector('#ranking-heading');
+                    logToOutput(rankingHeading ? '✓ Found ranking heading with ID' : '✗ Missing ranking heading with ID', !!rankingHeading);
+                    
+                    const rankingList = document.querySelector('[role="list"]');
+                    logToOutput(rankingList ? '✓ Found ranking list with list role' : '✗ Missing ranking list with list role', !!rankingList);
+                    
+                    const rankingItems = document.querySelectorAll('[role="listitem"]');
+                    logToOutput(rankingItems.length > 0 ? `✓ Found ${rankingItems.length} ranking items` : '✗ No ranking items found', rankingItems.length > 0);
+                    
+                    const upButtons = document.querySelectorAll('.move-up-btn');
+                    const downButtons = document.querySelectorAll('.move-down-btn');
+                    logToOutput(upButtons.length > 0 && downButtons.length > 0 ? 
+                        `✓ Found ${upButtons.length} up buttons and ${downButtons.length} down buttons` : 
+                        '✗ Missing ranking buttons', upButtons.length > 0 && downButtons.length > 0);
+                    
+                    // Test ARIA labels on buttons
+                    const buttonsWithAriaLabels = document.querySelectorAll('button[aria-label]');
+                    logToOutput(buttonsWithAriaLabels.length > 0 ? 
+                        `✓ Found ${buttonsWithAriaLabels.length} buttons with aria-label attributes` : 
+                        '✗ Missing aria-labels on buttons', buttonsWithAriaLabels.length > 0);
+                    
+                } catch (error) {
+                    logToOutput(`Error testing values ranking: ${error.message}`, false);
+                    console.error(error);
+                }
+            });
+            
+            testReflectionButton.addEventListener('click', function() {
+                clearOutput();
+                try {
+                    logToOutput('Testing Reflection Screen...');
+                    
+                    // Create instance
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    // Show Reflection
+                    valuesAssessment.showReflection();
+                    logToOutput('✓ Called showReflection()', true);
+                    
+                    // Test accessibility elements
+                    const reflectionHeading = document.querySelector('#reflection-heading');
+                    logToOutput(reflectionHeading ? '✓ Found reflection heading with ID' : '✗ Missing reflection heading with ID', !!reflectionHeading);
+                    
+                    const fieldsets = document.querySelectorAll('fieldset.reflection-item');
+                    logToOutput(fieldsets.length > 0 ? `✓ Found ${fieldsets.length} fieldsets` : '✗ No fieldsets found', fieldsets.length > 0);
+                    
+                    const textareas = document.querySelectorAll('textarea');
+                    logToOutput(textareas.length > 0 ? `✓ Found ${textareas.length} textareas` : '✗ No textareas found', textareas.length > 0);
+                    
+                    const labels = document.querySelectorAll('label');
+                    logToOutput(labels.length > 0 ? `✓ Found ${labels.length} explicit labels` : '✗ No explicit labels found', labels.length > 0);
+                    
+                    // Test ARIA describedby
+                    const describedElements = document.querySelectorAll('[aria-describedby]');
+                    logToOutput(describedElements.length > 0 ? 
+                        `✓ Found ${describedElements.length} elements with aria-describedby` : 
+                        '✗ Missing aria-describedby attributes', describedElements.length > 0);
+                    
+                    const charCounters = document.querySelectorAll('.char-counter[aria-live]');
+                    logToOutput(charCounters.length > 0 ? 
+                        `✓ Found ${charCounters.length} character counters with aria-live` : 
+                        '✗ Missing character counters with aria-live', charCounters.length > 0);
+                    
+                } catch (error) {
+                    logToOutput(`Error testing reflection: ${error.message}`, false);
+                    console.error(error);
+                }
+            });
+            
+            testExportButton.addEventListener('click', function() {
+                clearOutput();
+                try {
+                    logToOutput('Testing PDF Export Modal...');
+                    
+                    // Create instance
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    // Show Export Modal
+                    valuesAssessment.exportValuesAsPDF();
+                    logToOutput('✓ Called exportValuesAsPDF()', true);
+                    
+                    // Test accessibility elements
+                    setTimeout(() => {
+                        const modal = document.querySelector('[role="dialog"]');
+                        logToOutput(modal ? '✓ Found modal with dialog role' : '✗ Missing modal with dialog role', !!modal);
+                        
+                        const modalOverlay = document.querySelector('.modal-overlay');
+                        logToOutput(modalOverlay ? '✓ Found modal overlay' : '✗ Missing modal overlay', !!modalOverlay);
+                        
+                        const modalTitle = document.querySelector('#export-modal-title');
+                        logToOutput(modalTitle ? '✓ Found modal title with ID' : '✗ Missing modal title with ID', !!modalTitle);
+                        
+                        const modalDesc = document.querySelector('#export-modal-description');
+                        logToOutput(modalDesc ? '✓ Found modal description with ID' : '✗ Missing modal description with ID', !!modalDesc);
+                        
+                        const progressBar = document.querySelector('[role="progressbar"]');
+                        logToOutput(progressBar ? '✓ Found progress bar with progressbar role' : '✗ Missing progress bar with progressbar role', !!progressBar);
+                        
+                        const progressMsg = document.querySelector('.progress-message[aria-live]');
+                        logToOutput(progressMsg ? '✓ Found progress message with aria-live' : '✗ Missing progress message with aria-live', !!progressMsg);
+                        
+                        const cancelButton = document.querySelector('.cancel-button');
+                        logToOutput(cancelButton ? '✓ Found cancel button' : '✗ Missing cancel button', !!cancelButton);
+                        
+                        logToOutput('\nNote: The modal will close automatically after simulated export completes.');
+                    }, 100);
+                    
+                } catch (error) {
+                    logToOutput(`Error testing PDF export: ${error.message}`, false);
+                    console.error(error);
+                }
+            });
+            
+            // Run all tests in sequence
+            testButton.addEventListener('click', async function() {
+                clearOutput();
+                logToOutput('Running all accessibility tests...\n');
+                
+                // Test 1: Create instance
+                try {
+                    logToOutput('Test 1: Creating ValuesAssessment instance');
+                    const valuesAssessment = new window.ValuesAssessment();
+                    
+                    if (valuesAssessment) {
+                        logToOutput('✓ Successfully created ValuesAssessment instance', true);
+                    } else {
+                        logToOutput('✗ Failed to create ValuesAssessment instance', false);
+                        return;
+                    }
+                } catch(error) {
+                    logToOutput(`✗ Error creating instance: ${error.message}`, false);
+                    return;
+                }
+                
+                // Run tests in sequence
+                testIntroButton.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                testSelectionButton.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                testRankingButton.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                testReflectionButton.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                testExportButton.click();
+            });
+        });
+    </script>
+</body>
+</html>
