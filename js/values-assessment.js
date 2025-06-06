@@ -13,10 +13,14 @@ window.ValuesAssessment = class ValuesAssessment {
     constructor() {
         // DOM elements
         this.assessmentContainer = document.getElementById('assessment-container');
-        this.progressAnnouncer = document.getElementById('progress-announcer');
-        this.statusAnnouncer = document.getElementById('status-announcer');
+        this.progressTracker = document.getElementById('progress-tracker');
         this.prevButton = document.getElementById('prev-button');
         this.nextButton = document.getElementById('next-button');
+        this.progressAnnouncer = document.getElementById('progress-announcer');
+        this.statusAnnouncer = document.createElement('div');
+        this.statusAnnouncer.setAttribute('aria-live', 'assertive');
+        this.statusAnnouncer.classList.add('sr-only');
+        document.body.appendChild(this.statusAnnouncer);
         
         // State management
         this.currentStep = 1;
@@ -24,8 +28,11 @@ window.ValuesAssessment = class ValuesAssessment {
         this.selectedValues = [];
         this.prioritizedValues = [];
         this.reflectionResponses = {};
-        this.completionDate = null;
-        this.previousCompletionDate = null;
+        this.completionDate = new Date();
+        this.previousAssessments = [];
+        
+        // Load any previous assessment data
+        this.loadSavedProgress();
     }
     
     /**
@@ -1073,51 +1080,17 @@ window.ValuesAssessment = class ValuesAssessment {
     }
     
     /**
-     * Show values selection screen with interactive UI for selecting values
-     * @returns {void}
+     * Populate the values grid with interactive value selection cards
      */
-    showValuesSelection() {
-        if (!this.assessmentContainer) return;
+    populateValuesGrid() {
+        // Get values grid element
+        const valuesGrid = document.getElementById('values-grid');
+        if (!valuesGrid) return;
         
-        // Clear previous content
-        this.assessmentContainer.innerHTML = '';
+        // Clear existing content
+        valuesGrid.innerHTML = '';
         
-        // Create header section
-        const header = document.createElement('header');
-        header.setAttribute('role', 'banner');
-        header.className = 'mb-6';
-        
-        const heading = document.createElement('h2');
-        heading.id = 'values-selection-title';
-        heading.className = 'text-2xl font-bold mb-3';
-        heading.textContent = 'Select Your Values';
-        
-        const description = document.createElement('p');
-        description.className = 'mb-2';
-        description.textContent = 'Select up to 10 values that resonate most with you. These are principles that guide your decisions and actions.';
-        
-        const selectionCounter = document.createElement('div');
-        selectionCounter.className = 'text-blue-600 font-medium';
-        selectionCounter.id = 'selection-counter';
-        selectionCounter.setAttribute('role', 'status');
-        selectionCounter.setAttribute('aria-live', 'polite');
-        
-        // Initial counter text
-        const selectedCount = this.selectedValues ? this.selectedValues.length : 0;
-        selectionCounter.textContent = `${selectedCount} of 10 values selected`;
-        
-        // Assemble header
-        header.appendChild(heading);
-        header.appendChild(description);
-        header.appendChild(selectionCounter);
-        
-        // Create values grid container
-        const valuesContainer = document.createElement('div');
-        valuesContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8';
-        valuesContainer.setAttribute('role', 'region');
-        valuesContainer.setAttribute('aria-labelledby', 'values-selection-title');
-        
-        // Get values data - fallback to empty array if window.valuesData is not available
+        // Get values data or use empty array as fallback
         const valuesData = window.valuesData || [];
         
         // If no values data available, display an error message
@@ -1125,230 +1098,558 @@ window.ValuesAssessment = class ValuesAssessment {
             const errorMessage = document.createElement('p');
             errorMessage.className = 'text-red-600';
             errorMessage.textContent = 'Error: Values data not found. Please refresh the page or contact support.';
-            valuesContainer.appendChild(errorMessage);
-        } else {
-            // Create value selection cards
-            valuesData.forEach(value => {
-                // Create card container
-                const card = document.createElement('div');
-                card.className = 'border rounded p-4 cursor-pointer hover:bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500';
-                card.setAttribute('data-value-id', value.id);
-                card.setAttribute('role', 'checkbox');
-                card.setAttribute('aria-checked', 'false');
-                card.setAttribute('tabindex', '0');
-                
-                // Value is selected
-                if (this.selectedValues && this.selectedValues.includes(value.id)) {
-                    card.classList.add('bg-blue-50', 'border-blue-500');
-                    card.setAttribute('aria-checked', 'true');
-                }
-                
-                // Create value title
-                const valueTitle = document.createElement('h3');
-                valueTitle.className = 'font-bold mb-2';
-                valueTitle.textContent = value.name;
-                
-                // Create value description
-                const valueDesc = document.createElement('p');
-                valueDesc.className = 'text-sm text-gray-600';
-                valueDesc.textContent = value.description;
-                
-                // Create checkmark icon (hidden by default)
-                const checkIcon = document.createElement('div');
-                checkIcon.className = 'flex justify-end mt-2';
-                checkIcon.setAttribute('aria-hidden', 'true');
-                
-                const checkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                checkSvg.setAttribute('class', 'w-6 h-6 text-blue-600');
-                checkSvg.setAttribute('fill', 'none');
-                checkSvg.setAttribute('viewBox', '0 0 24 24');
-                checkSvg.setAttribute('stroke', 'currentColor');
-                
-                const checkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                checkPath.setAttribute('stroke-linecap', 'round');
-                checkPath.setAttribute('stroke-linejoin', 'round');
-                checkPath.setAttribute('stroke-width', '2');
-                checkPath.setAttribute('d', 'M5 13l4 4L19 7');
-                
-                checkSvg.appendChild(checkPath);
-                checkIcon.appendChild(checkSvg);
-                
-                // Show checkmark if selected
-                if (this.selectedValues && this.selectedValues.includes(value.id)) {
-                    checkIcon.classList.remove('hidden');
-                } else {
-                    checkIcon.classList.add('hidden');
-                }
-                
-                // Assemble card
-                card.appendChild(valueTitle);
-                card.appendChild(valueDesc);
-                card.appendChild(checkIcon);
-                
-                // Add event listeners for selection toggling
-                card.addEventListener('click', () => this.toggleValueSelection(value.id, card));
-                card.addEventListener('keydown', (e) => {
-                    // Toggle on Space or Enter
-                    if (e.key === ' ' || e.key === 'Enter') {
-                        e.preventDefault();
-                        this.toggleValueSelection(value.id, card);
-                    }
-                });
-                
-                // Add to container
-                valuesContainer.appendChild(card);
-            });
+            valuesGrid.appendChild(errorMessage);
+            return;
         }
         
-        // Create button container
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'flex justify-between mt-8';
-        
-        // Back button
-        const backButton = document.createElement('button');
-        backButton.className = 'px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
-        backButton.setAttribute('aria-label', 'Back to introduction');
-        backButton.textContent = 'Back';
-        backButton.addEventListener('click', () => this.previousStep());
-        
-        // Next button (disabled initially if no selections)
-        const nextButton = document.createElement('button');
-        nextButton.className = 'px-4 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500';
-        nextButton.textContent = 'Next';
-        nextButton.setAttribute('aria-label', 'Continue to rank values');
-        
-        // Disable next button if no values selected
-        if (!this.selectedValues || !this.selectedValues.length) {
-            nextButton.disabled = true;
-            nextButton.classList.add('opacity-50', 'cursor-not-allowed');
-        }
-        
-        nextButton.addEventListener('click', () => this.nextStep());
-        
-        // Add buttons to container
-        buttonContainer.appendChild(backButton);
-        buttonContainer.appendChild(nextButton);
-        
-        // Assemble the UI
-        this.assessmentContainer.appendChild(header);
-        this.assessmentContainer.appendChild(valuesContainer);
-        this.assessmentContainer.appendChild(buttonContainer);
-        
-        // Focus first selectable value
-        const firstCard = valuesContainer.querySelector('[role="checkbox"]');
-        if (firstCard) firstCard.focus();
-        
-        // Announce for screen readers
-        this.announce('Values selection screen. Use space or enter to select values. You can select up to 10 values.', 'polite');
+        // Create value selection cards
+        valuesData.forEach(value => {
+            // Create the value card using the HTML structure from the template
+            const cardTemplate = `
+                <div class="value-card" data-value-id="${value.id}" data-category="${value.category || ''}">
+                    <div class="cursor-pointer p-4 rounded-md border-2 border-gray-200 dark:border-gray-700 hover:border-va-primary dark:hover:border-va-primary-light bg-white dark:bg-gray-800 transition-all duration-200 flex flex-col h-full">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200">${value.name}</h4>
+                            <div class="value-checkbox h-5 w-5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex-shrink-0"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">${value.description || ''}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add the card to the grid
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = cardTemplate.trim();
+            valuesGrid.appendChild(tempContainer.firstChild);
+        });
     }
     
     /**
-     * Toggle selection of a value
-     * @param {string} valueId - ID of the value to toggle
-     * @param {HTMLElement} cardElement - Card element that was clicked
-     * @returns {void}
+     * Set up search and filter functionality for the values selection screen
      */
-    toggleValueSelection(valueId, cardElement) {
-        if (!valueId || !cardElement) return;
+    setupValuesSearchAndFilter() {
+        const searchInput = document.getElementById('values-search');
+        const categoryFilter = document.getElementById('category-filter');
         
-        // Initialize selectedValues array if undefined
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                this.filterValues();
+            });
+        }
+        
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', () => {
+                this.filterValues();
+            });
+        }
+    }
+    
+    /**
+     * Filter values based on search input and category selection
+     */
+    filterValues() {
+        const searchInput = document.getElementById('values-search');
+        const categoryFilter = document.getElementById('category-filter');
+        const valueCards = document.querySelectorAll('.value-card');
+        
+        if (!searchInput || !categoryFilter || !valueCards.length) return;
+        
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const categoryTerm = categoryFilter.value;
+        
+        // Count how many cards are visible
+        let visibleCount = 0;
+        
+        valueCards.forEach(card => {
+            // Get value name and description from the card
+            const valueName = card.querySelector('h4').textContent.toLowerCase();
+            const valueDescription = card.querySelector('p').textContent.toLowerCase();
+            const valueCategory = card.dataset.category || '';
+            
+            // Check if card matches both filters
+            const matchesSearch = !searchTerm || 
+                valueName.includes(searchTerm) || 
+                valueDescription.includes(searchTerm);
+                
+            const matchesCategory = categoryTerm === 'all' || 
+                valueCategory.split(',').includes(categoryTerm);
+            
+            // Show or hide based on filters
+            if (matchesSearch && matchesCategory) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+        
+        // Update no results message
+        const noResultsMessage = document.getElementById('no-values-found');
+        if (noResultsMessage) {
+            if (visibleCount === 0) {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+        }
+        
+        this.announce(`${visibleCount} values displayed based on current filters`, 'polite');
+    }
+    
+    /**
+     * Adds click handlers to value selection cards to toggle selection
+     */
+    setupValueCardHandlers() {
+        // Get all value cards
+        const valueCards = document.querySelectorAll('.value-card');
+        if (!valueCards.length) return;
+        
+        // Get selection counter
+        const selectionCounter = document.getElementById('selection-counter');
+        
+        // Initialize counter with current selection count
+        if (selectionCounter && this.selectedValues) {
+            selectionCounter.textContent = `${this.selectedValues.length} of ${valueCards.length} values selected`;
+        }
+        
+        // Add click handlers to each card
+        valueCards.forEach(card => {
+            const valueId = card.dataset.valueId;
+            const checkmark = card.querySelector('.value-checkbox');
+            
+            // Set initial selected state if value is in selectedValues array
+            if (this.selectedValues && this.selectedValues.includes(valueId)) {
+                card.classList.add('selected');
+                card.querySelector('.cursor-pointer').classList.add('border-va-primary', 'dark:border-va-primary-light');
+                if (checkmark) {
+                    checkmark.classList.add('bg-va-primary', 'dark:bg-va-primary-light');
+                }
+            }
+            
+            // Add click event listener
+            card.addEventListener('click', () => this.toggleValueSelection(valueId, card));
+            
+            // Add keyboard support
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    this.toggleValueSelection(valueId, card);
+                }
+            });
+        });
+    }
+    
+    /**
+     * Toggle selection state for a value card
+     * @param {string} valueId - ID of the value to toggle
+     * @param {HTMLElement} card - The card element
+     */
+    toggleValueSelection(valueId, card) {
+        if (!valueId || !card) return;
+        
+        // Get checkmark element
+        const checkmark = card.querySelector('.value-checkbox');
+        
+        // Initialize selectedValues array if it doesn't exist
         if (!this.selectedValues) {
             this.selectedValues = [];
         }
         
-        // Get the counter element
-        const counterElement = document.getElementById('selection-counter');
-        
-        // Check if the value is already selected
+        // Toggle selection
         const isSelected = this.selectedValues.includes(valueId);
+        const cardContainer = card.querySelector('.cursor-pointer');
         
         if (isSelected) {
-            // Remove from selected values
+            // Remove value from selection
             this.selectedValues = this.selectedValues.filter(id => id !== valueId);
-            
-            // Update UI
-            cardElement.classList.remove('bg-blue-50', 'border-blue-500');
-            cardElement.setAttribute('aria-checked', 'false');
-            
-            // Hide the checkmark
-            const checkIcon = cardElement.querySelector('div[aria-hidden="true"]');
-            if (checkIcon) checkIcon.classList.add('hidden');
-            
-            // Update counter
-            if (counterElement) {
-                counterElement.textContent = `${this.selectedValues.length} of 10 values selected`;
+            card.classList.remove('selected');
+            if (cardContainer) {
+                cardContainer.classList.remove('border-va-primary', 'dark:border-va-primary-light');
             }
-            
-            // Announce deselection
-            const valueName = cardElement.querySelector('h3').textContent;
-            this.announce(`${valueName} deselected. ${this.selectedValues.length} of 10 values selected.`);
+            if (checkmark) {
+                checkmark.classList.remove('bg-va-primary', 'dark:bg-va-primary-light');
+            }
         } else {
-            // Check if maximum number reached
-            if (this.selectedValues.length >= 10) {
-                this.announce('You can select a maximum of 10 values. Please deselect a value before selecting a new one.', 'assertive');
-                return;
-            }
-            
-            // Add to selected values
+            // Add value to selection
             this.selectedValues.push(valueId);
-            
-            // Update UI
-            cardElement.classList.add('bg-blue-50', 'border-blue-500');
-            cardElement.setAttribute('aria-checked', 'true');
-            
-            // Show the checkmark
-            const checkIcon = cardElement.querySelector('div[aria-hidden="true"]');
-            if (checkIcon) checkIcon.classList.remove('hidden');
-            
-            // Update counter
-            if (counterElement) {
-                counterElement.textContent = `${this.selectedValues.length} of 10 values selected`;
+            card.classList.add('selected');
+            if (cardContainer) {
+                cardContainer.classList.add('border-va-primary', 'dark:border-va-primary-light');
             }
-            
-            // Announce selection
-            const valueName = cardElement.querySelector('h3').textContent;
-            this.announce(`${valueName} selected. ${this.selectedValues.length} of 10 values selected.`);
-        }
-        
-        // Enable/disable next button based on selections
-        const nextButton = this.nextButton || document.querySelector('button[aria-label="Continue to rank values"]');
-        if (nextButton) {
-            if (this.selectedValues.length > 0) {
-                nextButton.disabled = false;
-                nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                nextButton.disabled = true;
-                nextButton.classList.add('opacity-50', 'cursor-not-allowed');
+            if (checkmark) {
+                checkmark.classList.add('bg-va-primary', 'dark:bg-va-primary-light');
             }
         }
         
-        // Save progress
-        this.saveProgress();
+        // Update selection counter and next button state
+        this.updateSelectionCounter();
     }
     
     /**
-     * Show values ranking screen with interactive UI for prioritizing selected values
-     * @returns {void}
+     * Updates the selection counter based on currently selected values
      */
-    showValuesRanking() {
+    updateSelectionCounter() {
+        // Find selection counter element
+        const selectionCounter = document.getElementById('selection-counter');
+        if (!selectionCounter) return;
+        
+        // Get total number of value cards
+        const totalCards = document.querySelectorAll('.value-card').length;
+        
+        // Update counter text
+        if (this.selectedValues && Array.isArray(this.selectedValues)) {
+            selectionCounter.textContent = `${this.selectedValues.length} of ${totalCards} values selected`;
+            
+            // Announce for screen readers
+            this.announce(`${this.selectedValues.length} of ${totalCards} values selected`, 'polite');
+        } else {
+            selectionCounter.textContent = `0 of ${totalCards} values selected`;
+        }
+        
+        // Update next button state
+        this.updateNextButtonState();
+    }
+    
+    /**
+     * Updates the next button state based on current selection
+     */
+    updateNextButtonState() {
+        const nextButton = document.getElementById('next-button');
+        if (!nextButton) return;
+        
+        // Enable next button if at least one value is selected
+        if (this.selectedValues && this.selectedValues.length > 0) {
+            nextButton.removeAttribute('disabled');
+            nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        } else {
+            nextButton.setAttribute('disabled', 'disabled');
+            nextButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    }
+    
+    /**
+     * Sets up navigation buttons for the values selection screen
+     */
+    setupNavigationButtons() {
+        const nextButton = document.getElementById('next-button');
+        const prevButton = document.getElementById('prev-button');
+        
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                this.showValuesPrioritization();
+            });
+        }
+        
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                this.showIntroduction();
+            });
+        }
+        
+        // Update next button state based on current selection
+        this.updateNextButtonState();
+    }
+    
+    /**
+     * Shows the values prioritization screen
+     */
+    showValuesPrioritization() {
         if (!this.assessmentContainer) return;
         
         // Check if we have selected values
         if (!this.selectedValues || this.selectedValues.length === 0) {
-            // No values selected, redirect to selection screen
-            this.currentStep = 2;
-            this.showValuesSelection();
-            this.announce('No values selected. Please select at least one value before ranking.', 'assertive');
+            this.announce('No values selected. Please select at least one value to continue.', 'assertive');
             return;
         }
         
-        // Initialize prioritizedValues if empty
+        // Copy selected values to prioritized values if not already populated
         if (!this.prioritizedValues || this.prioritizedValues.length === 0) {
-            // Start with the order of selected values
             this.prioritizedValues = [...this.selectedValues];
         }
         
-        // Clear previous content
+        // Set up prioritization screen HTML structure
+        this.assessmentContainer.innerHTML = `
+            <section role="region" aria-labelledby="priority-heading">
+                <h2 id="priority-heading">Prioritize Your Values</h2>
+                <p>Arrange your selected values in order of importance to you.</p>
+                <div id="priority-list-container" class="my-6">
+                    <ul id="priority-list" class="space-y-2" role="list" aria-label="Prioritized values list. Use up and down buttons to reorder values."></ul>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <button id="back-to-selection" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">Back</button>
+                    <button id="go-to-reflection" class="px-4 py-2 bg-va-primary text-white rounded">Continue</button>
+                </div>
+            </section>
+        `;
+        
+        // Populate the priority list
+        this.populatePriorityList();
+        
+        // Set up navigation buttons
+        this.setupPrioritizationNavigation();
+        
+        // Announce for screen readers
+        this.announce('Values prioritization screen loaded. Arrange your selected values in order of importance using the up and down buttons.', 'polite');
+    }
+    
+    /**
+     * Populates the priority list with the selected values for ranking
+     */
+    populatePriorityList() {
+        const priorityList = document.getElementById('priority-list');
+        if (!priorityList || !this.prioritizedValues || !Array.isArray(this.prioritizedValues)) return;
+        
+        // Clear existing items
+        priorityList.innerHTML = '';
+        
+        // Get values data
+        const valuesData = window.valuesData || [];
+        if (!valuesData.length) return;
+        
+        // Create ranking items from prioritizedValues
+        this.prioritizedValues.forEach((valueId, index) => {
+            // Find the value data
+            const valueData = valuesData.find(v => v.id === valueId);
+            if (!valueData) return; // Skip if not found
+            
+            // Create list item for each value
+            const listItem = document.createElement('li');
+            listItem.className = 'flex items-center justify-between bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-3';
+            listItem.setAttribute('role', 'listitem');
+            listItem.setAttribute('data-value-id', valueId);
+            listItem.setAttribute('tabindex', '0');
+            listItem.setAttribute('aria-label', `${valueData.name} ranked ${index + 1} of ${this.prioritizedValues.length}`);
+            
+            // Left side with rank number and value name
+            const valueInfo = document.createElement('div');
+            valueInfo.className = 'flex items-center space-x-3';
+            
+            // Rank number
+            const rankBadge = document.createElement('span');
+            rankBadge.className = 'inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-800 font-bold';
+            rankBadge.textContent = (index + 1).toString();
+            rankBadge.setAttribute('aria-hidden', 'true'); // Hidden from screen readers as rank is in the parent aria-label
+            
+            // Value name and description
+            const valueContent = document.createElement('div');
+            valueContent.className = 'ml-2';
+            
+            const valueName = document.createElement('div');
+            valueName.className = 'font-medium text-gray-900 dark:text-gray-100';
+            valueName.textContent = valueData.name;
+            
+            valueContent.appendChild(valueName);
+            valueInfo.appendChild(rankBadge);
+            valueInfo.appendChild(valueContent);
+            
+            // Right side with up/down controls
+            const controls = document.createElement('div');
+            controls.className = 'flex space-x-2';
+            
+            // Move up button
+            const upButton = document.createElement('button');
+            upButton.className = 'p-1 bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600';
+            upButton.setAttribute('type', 'button');
+            upButton.setAttribute('aria-label', `Move ${valueData.name} up in ranking`);
+            upButton.disabled = index === 0; // Disable if first item
+            if (upButton.disabled) {
+                upButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            
+            // Up arrow icon
+            const upIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            upIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            upIcon.setAttribute('width', '16');
+            upIcon.setAttribute('height', '16');
+            upIcon.setAttribute('fill', 'currentColor');
+            upIcon.setAttribute('viewBox', '0 0 20 20');
+            upIcon.setAttribute('aria-hidden', 'true');
+            
+            const upPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            upPath.setAttribute('fill-rule', 'evenodd');
+            upPath.setAttribute('d', 'M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z');
+            upPath.setAttribute('clip-rule', 'evenodd');
+            
+            upIcon.appendChild(upPath);
+            upButton.appendChild(upIcon);
+            
+            // Move down button
+            const downButton = document.createElement('button');
+            downButton.className = 'p-1 bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600';
+            downButton.setAttribute('type', 'button');
+            downButton.setAttribute('aria-label', `Move ${valueData.name} down in ranking`);
+            downButton.disabled = index === this.prioritizedValues.length - 1; // Disable if already at the bottom
+            if (downButton.disabled) {
+                downButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            
+            const downIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            downIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            downIcon.setAttribute('width', '16');
+            downIcon.setAttribute('height', '16');
+            downIcon.setAttribute('fill', 'currentColor');
+            downIcon.setAttribute('viewBox', '0 0 20 20');
+            downIcon.setAttribute('aria-hidden', 'true');
+            
+            const downPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            downPath.setAttribute('fill-rule', 'evenodd');
+            downPath.setAttribute('d', 'M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z');
+            downPath.setAttribute('clip-rule', 'evenodd');
+            
+            downIcon.appendChild(downPath);
+            downButton.appendChild(downIcon);
+            
+            // Add event listeners
+            upButton.addEventListener('click', () => this.moveValueUp(index));
+            downButton.addEventListener('click', () => this.moveValueDown(index));
+            
+            // Add keyboard navigation
+            listItem.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp' && !upButton.disabled) {
+                    e.preventDefault();
+                    this.moveValueUp(index);
+                } else if (e.key === 'ArrowDown' && !downButton.disabled) {
+                    e.preventDefault();
+                    this.moveValueDown(index);
+                }
+            });
+            
+            // Add controls to the controls container
+            controls.appendChild(upButton);
+            controls.appendChild(downButton);
+            
+            // Add all components to the list item
+            listItem.appendChild(valueInfo);
+            listItem.appendChild(controls);
+            
+            // Add to the priority list
+            priorityList.appendChild(listItem);
+        });
+    }
+
+    /**
+     * Set up navigation buttons for the prioritization screen
+     */
+    setupPrioritizationNavigation() {
+        const backButton = document.getElementById('back-to-selection');
+        const continueButton = document.getElementById('go-to-reflection');
+        
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                // Go back to values selection
+                this.announce('Returning to values selection screen', 'polite');
+                this.showValuesSelection();
+            });
+        }
+        
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                // Proceed to reflection
+                this.announce('Proceeding to values reflection', 'polite');
+                this.showReflection();
+            });
+        }
+    }
+    
+    /**
+     * Move a value up in the ranking
+     * @param {number} index - Current index of the value
+     */
+    moveValueUp(index) {
+        // Can't move the top item up
+        if (index <= 0 || !this.prioritizedValues || index >= this.prioritizedValues.length) return;
+        
+        // Swap items in the array
+        const temp = this.prioritizedValues[index];
+        this.prioritizedValues[index] = this.prioritizedValues[index - 1];
+        this.prioritizedValues[index - 1] = temp;
+        
+        // Update the UI
+        this.populatePriorityList();
+        
+        // Get the value that was moved for screen reader announcement
+        const valuesData = window.valuesData || [];
+        const valueData = valuesData.find(v => v.id === temp);
+        if (valueData) {
+            this.announce(`${valueData.name} moved up to position ${index}`, 'polite');
+        }
+        
+        // Focus the item after re-render
+        setTimeout(() => {
+            const items = document.querySelectorAll('#priority-list li');
+            if (items[index - 1]) {
+                items[index - 1].focus();
+            }
+        }, 50);
+    }
+    
+    /**
+     * Move a value down in the ranking
+     * @param {number} index - Current index of the value
+     */
+    moveValueDown(index) {
+        // Can't move the bottom item down
+        if (!this.prioritizedValues || index >= this.prioritizedValues.length - 1 || index < 0) return;
+        
+        // Swap items in the array
+        const temp = this.prioritizedValues[index];
+        this.prioritizedValues[index] = this.prioritizedValues[index + 1];
+        this.prioritizedValues[index + 1] = temp;
+        
+        // Update the UI
+        this.populatePriorityList();
+        
+        // Get the value that was moved for screen reader announcement
+        const valuesData = window.valuesData || [];
+        const valueData = valuesData.find(v => v.id === temp);
+        if (valueData) {
+            this.announce(`${valueData.name} moved down to position ${index + 2}`, 'polite');
+        }
+        
+        // Focus the item after re-render
+        setTimeout(() => {
+            const items = document.querySelectorAll('#priority-list li');
+            if (items[index + 1]) {
+                items[index + 1].focus();
+            }
+        }, 50);
+    }
+    
+    /**
+     * Update the progress indicator based on current step
+     * @param {number} step - Current step number
+     */
+    updateProgressIndicator(step) {
+        const progressBar = document.getElementById('assessment-progress');
+        if (!progressBar) return;
+        
+        // Calculate progress percentage
+        const totalSteps = this.totalSteps || 4;
+        const percentage = Math.round((step / totalSteps) * 100);
+        
+        // Update the progress bar
+        progressBar.style.width = `${percentage}%`;
+        progressBar.setAttribute('aria-valuenow', percentage);
+        
+        // Update any progress text
+        const progressText = document.getElementById('progress-text');
+        if (progressText) {
+            progressText.textContent = `Step ${step} of ${totalSteps}`;
+        }
+    }
+    
+    /**
+     * Show the reflection screen for top values
+     */
+    showReflection() {
+        if (!this.assessmentContainer) return;
+        
+        // Check if we have prioritized values
+        if (!this.prioritizedValues || this.prioritizedValues.length === 0) {
+            this.announce('No values prioritized. Please select and prioritize at least one value to continue.', 'assertive');
+            return;
+        }
+        
         this.assessmentContainer.innerHTML = '';
         
         // Create header section
@@ -1357,9 +1658,9 @@ window.ValuesAssessment = class ValuesAssessment {
         header.className = 'mb-6';
         
         const heading = document.createElement('h2');
-        heading.id = 'values-ranking-title';
+        heading.id = 'values-reflection-title';
         heading.className = 'text-2xl font-bold mb-3';
-        heading.textContent = 'Prioritize Your Values';
+        heading.textContent = 'Reflect On Your Values';
         
         const description = document.createElement('p');
         description.className = 'mb-2';
@@ -1529,27 +1830,38 @@ window.ValuesAssessment = class ValuesAssessment {
         // Add ranked list to container
         rankingContainer.appendChild(rankedList);
         
-        // Create button container
+        
+        // Create navigation buttons
         const buttonContainer = document.createElement('div');
         buttonContainer.className = 'flex justify-between mt-8';
         
-        // Back button
         const backButton = document.createElement('button');
-        backButton.className = 'px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
-        backButton.setAttribute('aria-label', 'Back to values selection');
+        backButton.type = 'button';
+        backButton.className = 'px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded';
         backButton.textContent = 'Back';
-        backButton.addEventListener('click', () => this.previousStep());
+        backButton.setAttribute('aria-label', 'Return to prioritization');
         
-        // Next button
-        const nextButton = document.createElement('button');
-        nextButton.className = 'px-4 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500';
-        nextButton.textContent = 'Next';
-        nextButton.setAttribute('aria-label', 'Continue to reflection');
-        nextButton.addEventListener('click', () => this.nextStep());
+        const finishButton = document.createElement('button');
+        finishButton.type = 'button';
+        finishButton.className = 'px-4 py-2 bg-va-primary text-white rounded';
+        finishButton.textContent = 'Finish';
+        finishButton.setAttribute('aria-label', 'Complete assessment');
         
-        // Add buttons to container
+        // Add event listeners
+        backButton.addEventListener('click', () => {
+            this.announce('Returning to values prioritization', 'polite');
+            this.showValuesPrioritization();
+        });
+        
+        finishButton.addEventListener('click', () => {
+            this.announce('Assessment completed', 'polite');
+            // Add completion logic here
+            this.saveProgress();
+            // Redirect or show completion screen
+        });
+        
         buttonContainer.appendChild(backButton);
-        buttonContainer.appendChild(nextButton);
+        buttonContainer.appendChild(finishButton);
         
         // Assemble the UI
         this.assessmentContainer.appendChild(header);
@@ -1557,9 +1869,17 @@ window.ValuesAssessment = class ValuesAssessment {
         this.assessmentContainer.appendChild(buttonContainer);
         
         // Focus first item
-        const firstItem = rankingContainer.querySelector('[tabindex="0"]');
-        if (firstItem) firstItem.focus();
+        setTimeout(() => {
+            const firstItem = this.assessmentContainer.querySelector('li');
+            if (firstItem) {
+                firstItem.focus();
+            }
+        }, 100);
         
+        // Announce for screen readers
+        this.announce('Values reflection screen loaded. Review your prioritized values.', 'polite');
+    }
+
         // Announce for screen readers
         this.announce('Values ranking screen. Use arrow keys or buttons to reorder your values by importance.', 'polite');
     }
@@ -2268,6 +2588,9 @@ window.ValuesAssessment = class ValuesAssessment {
             
             // Announce for screen readers
             this.announce('Using browser print dialog for export. Please use your browser\'s print options to save as PDF.', 'assertive');
+            
+            // Print the content
+            window.print();
             
             // Clean up modal after a short delay to avoid visual confusion
             setTimeout(() => {

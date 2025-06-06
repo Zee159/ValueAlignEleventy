@@ -1,0 +1,105 @@
+/* Auth Canvas Styles */
+
+/* Base positioning and z-index */
+#auth-canvas {
+  position: fixed;
+  top: 0; /* No offset, align to very top */
+  right: 0;
+  height: 2rem; /* Fixed smaller height */
+  padding-top: 0; /* No padding needed */
+  padding-right: 2rem; /* Add some padding on the right */
+  padding-bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Make sure dropdowns appear above other content */
+#user-dropdown,
+#settings-dropdown {
+  z-index: 1001;
+}
+
+/* Add background on hover/focus for better visibility */
+#auth-canvas:hover,
+#auth-canvas:focus-within {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark #auth-canvas:hover,
+.dark #auth-canvas:focus-within {
+  background-color: rgba(31, 41, 55, 0.9);
+}
+
+/* Animation for dropdowns */
+#user-dropdown,
+#settings-dropdown {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#user-dropdown:not(.hidden),
+#settings-dropdown:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Member type badge styles */
+/* Force FREE display to Basic */
+.free,
+[data-member-type="free"],
+span:contains("FREE") {
+  content: "Basic";
+}
+
+/* Hide the "FREE" text that appears in the screenshot */
+.auth-section .free:not(#member-type-badge) {
+  display: none !important;
+}
+
+#member-type-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#member-type-badge.premium {
+  background-color: #8b5cf6; /* Purple for premium */
+}
+
+#member-type-badge.admin {
+  background-color: #ef4444; /* Red for admin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  #auth-canvas {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  #user-name-display {
+    display: none;
+  }
+  
+  #member-type-badge {
+    display: none;
+  }
+}
+
+/* Ensure we don't interfere with site headers */
+@media (min-width: 768px) {
+  #auth-canvas {
+    top: 1.5rem;
+  }
+}

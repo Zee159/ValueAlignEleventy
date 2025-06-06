@@ -1,0 +1,299 @@
+<div class="mb-6" role="banner">
+    <h1 id="journal-heading" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Values Journal</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">Document your journey and track your progress with values-aligned living.</p>
+    
+    <div class="bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-500 p-4 mt-4" role="region" aria-labelledby="journal-info-title">
+        <h2 id="journal-info-title" class="text-lg font-medium text-blue-700 dark:text-blue-300">Why Journaling Matters</h2>
+        <p class="mt-1 text-gray-700 dark:text-gray-300">Regular journaling helps you reflect on your values and track your growth over time. Just a few minutes each day can lead to meaningful insights.</p>
+    </div>
+</div>
+
+<!-- Journal Date Selection -->
+<div class="flex flex-wrap items-center justify-between mb-6">
+    <div class="flex items-center space-x-2">
+        <button type="button" id="previous-day" aria-label="Previous day" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <div>
+            <span id="current-date" class="text-lg font-medium text-va-text dark:text-white" aria-live="polite">Today, June 6, 2025</span>
+        </div>
+        <button type="button" id="next-day" aria-label="Next day" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+    <button type="button" id="calendar-picker" class="flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span>Calendar</span>
+    </button>
+</div>
+
+<!-- Journal Prompt Card -->
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8" role="region" aria-labelledby="journal-prompt-heading">
+    <div class="flex justify-between items-center mb-4">
+        <h2 id="journal-prompt-heading" class="text-xl font-semibold text-va-text dark:text-gray-200">Today's Prompt</h2>
+        <button type="button" id="refresh-prompt-btn" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Get a new prompt">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        </button>
+    </div>
+    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+        <blockquote id="journal-prompt-text" class="text-lg italic text-va-text dark:text-white">
+            What small step did you take today that moved you closer to one of your core values?
+        </blockquote>
+    </div>
+</div>
+
+<!-- Journal Entry Form -->
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8" role="region" aria-labelledby="journal-entry-heading">
+    <h2 id="journal-entry-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-4">Write Your Entry</h2>
+    
+    <!-- Text Formatting Tools -->
+    <div class="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-3 mb-4" role="toolbar" aria-label="Text formatting options">
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Bold text">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h8m-8 6h8m-8-12h8m-8 6h8" />
+            </svg>
+        </button>
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Italic text">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6v6h4m10 0h-4v6h4m-10 0V6m10 0v6" />
+            </svg>
+        </button>
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Underline text">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17h8M7 11v-1a5 5 0 0110 0v1m-9 8h8" />
+            </svg>
+        </button>
+        <span class="h-6 w-px bg-gray-300 dark:bg-gray-600" aria-hidden="true"></span>
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Bullet list">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Numbered list">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h12M9 12h12M9 17h12M4 7h1v1H4V7zm0 5h1v1H4v-1zm0 5h1v1H4v-1z" />
+            </svg>
+        </button>
+        <span class="h-6 w-px bg-gray-300 dark:bg-gray-600" aria-hidden="true"></span>
+        <button type="button" class="format-btn p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false" aria-label="Insert image">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-va-text dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Journal Text Area -->
+    <div class="mb-4">
+        <textarea id="journal-textarea" rows="8" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white focus:outline-none focus:ring-2 focus:ring-va-primary" placeholder="Write your journal entry here..." aria-labelledby="journal-entry-heading"></textarea>
+        <div class="flex justify-between items-center mt-2">
+            <span id="journal-word-count" class="text-sm text-gray-500 dark:text-gray-400">0 words</span>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 dark:text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Private entry</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Emotion Tagging Section (Premium feature) -->
+    <div id="emotion-tagging-section" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-va-text dark:text-white mb-2">How are you feeling?</h3>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Grateful</button>
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-green-300 dark:border-green-700 text-green-600 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Inspired</button>
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Peaceful</button>
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-yellow-300 dark:border-yellow-700 text-yellow-600 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Motivated</button>
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-red-300 dark:border-red-700 text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Challenged</button>
+            <button type="button" class="emotion-tag px-3 py-1 rounded-full border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">Reflective</button>
+            <button type="button" class="add-emotion-tag px-3 py-1 rounded-full border border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-va-primary">
+                <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add custom
+                </span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="flex justify-between mt-6">
+        <button type="button" id="clear-journal-btn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-va-text dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary transition-colors duration-300">
+            Clear
+        </button>
+        <button type="button" id="save-journal-btn" class="px-6 py-2 bg-va-primary hover:bg-va-primary-dark text-white rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+            Save Entry
+        </button>
+    </div>
+</div>
+
+<!-- Journal Entries Section -->
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8" role="region" aria-labelledby="previous-entries-heading">
+    <h2 id="previous-entries-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-6">Your Journal Entries</h2>
+    
+    <!-- Filters -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <!-- Search Box -->
+        <div class="relative w-full md:w-72">
+            <label for="journal-search" class="sr-only">Search entries</label>
+            <input type="text" id="journal-search" class="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white focus:outline-none focus:ring-2 focus:ring-va-primary" placeholder="Search journal entries...">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-4">
+            <div>
+                <label for="journal-filter-tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Tag</label>
+                <select id="journal-filter-tags" class="w-full md:w-auto px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white focus:outline-none focus:ring-2 focus:ring-va-primary">
+                    <option value="all">All Tags</option>
+                    <option value="gratitude">Gratitude</option>
+                    <option value="reflection">Reflection</option>
+                    <option value="growth">Growth</option>
+                    <option value="challenge">Challenge</option>
+                    <option value="aspiration">Aspiration</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="journal-filter-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Time Period</label>
+                <select id="journal-filter-date" class="w-full md:w-auto px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white focus:outline-none focus:ring-2 focus:ring-va-primary">
+                    <option value="all">All Time</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">Last 3 Months</option>
+                    <option value="year">This Year</option>
+                </select>
+            </div>
+            
+            <div class="flex items-end">
+                <button type="button" id="reset-journal-filters" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-va-text dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary transition-colors duration-300">
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Journal Entry List - Will be populated by JS -->
+    <div id="previous-entries-container" class="space-y-6">
+        <!-- Sample Entry Cards - These will be generated dynamically by JS in production -->
+        <div class="journal-entry-card border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300" data-entry-id="entry-1" data-entry-date="2025-06-05" data-entry-tags="gratitude,growth">
+            <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-medium text-va-text dark:text-white">Morning Reflection</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">June 5, 2025</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Edit journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Delete journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-white dark:bg-gray-800">
+                <p class="text-va-text dark:text-gray-300">Today I took a moment to appreciate the small progress I've made with my daily meditation practice. Even though it was just 5 minutes, I'm grateful that I'm building consistency with this habit that aligns with my value of inner peace.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Gratitude</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Growth</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="journal-entry-card border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300" data-entry-id="entry-2" data-entry-date="2025-06-04" data-entry-tags="challenge,reflection">
+            <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-medium text-va-text dark:text-white">Difficult Conversation</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">June 4, 2025</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Edit journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Delete journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-white dark:bg-gray-800">
+                <p class="text-va-text dark:text-gray-300">I had a challenging conversation with a colleague today. I tried to stay true to my values of honesty and respect, even when it was difficult. I noticed myself wanting to avoid the tension but chose to stay engaged while remaining calm. This is something I want to continue working on.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Challenge</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">Reflection</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="journal-entry-card border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300" data-entry-id="entry-3" data-entry-date="2025-06-02" data-entry-tags="aspiration,growth">
+            <div class="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-medium text-va-text dark:text-white">Future Planning</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">June 2, 2025</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Edit journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Delete journal entry">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-white dark:bg-gray-800">
+                <p class="text-va-text dark:text-gray-300">I spent some time today planning how I can integrate more community service into my schedule. I've identified a local organization that aligns with my values of compassion and giving back. I'm planning to volunteer for 2 hours every other weekend starting next month.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">Aspiration</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Growth</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Empty State Message - Hidden by default, shown when no entries match filters -->
+    <div id="no-entries-message" class="hidden py-12 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-va-text dark:text-white">No journal entries found</h3>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">Try adjusting your filters or create your first journal entry above.</p>
+    </div>
+    
+    <!-- Load More Button - Hidden by default, shown when there are more entries to load -->
+    <div class="mt-8 text-center">
+        <button type="button" id="load-more-entries" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-va-text dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-va-primary transition-colors duration-300">
+            Load more entries
+        </button>
+    </div>
+</div>
+
+<!-- Journal Page Specific Scripts -->
+<script src="{{ '/js/journal.js' | url }}"></script>
+
+<!-- Status Message for Accessibility Announcements -->
+<div id="journal-status" class="sr-only" role="status" aria-live="polite"></div>

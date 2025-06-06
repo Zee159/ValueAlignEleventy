@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Unified theme system with immediate initialization -->
+    <script src="/js/theme-system.js"></script>
+    
+    <!-- Auth Services - Load early with defer to ensure availability -->
+    <script src="/js/auth-service.js" defer></script>
+    <script src="/js/auth-guard.js" defer></script>
+    <script src="/js/auth-ui-controller.js" defer></script>
     {% if requires_auth %}
     <meta name="requires-auth" content="true">
     {% endif %}
@@ -14,6 +21,7 @@
     <link href="/css/portal-components.css" rel="stylesheet">
     <link href="/css/portal-card-fixes.css" rel="stylesheet">
     <link href="/css/portal-layout-fix.css" rel="stylesheet">
+    <link href="/css/auth-canvas.css" rel="stylesheet">
     <style>
         /* Ensure the body takes full viewport height and accounts for fixed header */
         html {
@@ -78,6 +86,9 @@
         Skip to main content
     </a>
     
+    <!-- Global Auth Canvas - positioned absolutely on all pages -->
+    {% include "_auth_canvas.html" %}
+    
     <!-- Include the appropriate header based on page type -->
     {% if requires_auth %}
         {% include "_portal_header.html" %}
@@ -109,15 +120,8 @@
     <!-- Settings functionality -->
     <script src="/js/settings.js" defer></script>
     
-    <script src="/js/auth-manager.js"></script>
-    <script src="/js/auth-shared.js"></script>
+    <!-- Legacy auth system has been removed, using only modern auth system now -->
     <script src="/js/theme-manager.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            window.authManager = new AuthManager();
-            // Theme manager is initialized in its own file
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Initializing mobile menu...');
@@ -179,21 +183,40 @@
     </script>
     
     <!-- Base scripts -->
-    <script src="/js/theme-toggle.js"></script>
     <script src="/js/menu.js"></script>
-
-    <!-- Auth scripts for consistent behavior across all pages -->
-    <script src="/js/auth-shared.js"></script>
-    <script src="/js/auth-manager.js"></script>
+    <script src="/js/fix-member-badge.js"></script>
     
+    <!-- Centralized Auth Initialization -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Ensuring auth manager is initialized on all pages');
-        // Make sure authManager is initialized on all pages
-        if (window.authManager) {
-            window.authManager.updateUI();
-        }
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[Base Layout] Setting up unified auth system');
+            
+            // Ensure services are properly initialized in the correct order
+            if (!window.authService) {
+                console.log('[Base Layout] Auth service not available, creating it');
+                window.authService = new AuthService();
+            }
+            
+            // Allow auth service to fully initialize before UI controller
+            setTimeout(function() {
+                // Initialize UI controller on every page
+                if (!window.authUIController) {
+                    console.log('[Base Layout] Creating new authUIController instance');
+                    window.authUIController = new AuthUIController();
+                } else {
+                    console.log('[Base Layout] Using existing authUIController');
+                }
+                
+                // Force a UI update after everything else has loaded
+                setTimeout(function() {
+                    if (window.authService && window.authUIController) {
+                        console.log('[Base Layout] Forcing final UI refresh');
+                        const authState = window.authService.getAuthState();
+                        window.authUIController.updateUI(authState);
+                    }
+                }, 100);
+            }, 50);
+        });
     </script>
     
     <!-- Dashboard script (only loads on dashboard page) -->

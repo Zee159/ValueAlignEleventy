@@ -1,0 +1,72 @@
+<div class="mb-6" role="banner">
+    <h1 id="demo-heading" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Dashboard Demo</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">This page demonstrates the standardized dashboard structure.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+    <div class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">URL Structure</h2>
+        <ul class="list-disc pl-5 space-y-2 text-va-text dark:text-gray-300">
+            <li>All dashboard pages follow the <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm font-mono">/dashboard/*</code> URL pattern</li>
+            <li>Using kebab-case for multi-word paths (e.g. <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm font-mono">/dashboard/values-assessment/</code>)</li>
+            <li>Each section has its own directory with an index.html</li>
+            <li>All URLs end with a trailing slash</li>
+        </ul>
+    </div>
+
+    <div class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Authentication</h2>
+        <ul class="list-disc pl-5 space-y-2 text-va-text dark:text-gray-300">
+            <li>All protected pages set <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm font-mono">requiresAuth: true</code> in front matter</li>
+            <li>Pages are guarded by auth-guard.js</li>
+            <li>Using centralized authService for auth operations</li>
+            <li>Login page remains outside dashboard directory</li>
+        </ul>
+    </div>
+</div>
+
+<div class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow mb-8">
+    <h2 class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Components & Includes</h2>
+    <p class="mb-4 text-va-text dark:text-gray-300">All dashboard pages use standardized components from the <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm font-mono">_includes</code> directory:</p>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_account.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_exercises.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_journal.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_reflection.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_acts.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_progress.html</p>
+        </div>
+        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+            <p class="font-medium text-va-primary dark:text-va-primary-light">_portal_values_assessment.html</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-va-success-light dark:bg-va-success-dark text-va-text dark:text-white p-6 rounded-lg border-l-4 border-green-500">
+    <h2 class="text-xl font-semibold mb-2">Migration Complete!</h2>
+    <p>All legacy portal pages have been successfully migrated to the new standardized <code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-sm font-mono">/dashboard/*</code> URL structure.</p>
+    <ul class="mt-2 list-disc pl-5 space-y-1">
+        <li>Consistent URL patterns</li>
+        <li>Reusable include files for maintainability</li>
+        <li>Proper authentication controls</li>
+        <li>Backward compatibility via redirects</li>
+    </ul>
+</div>
+
+<!-- Hidden status element for screen readers -->
+<div id="status" class="sr-only" role="status" aria-live="polite"></div>
+
+<!-- This include represents a completed implementation -->
+<script src="/js/theme-system.js" defer></script>

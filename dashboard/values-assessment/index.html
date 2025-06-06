@@ -1,0 +1,147 @@
+---
+layout: portal.njk
+title: Values Assessment | ValueAlign Dashboard
+pageTitle: Values Assessment Dashboard
+meta_description: Identify, prioritize and reflect on your core values to enhance personal growth and values-action alignment.
+requires_auth: true
+eleventyNavigation:
+  key: Values Assessment
+  parent: Dashboard
+  order: 3
+---
+
+{# Core Values Assessment Page Header with proper spacing #}
+<div role="banner" class="mb-8 pt-6" aria-labelledby="page-title">
+  <h1 id="page-title" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Core Values Assessment</h1>
+  <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">Identify and prioritize what matters most to you.</p>
+  
+  <div class="flex flex-col md:flex-row gap-6 mt-6">
+    <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-5 flex-1">
+      <h2 class="text-lg font-medium text-blue-800 dark:text-blue-300 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Why Values Matter
+      </h2>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">Your core values act as a compass for decision-making, helping you live with greater purpose and fulfillment. This assessment will help you identify and prioritize these guiding principles.</p>
+    </div>
+    
+    <div class="bg-green-50 dark:bg-green-900 rounded-lg p-5 flex-1">
+      <h2 class="text-lg font-medium text-green-800 dark:text-green-300 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Assessment Benefits
+      </h2>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">Understanding your values helps align your daily actions with what truly matters to you, leading to more authentic decision-making and greater life satisfaction.</p>
+    </div>
+  </div>
+</div>
+
+<div class="va-card mb-8" role="region" aria-labelledby="assessment-heading">
+  <div class="va-card-header">
+    <h2 id="assessment-heading" class="va-card-title">Core Values Assessment</h2>
+  </div>
+  
+  <div class="va-card-body">
+    <!-- Modern Values Assessment Container -->
+    <div id="values-assessment-container" class="min-h-[500px]" data-auto-init="true" aria-live="polite" data-debug="true">
+      <!-- This container will be populated by the ValuesAssessment class -->
+      <div class="flex items-center justify-center py-12">
+        <div role="status" class="text-center">
+          <svg aria-hidden="true" class="inline w-12 h-12 text-gray-300 animate-spin fill-va-primary" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+          </svg>
+          <p class="mt-4 text-gray-600 dark:text-gray-400">Loading Values Assessment...</p>
+          <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">Please wait while we initialize the assessment</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error message container (hidden by default) -->
+    <div id="values-assessment-error" class="hidden bg-red-50 dark:bg-red-900/20 p-4 rounded-lg mt-4 border border-red-200 dark:border-red-800" role="alert">
+      <div class="flex items-center">
+        <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="text-sm font-medium text-red-800 dark:text-red-300">There was an error loading the Values Assessment</h3>
+      </div>
+      <p class="text-sm mt-2 text-red-700 dark:text-red-400" id="values-assessment-error-message"></p>
+      <button type="button" id="values-assessment-retry" class="mt-3 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors">
+        Try Again
+      </button>
+    </div>
+  </div>
+  
+  <div class="va-card-footer">
+    <!-- Status announcer for screen readers -->
+    <div class="sr-only" aria-live="assertive" id="values-assessment-status"></div>
+  </div>
+</div>
+
+<!-- Module Awareness Notice -->
+<div class="mt-8 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+  <h3 class="text-lg font-medium text-amber-800 dark:text-amber-300 flex items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    New Values Assessment
+  </h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    This page uses the new Values Assessment module. If you experience any issues, please contact the support team.
+  </p>
+</div>
+
+<!-- Include the Values Assessment JavaScript -->
+<script type="module" src="/js/values-assessment-new.js"></script>
+<script>
+  // Error handling and retry functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const errorContainer = document.getElementById('values-assessment-error');
+    const errorMessage = document.getElementById('values-assessment-error-message');
+    const retryButton = document.getElementById('values-assessment-retry');
+    const statusAnnouncer = document.getElementById('values-assessment-status');
+    
+    // Listen for values assessment error events
+    document.addEventListener('values-assessment-error', (event) => {
+      if (errorContainer && errorMessage) {
+        errorContainer.classList.remove('hidden');
+        errorMessage.textContent = event.detail.message || 'An unknown error occurred';
+        statusAnnouncer.textContent = 'There was an error loading the Values Assessment. ' + (event.detail.message || 'An unknown error occurred');
+      }
+    });
+    
+    // Handle retry button click
+    if (retryButton) {
+      retryButton.addEventListener('click', async () => {
+        if (errorContainer) {
+          errorContainer.classList.add('hidden');
+        }
+        
+        statusAnnouncer.textContent = 'Retrying to load the Values Assessment...';
+        
+        try {
+          const valuesAssessment = new ValuesAssessment({
+            debug: true
+          });
+          
+          const success = await valuesAssessment.initialize();
+          
+          if (success) {
+            statusAnnouncer.textContent = 'Values Assessment loaded successfully';
+          } else {
+            throw new Error('Failed to initialize Values Assessment');
+          }
+        } catch (error) {
+          console.error('[ValuesAssessment]', error);
+          if (errorContainer && errorMessage) {
+            errorContainer.classList.remove('hidden');
+            errorMessage.textContent = error.message || 'An unknown error occurred while retrying';
+            statusAnnouncer.textContent = 'There was an error retrying to load the Values Assessment. ' + (error.message || 'An unknown error occurred');
+          }
+        }
+      });
+    }
+  });
+</script>

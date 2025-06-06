@@ -1,0 +1,86 @@
+---
+layout: portal.njk
+title: Dashboard
+pageTitle: User Dashboard
+metaDescription: Your personal values alignment dashboard
+requiresAuth: true
+permalink: /dashboard/home/
+---
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-va-text dark:text-gray-100 mb-8">Your ValueAlign Dashboard</h1>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Values Assessment Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-va-primary dark:bg-va-primary-dark h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Values Assessment</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Identify and reflect on your core values to guide your meaningful actions.</p>
+        <a href="/dashboard/values-assessment/" class="inline-block bg-va-primary text-white px-4 py-2 rounded-md hover:bg-va-primary-dark transition-colors">
+          Start Assessment
+        </a>
+      </div>
+    </div>
+    
+    <!-- Daily Reflection Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-va-secondary dark:bg-va-secondary-dark h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Today's Reflection</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Reflect on how your actions today aligned with your core values.</p>
+        <a href="/dashboard/todays-reflection/" class="inline-block bg-va-secondary text-white px-4 py-2 rounded-md hover:bg-va-secondary-dark transition-colors">
+          Daily Reflection
+        </a>
+      </div>
+    </div>
+    
+    <!-- Journal Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-va-accent dark:bg-va-accent-dark h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Values Journal</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Record your thoughts and insights about your values journey.</p>
+        <a href="/dashboard/journal/" class="inline-block bg-va-accent text-white px-4 py-2 rounded-md hover:bg-va-accent-dark transition-colors">
+          Open Journal
+        </a>
+      </div>
+    </div>
+    
+    <!-- Value-Based Acts Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-green-500 dark:bg-green-600 h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Value-Based Acts</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Plan and track meaningful actions aligned with your core values.</p>
+        <a href="/dashboard/acts/" class="inline-block bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors">
+          Plan an Act
+        </a>
+      </div>
+    </div>
+    
+    <!-- Exercises Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-blue-500 dark:bg-blue-600 h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Value Exercises</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Practice exercises to strengthen your connection to your values.</p>
+        <a href="/dashboard/exercises/" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+          Start Exercises
+        </a>
+      </div>
+    </div>
+    
+    <!-- Progress Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-purple-500 dark:bg-purple-600 h-2"></div>
+      <div class="p-6">
+        <h2 class="text-xl font-bold text-va-text dark:text-gray-100 mb-3">Your Progress</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Track your values alignment journey and see your improvement.</p>
+        <a href="/dashboard/progress/" class="inline-block bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors">
+          View Progress
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

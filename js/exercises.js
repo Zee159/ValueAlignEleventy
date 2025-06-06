@@ -8,20 +8,21 @@ class ExercisesManager {
     constructor() {
         // DOM References
         this.exerciseGrid = document.getElementById('exercise-grid');
-        this.exerciseCards = document.querySelectorAll('.exercise-card');
-        this.categoryButtons = document.querySelectorAll('.category-button');
-        this.durationButtons = document.querySelectorAll('.duration-filter');
-        this.difficultyButtons = document.querySelectorAll('.difficulty-filter');
+        this.exerciseCards = Array.from(document.querySelectorAll('#exercise-grid > article'));
+        this.categoryFilter = document.getElementById('value-filter');
+        this.difficultyFilter = document.getElementById('difficulty-filter');
+        this.durationFilter = document.getElementById('duration-filter');
         this.searchInput = document.getElementById('exercise-search');
-        this.noResultsMessage = document.getElementById('no-exercises-message');
-        this.resetFiltersBtn = document.getElementById('reset-filters-btn');
-        this.loadMoreBtn = document.getElementById('load-more-exercises');
+        this.noResultsMessage = document.getElementById('no-results');
+        this.resetFiltersBtn = document.getElementById('reset-filters');
+        this.applyFiltersBtn = document.getElementById('apply-filters');
+        this.exerciseCountElement = document.getElementById('exercise-count');
         
         // State management
         this.activeFilters = {
-            category: null,
-            duration: null,
-            difficulty: null,
+            category: 'all',
+            duration: 'all',
+            difficulty: 'all',
             search: ''
         };
 
@@ -40,66 +41,26 @@ class ExercisesManager {
      * Set up all event listeners for the exercises page
      */
     setupEventListeners() {
-        // Category button filtering
-        this.categoryButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const category = button.dataset.category;
-                this.toggleCategoryFilter(category, button);
-            });
-            
-            // Keyboard accessibility
-            button.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    button.click();
-                }
-            });
-        });
-        
-        // Duration filtering
-        this.durationButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const duration = button.dataset.duration;
-                this.toggleDurationFilter(duration, button);
-            });
-        });
-        
-        // Difficulty filtering
-        this.difficultyButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const difficulty = button.dataset.difficulty;
-                this.toggleDifficultyFilter(difficulty, button);
-            });
-        });
-        
-        // Search functionality
-        if (this.searchInput) {
-            this.searchInput.addEventListener('input', () => {
-                this.activeFilters.search = this.searchInput.value.toLowerCase().trim();
+        // Apply filters button
+        if (this.applyFiltersBtn) {
+            this.applyFiltersBtn.addEventListener('click', () => {
+                this.getFilterValues();
                 this.applyFilters();
             });
-            
-            // Clear search when 'x' button is clicked
-            const clearSearchBtn = document.getElementById('clear-search');
-            if (clearSearchBtn) {
-                clearSearchBtn.addEventListener('click', () => {
-                    this.searchInput.value = '';
-                    this.activeFilters.search = '';
-                    this.applyFilters();
-                    // Focus back on search input for better UX
-                    this.searchInput.focus();
-                });
-            }
         }
         
-        // Exercise start buttons
-        const startButtons = document.querySelectorAll('.start-exercise-btn');
-        startButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const exerciseId = button.dataset.exerciseId;
-                this.openExercise(exerciseId, event);
+        // Search input for real-time filtering
+        if (this.searchInput) {
+            this.searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    this.getFilterValues();
+                    this.applyFilters();
+                } else {
+                    // Update search term but don't apply yet (wait for Enter or button click)
+                    this.activeFilters.search = this.searchInput.value.toLowerCase().trim();
+                }
             });
-        });
+        }
         
         // Reset filters button
         if (this.resetFiltersBtn) {
@@ -108,102 +69,136 @@ class ExercisesManager {
             });
         }
         
-        // Load more exercises button
-        if (this.loadMoreBtn) {
-            this.loadMoreBtn.addEventListener('click', () => {
-                this.loadMoreExercises();
-            });
+        // Make exercise cards accessible
+        this.exerciseCards.forEach(card => {
+            const startButton = card.querySelector('a');
+            if (startButton) {
+                // Add keyboard focus handler for better accessibility
+                startButton.addEventListener('focus', () => {
+                    card.classList.add('ring-2', 'ring-va-primary', 'ring-opacity-50');
+                });
+                
+                startButton.addEventListener('blur', () => {
+                    card.classList.remove('ring-2', 'ring-va-primary', 'ring-opacity-50');
+                });
+            }
+        });
+    }
+    
+    /**
+     * Get current values from all filter dropdowns
+     */
+    getFilterValues() {
+        if (this.categoryFilter) {
+            this.activeFilters.category = this.categoryFilter.value;
+        }
+        
+        if (this.difficultyFilter) {
+            this.activeFilters.difficulty = this.difficultyFilter.value;
+        }
+        
+        if (this.durationFilter) {
+            this.activeFilters.duration = this.durationFilter.value;
+        }
+        
+        if (this.searchInput) {
+            this.activeFilters.search = this.searchInput.value.toLowerCase().trim();
         }
     }
     
     /**
-     * Toggle category filter state and update UI
-     * @param {string} category - Selected category
-     * @param {HTMLElement} button - Selected category button
+     * Apply all active filters to the exercise cards
      */
-    toggleCategoryFilter(category, button) {
-        // If same category clicked again, deselect it
-        if (this.activeFilters.category === category) {
-            this.activeFilters.category = null;
-            button.setAttribute('aria-pressed', 'false');
-            button.classList.remove('active');
-        } else {
-            // Deselect previous category if any
-            if (this.activeFilters.category) {
-                const prevButton = document.querySelector(`.category-button[data-category="${this.activeFilters.category}"]`);
-                if (prevButton) {
-                    prevButton.setAttribute('aria-pressed', 'false');
-                    prevButton.classList.remove('active');
-                }
-            }
+    applyFilters() {
+        let visibleCount = 0;
+        let totalCount = this.exerciseCards.length;
+        
+        // Apply filters to each card
+        this.exerciseCards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            const difficulty = card.getAttribute('data-difficulty');
+            const duration = card.getAttribute('data-duration');
+            const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+            const description = card.querySelector('p')?.textContent.toLowerCase() || '';
             
-            // Select new category
-            this.activeFilters.category = category;
-            button.setAttribute('aria-pressed', 'true');
-            button.classList.add('active');
+            // Check if card matches all active filters
+            const matchesCategory = this.activeFilters.category === 'all' || this.activeFilters.category === category;
+            const matchesDifficulty = this.activeFilters.difficulty === 'all' || this.activeFilters.difficulty === difficulty;
+            const matchesDuration = this.activeFilters.duration === 'all' || this.activeFilters.duration === duration;
+            const matchesSearch = !this.activeFilters.search || 
+                                title.includes(this.activeFilters.search) || 
+                                description.includes(this.activeFilters.search);
+            
+            // Show or hide based on filter matches
+            if (matchesCategory && matchesDifficulty && matchesDuration && matchesSearch) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+        
+        // Update exercise count
+        if (this.exerciseCountElement) {
+            this.exerciseCountElement.textContent = `Showing ${visibleCount} of ${totalCount} exercises`;
         }
         
-        this.applyFilters();
+        // Show/hide no results message
+        if (visibleCount === 0) {
+            this.noResultsMessage.classList.remove('hidden');
+        } else {
+            this.noResultsMessage.classList.add('hidden');
+        }
+        
+        // Announce filter results for screen readers
+        this.announceFilterResults(visibleCount, totalCount);
     }
     
     /**
-     * Toggle duration filter state and update UI
-     * @param {string} duration - Selected duration
-     * @param {HTMLElement} button - Selected duration button
+     * Reset all filters to their default state
      */
-    toggleDurationFilter(duration, button) {
-        // If same duration clicked again, deselect it
-        if (this.activeFilters.duration === duration) {
-            this.activeFilters.duration = null;
-            button.setAttribute('aria-pressed', 'false');
-            button.classList.remove('active');
-        } else {
-            // Deselect previous duration if any
-            if (this.activeFilters.duration) {
-                const prevButton = document.querySelector(`.duration-filter[data-duration="${this.activeFilters.duration}"]`);
-                if (prevButton) {
-                    prevButton.setAttribute('aria-pressed', 'false');
-                    prevButton.classList.remove('active');
-                }
-            }
-            
-            // Select new duration
-            this.activeFilters.duration = duration;
-            button.setAttribute('aria-pressed', 'true');
-            button.classList.add('active');
-        }
+    resetAllFilters() {
+        // Reset dropdown selects
+        if (this.categoryFilter) this.categoryFilter.value = 'all';
+        if (this.durationFilter) this.durationFilter.value = 'all';
+        if (this.difficultyFilter) this.difficultyFilter.value = 'all';
         
+        // Clear search input
+        if (this.searchInput) this.searchInput.value = '';
+        
+        // Reset active filters state
+        this.activeFilters = {
+            category: 'all',
+            duration: 'all',
+            difficulty: 'all',
+            search: ''
+        };
+        
+        // Apply the reset filters
         this.applyFilters();
+        
+        // Focus on the first filter for better UX
+        if (this.categoryFilter) this.categoryFilter.focus();
     }
     
     /**
-     * Toggle difficulty filter state and update UI
-     * @param {string} difficulty - Selected difficulty
-     * @param {HTMLElement} button - Selected difficulty button
+     * Announce filter results for accessibility
+     * @param {number} visibleCount - Number of visible exercises
+     * @param {number} totalCount - Total number of exercises
      */
-    toggleDifficultyFilter(difficulty, button) {
-        // If same difficulty clicked again, deselect it
-        if (this.activeFilters.difficulty === difficulty) {
-            this.activeFilters.difficulty = null;
-            button.setAttribute('aria-pressed', 'false');
-            button.classList.remove('active');
+    announceFilterResults(visibleCount, totalCount) {
+        let message = '';
+        
+        if (visibleCount === 0) {
+            message = 'No matching exercises found. Try changing your filters.';
+        } else if (visibleCount === 1) {
+            message = '1 matching exercise found.';
         } else {
-            // Deselect previous difficulty if any
-            if (this.activeFilters.difficulty) {
-                const prevButton = document.querySelector(`.difficulty-filter[data-difficulty="${this.activeFilters.difficulty}"]`);
-                if (prevButton) {
-                    prevButton.setAttribute('aria-pressed', 'false');
-                    prevButton.classList.remove('active');
-                }
-            }
-            
-            // Select new difficulty
-            this.activeFilters.difficulty = difficulty;
-            button.setAttribute('aria-pressed', 'true');
-            button.classList.add('active');
+            message = `${visibleCount} matching exercises found.`;
         }
         
-        this.applyFilters();
+        // Update screen reader announcement
+        this.statusAnnouncement.textContent = message;
     }
     
     /**

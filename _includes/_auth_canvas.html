@@ -1,0 +1,64 @@
+<!-- Auth Canvas Component -->
+<!-- Fixed position authentication UI that appears on all pages -->
+<div id="auth-canvas" class="fixed top-0 right-0 z-50 px-4 py-2 flex items-center space-x-2">
+  <!-- Login Link (shown when logged out) -->
+  <div id="login-container" class="login-section">
+    <a href="/login/" id="login-join-link" class="text-sm bg-va-primary hover:bg-va-primary-dark text-white px-3 py-1 rounded-md transition-colors duration-200">
+      Sign In
+    </a>
+  </div>
+  
+  <!-- User Menu (shown when logged in) -->
+  <div id="user-menu-container" class="user-section hidden">
+    <div class="relative">
+      <button type="button" id="user-menu-button" class="flex items-center text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-md font-montserrat transition-colors duration-200" aria-expanded="false" aria-haspopup="true">
+        <span class="sr-only">Open user menu</span>
+        <div class="flex items-center">
+          <div class="rounded-full bg-va-primary dark:bg-green-800 p-1 mr-2">
+            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <span id="user-name-display" class="hidden sm:inline-block">User</span>
+          <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      <!-- User Dropdown Menu -->
+      <div id="user-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+        <div class="py-1" role="none">
+          <a href="/dashboard/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Dashboard</a>
+          <a href="/dashboard/journal/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Journal</a>
+          <a href="/dashboard/account/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Account Settings</a>
+        </div>
+        <div class="py-1" role="none">
+          <a href="#" class="logout-button block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theme Toggle Button (always visible) -->
+  <div id="theme-toggle-container" class="theme-toggle-section">
+    <button type="button" id="theme-toggle-button" data-theme-toggle-button class="p-2 rounded-full text-gray-500 hover:text-va-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary transition-colors duration-200">
+      <span class="sr-only">Toggle Light/Dark Mode</span>
+      <!-- Moon icon for light mode (switch to dark) -->
+      <svg id="dark-theme-icon" class="h-5 w-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+      <!-- Sun icon for dark mode (switch to light) -->
+      <svg id="light-theme-icon" class="h-5 w-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    </button>
+  </div>
+  
+  <!-- Member Type Badge - shown for logged in users -->
+  <div id="member-type-badge" class="hidden px-2 py-1 bg-va-accent text-xs font-medium rounded-md text-white">
+    Free Member
+  </div>
+</div>
+
+<!-- No dropdown needed anymore, theme toggle is direct -->

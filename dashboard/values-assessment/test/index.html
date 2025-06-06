@@ -1,0 +1,500 @@
+---
+layout: portal.njk
+title: Values Assessment Test | ValueAlign Dashboard
+pageTitle: Values Assessment Test Harness
+meta_description: Test and debug the Values Assessment components
+requires_auth: true
+eleventyNavigation:
+  key: Values Test
+  parent: Values Assessment
+  order: 99
+---
+
+<div class="portal-content">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Values Assessment Test Harness</h1>
+    
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Component Testing</h2>
+      <p class="mb-4">This page allows you to test the Values Assessment components independently and verify their functionality.</p>
+      
+      <div class="flex flex-wrap gap-4 mb-6">
+        <button id="test-initialize-button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+          Initialize Components
+        </button>
+        <button id="test-results-button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+          Test Results View
+        </button>
+        <button id="test-reflection-button" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">
+          Test Guided Reflection
+        </button>
+        <button id="test-nextsteps-button" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded">
+          Test Next Steps
+        </button>
+        <a href="/dashboard/values-assessment/test/migration-test/" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded inline-flex items-center">
+          Migration Test Tool
+        </a>
+      </div>
+      
+      <!-- Component Test Area -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-2">Component Preview</h3>
+        <div id="values-assessment-app" class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 p-4 rounded min-h-[300px]">
+          <!-- Values Assessment UI will render here -->
+          <div id="values-test-placeholder" class="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+            <div class="text-center">
+              <p class="mb-4">Values Assessment components will appear here</p>
+              <p>Click "Initialize Components" to begin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Theme Testing Controls -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-2">Theme Testing</h3>
+        <div class="flex items-center gap-4">
+          <select id="test-theme-select" class="border border-gray-300 rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+            <option value="light">Light Theme</option>
+            <option value="dark">Dark Theme</option>
+            <option value="system">System Theme</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Premium Status Simulation -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-2">User Status Testing</h3>
+        <div class="flex items-center gap-4">
+          <input type="checkbox" id="test-simulate-premium" class="mr-2">
+          <label for="test-simulate-premium">Simulate Premium User</label>
+          <button id="btn-test-premium" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+            Apply Status
+          </button>
+        </div>
+      </div>
+      
+      <!-- Debug Console Output -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-2">Test Console</h3>
+        <div id="test-console" class="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 p-4 rounded h-64 overflow-y-auto font-mono text-sm">
+          <!-- Debug messages will appear here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Global initialization script -->
+<script>
+// Create global values assessment namespace
+window.valueAlign = window.valueAlign || {};
+window.valueAlign.valuesAssessment = window.valueAlign.valuesAssessment || {};
+
+// Create basic service implementations if they don't exist yet
+if (!window.themeSystem) {
+  window.themeSystem = {
+    setTheme: function(theme) {
+      localStorage.setItem('valuealign_theme', theme);
+      document.documentElement.classList.toggle('dark', 
+        theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches));
+    },
+    getTheme: function() { return localStorage.getItem('valuealign_theme') || 'system'; },
+    isReady: function() { return Promise.resolve(true); }
+  };
+}
+</script>
+
+<!-- Ultra-simple approach: just load scripts directly in dependency order -->
+
+<!-- Load helper scripts first -->
+<script src="/js/values-assessment-logger.js"></script>
+
+<!-- Add simple script loading tracker -->
+<script>
+  // Global test namespace
+  window.valueAlignTest = {
+    loaded: false,
+    ready: false
+  };
+  
+  // Global logging helper
+  if (!window.logToTestConsole) {
+    window.logToTestConsole = function(message, level = 'info') {
+      console.log(`[${level.toUpperCase()}] ${message}`);
+      const testConsole = document.getElementById('test-console');
+      if (testConsole) {
+        const entry = document.createElement('div');
+        entry.className = `test-console-entry ${level}`;
+        const timestamp = new Date().toLocaleTimeString();
+        entry.innerHTML = `<span class="timestamp">${timestamp}:</span> ${message}`;
+        testConsole.appendChild(entry);
+        testConsole.scrollTop = testConsole.scrollHeight;
+      }
+    };
+  }
+</script>
+
+<!-- Load core components in dependency order (non-module) -->
+<script src="/js/components/values-assessment/base-component.js"></script>
+<script src="/js/components/values-assessment/component-registry.js"></script>
+<script src="/js/services/values-assessment/values-assessment-storage.js"></script>
+<script src="/js/services/values-assessment/values-assessment-service.js"></script>
+<script src="/js/services/values-assessment/values-assessment-ui.js"></script>
+
+<!-- Load test harness last (with cache buster) -->
+<script src="/js/values-assessment-ui-test.js?cache=no"></script>
+
+<!-- Mark loading complete -->
+<script>
+  window.valueAlignTest.loaded = true;
+  console.log('All scripts loaded!');
+  window.logToTestConsole('All scripts loaded!');
+  
+  // Initialize test harness when DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM ready - initializing test harness');
+    window.logToTestConsole('DOM ready - initializing test harness');
+    initializeTestHarness();
+  });
+  
+  // Also try initializing if DOM is already loaded
+  if (document.readyState !== 'loading') {
+    console.log('DOM already ready - initializing test harness immediately');
+    window.logToTestConsole('DOM already ready - initializing test harness immediately');
+    setTimeout(initializeTestHarness, 100);
+  }
+</script>
+
+<!-- Main test script - handles all initialization and event binding -->
+<script>
+// Initialize global objects
+window.valueAssessment = { testMode: true };
+window.valueAssessmentConfig = {
+  useNewAssessment: true,
+  useNewResults: true,
+  useNewReflection: true,
+  useNewNextSteps: true,
+  debug: true,
+  testMode: true
+};
+
+// Create a global function to initialize test harness
+function initializeTestHarness() {
+  console.log('Initializing test harness...');
+  window.logToTestConsole('Initializing test harness...');
+  
+  // Check if scripts have been loaded
+  if (!window.valueAlignTest || !window.valueAlignTest.loaded) {
+    window.logToTestConsole('Scripts not fully loaded yet. Waiting...', 'warn');
+    // Try again after a short delay
+    setTimeout(initializeTestHarness, 200);
+    return false;
+  }
+  
+  // Ensure container exists
+  let container = document.getElementById('values-assessment-app');
+  if (!container) {
+    window.logToTestConsole('Creating container element');
+    container = document.createElement('div');
+    container.id = 'values-assessment-app';
+    document.querySelector('main').appendChild(container);
+  }
+  
+  // Check for ValuesAssessmentUITest class
+  if (typeof ValuesAssessmentUITest !== 'function') {
+    window.logToTestConsole('ValuesAssessmentUITest class not found', 'error');
+    console.error('ValuesAssessmentUITest class not available - check script loading');
+    return false;
+  }
+  
+  // Create test harness instance
+  try {
+    window.testHarness = new ValuesAssessmentUITest({
+      container: document.getElementById('values-assessment-app'),
+      debug: true
+    });
+    
+    window.logToTestConsole('Test harness created successfully');
+    console.log('Test harness created successfully');
+    
+    // Mark the test as ready
+    window.valueAlignTest.ready = true;
+    return true;
+  } catch (error) {
+    window.logToTestConsole(`Error creating test harness: ${error.message}`, 'error');
+    console.error('Error creating test harness:', error);
+    return false;
+  }
+}
+
+// Try to initialize test harness immediately
+document.addEventListener('DOMContentLoaded', function() {
+  // Get UI elements
+  const testConsole = document.getElementById('test-console');
+  const initButton = document.getElementById('test-initialize-button');
+  const resultsButton = document.getElementById('test-results-button');
+  const reflectionButton = document.getElementById('test-reflection-button');
+  const themeSelect = document.getElementById('test-theme-select');
+  const premiumButton = document.getElementById('btn-test-premium');
+  const premiumCheckbox = document.getElementById('test-simulate-premium');
+  
+  // Logger function
+  function logToConsole(message, level = 'info') {
+    const timestamp = new Date().toLocaleTimeString();
+    let prefix = '';
+    let className = 'text-blue-500';
+    
+    if (level === 'error') {
+      prefix = '';
+      className = 'text-red-500';
+    } else if (level === 'warn') {
+      prefix = '';
+      className = 'text-yellow-500';
+    }
+    
+    console.log(`${timestamp} ${prefix} ${message}`);
+    
+    if (testConsole) {
+      testConsole.innerHTML += `<div class="${className}">${prefix} ${timestamp}: ${message}</div>`;
+      // Auto-scroll to bottom
+      testConsole.scrollTop = testConsole.scrollHeight;
+    }
+  }
+  
+  // Make logging available to other scripts
+  window.logToTestConsole = logToConsole;
+  
+  // Theme management
+  function applyTheme(theme) {
+    const isDark = theme === 'dark' || 
+      (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    document.documentElement.classList.toggle('dark', isDark);
+    logToConsole(`Current theme detected as: ${isDark ? 'dark' : 'light'}`);
+    document.dispatchEvent(new CustomEvent('themechange', { 
+      detail: { theme: isDark ? 'dark' : 'light' } 
+    }));
+  }
+  
+  // Make sure theme system is available
+  if (!window.themeSystem) {
+    window.themeSystem = {
+      setTheme: function(theme) {
+        localStorage.setItem('valuealign_theme', theme);
+        applyTheme(theme);
+      },
+      getTheme: function() {
+        return localStorage.getItem('valuealign_theme') || 'system';
+      },
+      isReady: function() {
+        return Promise.resolve(true);
+      }
+    };
+  }
+  
+  // Apply theme on load
+  applyTheme(window.themeSystem.getTheme());
+  
+  // Set initial theme value in select
+  if (themeSelect) {
+    themeSelect.value = window.themeSystem.getTheme();
+  }
+  
+  // Attach event handlers
+  if (initButton) {
+    initButton.addEventListener('click', function() {
+      logToConsole('Initializing components...');
+      
+      // First, make sure the test harness exists
+      if (!window.testHarness) {
+        logToConsole('Test harness not available, attempting to initialize...', 'warn');
+        
+        // Try to initialize the test harness
+        if (initializeTestHarness()) {
+          // Successfully initialized, now call the component initialization
+          if (typeof window.testHarness.initializeComponents === 'function') {
+            // Small delay to ensure everything is ready
+            setTimeout(function() {
+              window.testHarness.initializeComponents()
+                .then(() => {
+                  logToConsole('Components initialized successfully');
+                  // Suggest next actions
+                  const suggestions = [
+                    "Show Assessment",
+                    "Show Results",
+                    "Change Theme"
+                  ];
+                  logToConsole('Suggested next actions: ' + suggestions.join(' | '));
+                })
+                .catch(error => {
+                  logToConsole(`Component initialization error: ${error.message}`, 'error');
+                });
+            }, 100);
+          } else {
+            logToConsole('Test harness initialized but missing initializeComponents method', 'error');
+          }
+        } else {
+          // Failed to initialize test harness
+          const scriptPath = '/js/values-assessment-ui-test.js';
+          logToConsole(`Failed to initialize test harness. Checking if script '${scriptPath}' exists...`, 'error');
+          
+          // Fetch the script to check if it exists and show its content
+          fetch(scriptPath)
+            .then(response => {
+              if (!response.ok) {
+                logToConsole(`Script '${scriptPath}' not found (${response.status})`, 'error');
+                return null;
+              }
+              return response.text();
+            })
+            .then(content => {
+              if (content) {
+                logToConsole(`Script '${scriptPath}' exists and contains ${content.length} characters`, 'info');
+                logToConsole('Attempting to force script reload...', 'info');
+                
+                // Force reload the script
+                const script = document.createElement('script');
+                script.src = scriptPath + '?t=' + Date.now(); // Add cache-busting parameter
+                script.onload = function() {
+                  logToConsole('Script reloaded successfully, attempting initialization again...', 'info');
+                  setTimeout(function() {
+                    if (initializeTestHarness()) {
+                      window.testHarness.initializeComponents();
+                    }
+                  }, 200);
+                };
+                document.head.appendChild(script);
+              }
+            })
+            .catch(error => {
+              logToConsole(`Error checking script: ${error.message}`, 'error');
+            });
+        }
+      } else if (typeof window.testHarness.initializeComponents === 'function') {
+        // Test harness already exists, call initialization directly
+        window.testHarness.initializeComponents();
+      } else {
+        logToConsole('Test harness exists but missing initializeComponents method', 'error');
+      }
+    });
+  }
+  
+  if (themeSelect) {
+    themeSelect.addEventListener('change', function() {
+      const theme = this.value;
+      logToConsole(`Setting theme to: ${theme}`);
+      window.themeSystem.setTheme(theme);
+    });
+  }
+  
+  if (resultsButton) {
+    resultsButton.addEventListener('click', function() {
+      logToConsole('Showing results view...');
+      if (window.testHarness && typeof window.testHarness.showResultsView === 'function') {
+        window.testHarness.showResultsView()
+          .then(() => {
+            logToConsole('Results view displayed');
+            // Suggest next actions
+            const suggestions = [
+              "Back to Assessment",
+              "Show Reflection",
+              "Restart Test"
+            ];
+            logToConsole('Suggested next actions: ' + suggestions.join(' | '));
+          })
+          .catch(error => {
+            logToConsole(`Error showing results: ${error.message}`, 'error');
+          });
+      } else {
+        logToConsole('Test harness not found or missing showResultsView method', 'error');
+      }
+    });
+  }
+  
+  if (reflectionButton) {
+    reflectionButton.addEventListener('click', function() {
+      logToConsole('Showing reflection view...');
+      if (window.testHarness && typeof window.testHarness.showReflectionView === 'function') {
+        window.testHarness.showReflectionView()
+          .then(() => {
+            logToConsole('Reflection view displayed');
+            // Suggest next actions
+            const suggestions = [
+              "Back to Results",
+              "Complete Assessment",
+              "Save Progress"
+            ];
+            logToConsole('Suggested next actions: ' + suggestions.join(' | '));
+          })
+          .catch(error => {
+            logToConsole(`Error showing reflection: ${error.message}`, 'error');
+          });
+      } else {
+        logToConsole('Test harness not found or missing showReflectionView method', 'error');
+      }
+    });
+  }
+  
+  if (premiumButton && premiumCheckbox) {
+    premiumButton.addEventListener('click', function() {
+      const isPremium = premiumCheckbox.checked;
+      logToConsole(`Setting premium status to: ${isPremium ? 'Premium' : 'Standard'}`);
+      
+      // If auth service debug is available, use it
+      if (window.authService && window.authService.setDebugUserRole) {
+        window.authService.setDebugUserRole(isPremium ? 'premium' : 'standard');
+        
+        // Refresh components if they exist
+        if (window.valueAssessmentInstance && window.valueAssessmentInstance.updateAuthStatus) {
+          window.valueAssessmentInstance.updateAuthStatus();
+          logToConsole('Auth status updated in components');
+        }
+      } else {
+        logToConsole('Auth service debug overrides not available', 'warn');
+      }
+    });
+  }
+  
+  // Try to initialize test harness
+  try {
+    // First attempt at initialization
+    initializeTestHarness();
+    
+    // If it fails, try again after a short delay to allow scripts to load
+    if (!window.testHarness) {
+      setTimeout(function() {
+        if (!window.testHarness) {
+          logToConsole('Attempting delayed test harness initialization...', 'info');
+          if (initializeTestHarness()) {
+            logToConsole('Test harness initialized successfully on retry');
+          } else {
+            logToConsole('Test harness initialization failed on retry. Check script loading in console.', 'error');
+            // Check for script loading issues
+            const testScript = document.querySelector('script[src="/js/values-assessment-ui-test.js"]');
+            if (testScript) {
+              logToConsole('Test script tag is present in DOM', 'info');
+            } else {
+              logToConsole('Test script tag is missing from DOM', 'error');
+            }
+          }
+        }
+      }, 500);
+    }
+  } catch (error) {
+    logToConsole(`Error during test harness initialization: ${error.message}`, 'error');
+  }
+  
+  logToConsole('Test page loaded successfully');
+});
+</script>
+
+<!-- Global test configuration -->
+<script>
+  // Set default values for test page
+  window.addEventListener('load', function() {
+    window.valueAssessment = {
+      testMode: true
+    };
+  });
+</script>

@@ -1,0 +1,143 @@
+<div class="mb-6" role="banner">
+    <h1 id="account-heading" class="text-3xl font-bold text-va-text dark:text-white font-montserrat">Your Account</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">Manage your profile, membership, and integration settings.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Left Column / Main Settings Area -->
+    <div class="md:col-span-2 space-y-8">
+        <!-- Profile Information -->
+        <section class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow" aria-labelledby="profile-heading">
+            <h2 id="profile-heading" class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Profile Information</h2>
+            
+            <form id="profile-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="display-name" class="block text-sm font-medium text-va-text dark:text-gray-300 mb-1">Display Name</label>
+                        <input type="text" id="display-name" name="display-name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white" aria-describedby="name-help">
+                        <p id="name-help" class="mt-1 text-sm text-gray-500 dark:text-gray-400">This name will be visible to others in the community.</p>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-va-text dark:text-gray-300 mb-1">Email Address</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white" aria-describedby="email-help">
+                        <p id="email-help" class="mt-1 text-sm text-gray-500 dark:text-gray-400">Used for account-related notifications.</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="bio" class="block text-sm font-medium text-va-text dark:text-gray-300 mb-1">About Me</label>
+                    <textarea id="bio" name="bio" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-va-text dark:text-white" aria-describedby="bio-help"></textarea>
+                    <p id="bio-help" class="mt-1 text-sm text-gray-500 dark:text-gray-400">A brief description about yourself (optional).</p>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="px-6 py-2 bg-va-primary hover:bg-va-primary-dark text-white rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800" aria-label="Save profile information">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </section>
+        
+        <!-- Privacy Settings -->
+        <section class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow" aria-labelledby="privacy-heading">
+            <h2 id="privacy-heading" class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Privacy Settings</h2>
+            
+            <form id="privacy-form" class="space-y-4">
+                <fieldset class="space-y-4">
+                    <legend class="sr-only">Privacy Options</legend>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="flex items-center h-5">
+                            <input id="privacy-profile" name="privacy-profile" type="checkbox" class="h-4 w-4 text-va-primary border-gray-300 rounded focus:ring-va-primary dark:focus:ring-va-primary-dark dark:bg-gray-700 dark:border-gray-600" aria-describedby="privacy-profile-description">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="privacy-profile" class="text-sm font-medium text-va-text dark:text-gray-300">Public Profile</label>
+                            <p id="privacy-profile-description" class="text-sm text-gray-500 dark:text-gray-400">Allow others to view my profile information.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="flex items-center h-5">
+                            <input id="privacy-progress" name="privacy-progress" type="checkbox" class="h-4 w-4 text-va-primary border-gray-300 rounded focus:ring-va-primary dark:focus:ring-va-primary-dark dark:bg-gray-700 dark:border-gray-600" aria-describedby="privacy-progress-description">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="privacy-progress" class="text-sm font-medium text-va-text dark:text-gray-300">Progress Sharing</label>
+                            <p id="privacy-progress-description" class="text-sm text-gray-500 dark:text-gray-400">Share my values progress with the community.</p>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="px-6 py-2 bg-va-primary hover:bg-va-primary-dark text-white rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800" aria-label="Save privacy settings">
+                        Save Settings
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- Right Column / Sidebar Area -->
+    <div class="md:col-span-1 space-y-8">
+        <!-- Membership Status -->
+        <section class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow" aria-labelledby="membership-heading">
+            <h2 id="membership-heading" class="text-2xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Membership</h2>
+            
+            <div class="mb-4">
+                <div class="flex items-center">
+                    <div class="h-3 w-3 rounded-full bg-green-500 mr-2" aria-hidden="true"></div>
+                    <p class="text-sm font-medium text-green-500">Active</p>
+                </div>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Your membership is in good standing.</p>
+            </div>
+            
+            <dl class="divide-y divide-gray-200 dark:divide-gray-700">
+                <div class="py-3 flex justify-between">
+                    <dt class="text-sm text-gray-600 dark:text-gray-400">Plan</dt>
+                    <dd class="text-sm font-medium text-va-text dark:text-white">Premium</dd>
+                </div>
+                <div class="py-3 flex justify-between">
+                    <dt class="text-sm text-gray-600 dark:text-gray-400">Billing Period</dt>
+                    <dd class="text-sm font-medium text-va-text dark:text-white">Monthly</dd>
+                </div>
+                <div class="py-3 flex justify-between">
+                    <dt class="text-sm text-gray-600 dark:text-gray-400">Next Payment</dt>
+                    <dd class="text-sm font-medium text-va-text dark:text-white">July 15, 2025</dd>
+                </div>
+            </dl>
+            
+            <div class="mt-6">
+                <a href="/dashboard/billing/" class="block w-full text-center px-4 py-2 border border-va-primary text-va-primary hover:bg-va-primary hover:text-white rounded-md transition-colors duration-300">Manage Subscription</a>
+            </div>
+        </section>
+        
+        <!-- Theme Preferences -->
+        <section class="bg-va-card-bg dark:bg-gray-800 p-6 rounded-lg shadow" aria-labelledby="theme-heading">
+            <h2 id="theme-heading" class="text-xl font-semibold text-va-text dark:text-gray-200 mb-4 font-montserrat">Theme Preferences</h2>
+            
+            <fieldset>
+                <legend class="sr-only">Theme Selection</legend>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <input id="theme-light" name="theme-option" type="radio" value="light" class="h-4 w-4 text-va-primary focus:ring-va-primary dark:focus:ring-va-primary-dark border-gray-300 dark:border-gray-600">
+                        <label for="theme-light" class="ml-3 block text-sm text-va-text dark:text-gray-300">Light Theme</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="theme-dark" name="theme-option" type="radio" value="dark" class="h-4 w-4 text-va-primary focus:ring-va-primary dark:focus:ring-va-primary-dark border-gray-300 dark:border-gray-600">
+                        <label for="theme-dark" class="ml-3 block text-sm text-va-text dark:text-gray-300">Dark Theme</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="theme-system" name="theme-option" type="radio" value="system" class="h-4 w-4 text-va-primary focus:ring-va-primary dark:focus:ring-va-primary-dark border-gray-300 dark:border-gray-600">
+                        <label for="theme-system" class="ml-3 block text-sm text-va-text dark:text-gray-300">System Default</label>
+                    </div>
+                </div>
+            </fieldset>
+        </section>
+    </div>
+</div>
+
+<!-- Account Page Specific Scripts -->
+<script src="{{ '/js/account.js' | url }}"></script>
+
+<!-- Status Message for Accessibility Announcements -->
+<div id="account-status" class="sr-only" role="status" aria-live="polite"></div>

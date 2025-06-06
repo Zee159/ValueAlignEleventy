@@ -4,9 +4,14 @@
  */
 
 class DashboardManager {
-    constructor(authManager) {
-        this.authManager = authManager;
-        this.user = authManager.user; // Directly access user property instead of using getUser()
+    constructor() {
+        // Use modern auth system
+        if (!window.authService) {
+            console.error('[DashboardManager] authService not available');
+            return;
+        }
+        
+        this.user = window.authService.getCurrentUser();
         
         // Dashboard elements
         this.welcomeHeading = document.getElementById('portal-welcome-heading');
@@ -320,16 +325,23 @@ class DashboardManager {
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the auth manager instance
-    const authManager = window.authManager;
+    console.log('[Dashboard] Initializing with modern auth system');
     
-    if (!authManager || !authManager.isAuthenticated()) {
+    // Use modern auth system only
+    if (!window.authService || !window.authService.isAuthenticated()) {
+        console.log('[Dashboard] User not authenticated with modern auth system');
         // Redirect to login if not authenticated
-        window.location.href = '/login/';
+        if (window.authService && typeof window.authService.redirectToLogin === 'function') {
+            window.authService.redirectToLogin();
+        } else {
+            localStorage.setItem('auth_redirect_after_login', '/dashboard/');
+            window.location.href = '/login/';
+        }
         return;
     }
     
-    // Initialize dashboard
-    const dashboardManager = new DashboardManager(authManager);
+    // Initialize dashboard with modern auth system
+    console.log('[Dashboard] User authenticated, initializing dashboard');
+    const dashboardManager = new DashboardManager();
     dashboardManager.initialize();
 });

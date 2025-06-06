@@ -1,0 +1,42 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">{{ pageTitle }}</h1>
+      
+      <div id="act-planner" class="act-planner-container">
+        <!-- Act planner will be loaded here -->
+        <div class="act-planner-loading text-center py-10">
+          <p class="text-gray-600 dark:text-gray-400">Loading act planner...</p>
+          <div class="loading-spinner mt-4"></div>
+        </div>
+      </div>
+
+      <div id="act-confirmation" class="hidden mt-8 p-6 bg-green-50 dark:bg-green-900 rounded-lg">
+        <h2 class="text-xl font-semibold text-green-800 dark:text-green-200 mb-3">Act Created!</h2>
+        <p class="text-green-700 dark:text-green-300 mb-4">Your act has been created and added to your dashboard.</p>
+        <div class="flex gap-4">
+          <a href="/dashboard/acts/" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            View My Acts
+          </a>
+          <button id="create-another-act" class="inline-flex items-center px-4 py-2 border border-green-600 text-base font-medium rounded-md shadow-sm text-green-700 dark:text-green-300 bg-white dark:bg-gray-800 hover:bg-green-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            Create Another Act
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Optional help section -->
+    <div class="mt-8 bg-blue-50 dark:bg-blue-900 p-6 rounded-lg">
+      <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Tips for Creating Value-Based Acts</h3>
+      <ul class="list-disc pl-5 text-blue-700 dark:text-blue-300 space-y-2">
+        <li>Connect your act to one or more of your core values</li>
+        <li>Be specific about what you'll do and when</li>
+        <li>Make it realistic and achievable</li>
+        <li>Consider what might get in your way and plan for it</li>
+        <li>Reflect on how this act aligns with your values after completion</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/js/act-planner.js" defer></script>

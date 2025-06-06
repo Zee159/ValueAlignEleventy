@@ -412,17 +412,22 @@ permalink: /register/
                         registrationTime: new Date().toISOString()
                     };
                     
-                    // Use authManager for registration if available
-                    if (typeof authManager !== 'undefined') {
-                        // The auth manager will handle storing the user data and authentication state
-                        authManager.login(userData, false); // New registrations don't auto-check "remember me"
+                    // Use modern auth service for registration
+                    if (typeof window.authService !== 'undefined') {
+                        console.log('[REGISTER] Using modern auth service for registration');
+                        // The auth service will handle storing the user data and authentication state
+                        window.authService.login(userData, false); // New registrations don't auto-check "remember me"
                     } else {
-                        // Fallback if authManager isn't loaded
-                        console.error('Authentication manager not found!');
+                        // Fallback if auth service isn't loaded - this shouldn't happen
+                        console.error('[REGISTER] Modern authentication service not found!');
                         
-                        // Basic fallback to localStorage
+                        // Emergency fallback using localStorage
+                        const expiryTime = new Date();
+                        expiryTime.setHours(expiryTime.getHours() + 24);
+                        
                         localStorage.setItem('valuealign_authenticated', 'true');
                         localStorage.setItem('valuealign_user', JSON.stringify(userData));
+                        localStorage.setItem('valuealign_session_expiry', expiryTime.getTime().toString());
                     }
                     
                     // Update ARIA live region with success message

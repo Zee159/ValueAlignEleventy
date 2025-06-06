@@ -187,12 +187,12 @@ title: Auth Flow Test
     function updateDisplays() {
       // Update auth status
       const authStatusEl = document.getElementById('auth-status');
-      if (window.authManager) {
-        const isAuth = window.authManager.isAuthenticated();
-        const user = window.authManager.getCurrentUser();
-        authStatusEl.textContent = `Authenticated: ${isAuth}\nUser: ${user ? JSON.stringify(user, null, 2) : 'null'}\nInitialized: ${window.authManager.isInitialized}`;
+      if (window.authService) {
+        const isAuth = window.authService.isAuthenticated();
+        const user = window.authService.getCurrentUser();
+        authStatusEl.textContent = `Authenticated: ${isAuth}\nUser: ${user ? JSON.stringify(user, null, 2) : 'null'}`;
       } else {
-        authStatusEl.textContent = 'AuthManager not loaded';
+        authStatusEl.textContent = 'AuthService not loaded';
       }
       
       // Update localStorage display
@@ -231,7 +231,7 @@ title: Auth Flow Test
         memberType: memberType
       };
       
-      window.authManager.login(userData, false);
+      window.authService.login(userData, false);
       updateDisplays();
     });
     
@@ -246,7 +246,7 @@ title: Auth Flow Test
         memberType: memberType
       };
       
-      window.authManager.login(userData, true);
+      window.authService.login(userData, true);
       updateDisplays();
     });
     
@@ -259,33 +259,34 @@ title: Auth Flow Test
     
     document.getElementById('btn-test-is-auth').addEventListener('click', () => {
       log('Testing isAuthenticated()');
-      const isAuth = window.authManager.isAuthenticated();
+      const isAuth = window.authService.isAuthenticated();
       log(`isAuthenticated() returned: ${isAuth}`);
       updateDisplays();
     });
     
     document.getElementById('btn-test-expiry').addEventListener('click', () => {
       log('Testing isSessionExpired()');
-      const isExpired = window.authManager.isSessionExpired();
+      const isExpired = window.authService.isSessionExpired();
       log(`isSessionExpired() returned: ${isExpired}`);
       updateDisplays();
     });
     
     document.getElementById('btn-update-ui').addEventListener('click', () => {
       log('Manually calling updateUI()');
-      window.authManager.updateUI();
+      window.authService.updateUI();
+      log('Called updateUI()');
       updateDisplays();
     });
     
     document.getElementById('btn-refresh-dom').addEventListener('click', () => {
       log('Refreshing DOM element references');
-      window.authManager.setupDOMListeners();
+      window.authService.setupDOMListeners();
       updateDisplays();
     });
     
     document.getElementById('btn-test-logout').addEventListener('click', () => {
       log('Testing logout()');
-      window.authManager.logout();
+      window.authService.logout();
       // No need to update displays as logout will redirect
     });
     
@@ -305,7 +306,7 @@ title: Auth Flow Test
     
     document.getElementById('btn-check-protected').addEventListener('click', () => {
       log('Running checkProtectedPage()');
-      window.authManager.checkProtectedPage();
+      window.authService.checkProtectedPage();
       // May redirect if not authenticated and page is protected
     });
     
@@ -313,13 +314,18 @@ title: Auth Flow Test
       document.getElementById('log-container').innerHTML = '';
     });
     
-    // Watch for authManager initialization
-    if (window.authManager) {
-      log('AuthManager already initialized');
+    // Watch for authService initialization
+    if (window.authService) {
+      log('AuthService already initialized');
     } else {
-      document.addEventListener('authManagerInitialized', () => {
-        log('AuthManager initialized event fired');
-      });
+      // Add a short delay to check for authService
+      setTimeout(() => {
+        if (window.authService) {
+          log('AuthService initialized after delay');
+        } else {
+          log('AuthService not initialized within timeout');
+        }
+      }, 500);
     }
     
     // Initial update of displays

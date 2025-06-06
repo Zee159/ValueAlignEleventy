@@ -124,40 +124,48 @@ eleventyNavigation:
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Get the auth manager instance
-    const authManager = window.authManager;
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Dashboard.njk] Checking auth with modern auth system');
     
-    if (!authManager || !authManager.authenticated) {
-        // Redirect to login if not authenticated
+    // Use a small timeout to ensure auth service is initialized
+    setTimeout(() => {
+      if (!window.authService || !window.authService.isAuthenticated()) {
+        console.log('[Dashboard.njk] Not authenticated with modern auth system, redirecting to login');
+        
+        // Store current path for redirect after login
+        localStorage.setItem('auth_redirect_after_login', '/dashboard/');
+        
+        // Redirect to login page
         window.location.href = '/login/';
         return;
-    }
-    
-    const user = authManager.user;
-    
-    // Update welcome message with user name
-    const welcomeHeading = document.getElementById('portal-welcome-heading');
-    if (welcomeHeading && user) {
+      }
+      
+      const user = window.authService.getCurrentUser();
+      console.log('[Dashboard.njk] User authenticated:', user);
+      
+      // Update welcome message with user name
+      const welcomeHeading = document.getElementById('portal-welcome-heading');
+      if (welcomeHeading && user) {
         const displayName = user.name || user.email.split('@')[0];
         welcomeHeading.textContent = `Welcome, ${displayName}!`;
         welcomeHeading.setAttribute('aria-label', `Welcome, ${displayName}!`);
-    }
-    
-    // Handle reflect button
-    const goToReflectButton = document.getElementById('go-to-reflect-button');
-    if (goToReflectButton) {
+      }
+      
+      // Handle reflect button
+      const goToReflectButton = document.getElementById('go-to-reflect-button');
+      if (goToReflectButton) {
         goToReflectButton.addEventListener('click', () => {
             window.location.href = '/reflect/';
         });
-    }
-    
-    // Simulate showing/hiding premium card based on user status
-    // In real implementation, this would be based on user tier from backend
-    const upgradePremiumCard = document.getElementById('upgrade-premium-card');
-    if (upgradePremiumCard) {
-        // For demo, always show (can be changed to be conditional based on some property)
-        // upgradePremiumCard.classList.remove('hidden');
-    }
-});
+      }
+      
+      // Simulate showing/hiding premium card based on user status
+      // In real implementation, this would be based on user tier from backend
+      const upgradePremiumCard = document.getElementById('upgrade-premium-card');
+      if (upgradePremiumCard) {
+          // For demo, always show (can be changed to be conditional based on some property)
+          // upgradePremiumCard.classList.remove('hidden');
+      }
+    }, 100); // Properly close the setTimeout function
+  });
 </script>

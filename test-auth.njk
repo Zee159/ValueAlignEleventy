@@ -25,7 +25,7 @@ title: Auth Test Page
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Check if auth-shared.js is working
+  // Check if auth-service.js is working
   const authStatus = document.getElementById('auth-status');
   
   function updateAuthStatus() {
@@ -42,8 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
       html += `<p><strong>Member Type:</strong> ${userData.memberType || 'Not specified'}</p>`;
     }
     
-    // Check if auth-shared.js is loaded
-    html += `<p class="mt-4"><strong>auth-shared.js loaded:</strong> ${window.authSharedLoaded ? 'Yes ✅' : 'No ❌'}</p>`;
+    // Check if auth-service.js is loaded
+    html += `<p class="mt-4"><strong>auth-service.js loaded:</strong> ${window.authService ? 'Yes ✅' : 'No ❌'}</p>`;
+    
+    // Check if auth-ui-controller.js is loaded
+    html += `<p><strong>auth-ui-controller.js loaded:</strong> ${window.authUIController ? 'Yes ✅' : 'No ❌'}</p>`;
     
     authStatus.innerHTML = html;
   }

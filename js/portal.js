@@ -291,20 +291,20 @@ function getLoggedInUser() {
     return null;
 }
 
-// Function to check login status - DOES NOT redirect (authManager handles that)
+// Function to check login status - DOES NOT redirect (auth service handles that)
 function checkLoginStatus() {
-    console.log('[Portal] checkLoginStatus: Checking login via authManager instead of portal.js logic');
+    console.log('[Portal] checkLoginStatus: Checking login via modern auth service');
     
-    // Get authentication state from the globally available authManager object
-    if (window.authManager) {
-        const isAuthenticated = window.authManager.isAuthenticated();
-        const user = window.authManager.getCurrentUser();
-        console.log('[Portal] checkLoginStatus: authManager says authenticated =', isAuthenticated);
+    // Get authentication state from the globally available auth service
+    if (window.authService) {
+        const isAuthenticated = window.authService.isAuthenticated();
+        const user = window.authService.getCurrentUser();
+        console.log('[Portal] checkLoginStatus: authService says authenticated =', isAuthenticated);
         return isAuthenticated && user;
     }
     
-    // Fallback to localStorage if authManager isn't available
-    console.log('[Portal] checkLoginStatus: authManager unavailable, checking localStorage directly');
+    // Fallback to localStorage if auth service isn't available (shouldn't happen)
+    console.log('[Portal] checkLoginStatus: authService unavailable, checking localStorage directly');
     return localStorage.getItem('valuealign_authenticated') === 'true';
 }
 
@@ -502,23 +502,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeTheme();
     initializeCurrentFontSize(); // New font size initialization
 
-    // Listen for authManager initialization event or check immediately if already available
-    if (window.authManager && window.authManager.isInitialized) {
-        console.log("[Portal] AuthManager already initialized, checking auth status immediately");
+    // Check if authService is already available or wait for it
+    if (window.authService) {
+        console.log("[Portal] AuthService already initialized, checking auth status immediately");
         checkAndInitializePortalState();
     } else {
-        console.log("[Portal] Waiting for authManager to initialize...");
-        // Create a custom event listener for auth manager initialization
-        document.addEventListener('authManagerInitialized', () => {
-            console.log("[Portal] AuthManager initialization event received");
-            checkAndInitializePortalState();
-        }, { once: true });
-        
-        // Add a safety timeout just in case the event is never fired
+        console.log("[Portal] AuthService not available, adding a delay to wait for it...");
+        // Add a short delay to allow auth service to initialize
         setTimeout(() => {
-            console.log("[Portal] Safety timeout reached for authManager initialization");
+            console.log("[Portal] Checking for authService after delay");
             checkAndInitializePortalState();
-        }, 500);
+        }, 200);
     }
     
     // Helper function to check auth status and initialize portal state
@@ -526,15 +520,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isAuthenticated = checkLoginStatus();
         console.log("[Portal DEBUG] Authentication check result:", isAuthenticated);
         
-        if (isAuthenticated && window.authManager) {
-            const user = window.authManager.getCurrentUser();
+        if (isAuthenticated && window.authService) {
+            const user = window.authService.getCurrentUser();
             if (user) {
                 initializeLoggedInPortalState(user);
                 return;
             }
         }
         
-        // If we're not authenticated, load the not-logged-in UI (but don't redirect - auth-manager handles that)
+        // If we're not authenticated, load the not-logged-in UI (but don't redirect - auth-service handles that)
         console.log("[Portal] Not authenticated or no user. Loading logged-out UI.");
     }
 
@@ -619,11 +613,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('[Portal] On dashboard, accessToken found but loggedInUser not yet in localStorage. Waiting for dashboard.js to initialize portal state.');
         // dashboard.js will call window.initializePortalFeaturesForLoggedInUser
         // Optionally load a minimal/loading header here if needed
-    } else if (!user && currentPagePath.includes('/portal_') && !currentPagePath.endsWith('/login.html') && !currentPagePath.endsWith('/register.html')) {
+    } else if (!user && (currentPagePath.includes('/dashboard/') || currentPagePath.includes('/portal_')) && !currentPagePath.endsWith('/login.html') && !currentPagePath.endsWith('/register.html')) {
         // No user (and not on dashboard waiting for async user) and on a protected portal page
-        // REMOVED: No longer doing authentication checks here - auth-manager.js handles this
-        console.log('[Portal] Portal page detected. Authentication checks delegated to auth-manager.js');
-        // Note: We deliberately do NOT redirect here, letting auth-manager.js handle all auth checks
+        // Using modern auth system for authentication checks
+        console.log('[Portal] Portal page detected. Authentication checks delegated to auth-service.js');
+        // Note: We deliberately do NOT redirect here, letting auth-service.js handle all auth checks
         // This prevents redirect loops and conflicting authentication logic
     } else {
         // User is not logged in (and not on dashboard waiting for async user) OR on a public page.

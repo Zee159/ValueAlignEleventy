@@ -47,18 +47,45 @@ class JournalManager {
     initPage() {
         console.log('[JournalManager] Initializing journal page');
         
-        // Check if user is authenticated
-        if (typeof authManager !== 'object' || !authManager) {
-            console.error('[JournalManager] authManager not found. auth-manager.js might not be loaded correctly.');
-            return;
-        }
+        // Use a small delay to ensure auth service is fully initialized
+        setTimeout(() => {
+            // Check if user is authenticated using modern auth system
+            if (typeof window.authService !== 'object' || !window.authService) {
+                console.error('[JournalManager] authService not found. auth-service.js might not be loaded correctly.');
+                this.redirectToLogin();
+                return;
+            }
+            
+            // Get current user
+            const user = window.authService.getCurrentUser();
+            if (!user) {
+                console.error('[JournalManager] No logged-in user data found.');
+                this.redirectToLogin();
+                return;
+            }
+            
+            console.log('[JournalManager] User found:', user.email);
+            this.initializeJournalForUser(user);
+        }, 100);  // Small delay to ensure auth service is ready
+    }
+    
+    /**
+     * Redirect to login if not authenticated
+     */
+    redirectToLogin() {
+        console.log('[JournalManager] Redirecting to login');
         
-        // Get current user
-        const user = authManager.getCurrentUser();
-        if (!user) {
-            console.error('[JournalManager] No logged-in user data found.');
-            return;
-        }
+        // Save current page for redirect after login
+        localStorage.setItem('auth_redirect_after_login', window.location.pathname);
+        
+        // Redirect to login
+        window.location.href = '/login/';
+    }
+    
+    /**
+     * Initialize journal features after user is authenticated
+     */
+    initializeJournalForUser(user) {
         
         // Check if user has premium features
         this.isPremium = user.subscription && user.subscription.toLowerCase() !== 'free';

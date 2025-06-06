@@ -7,7 +7,8 @@
 document.addEventListener('DOMContentLoaded', function() {
   initializeUserMenu();
   initializeUserData();
-  initializeSettingsMenu();
+  // Settings menu was replaced with direct theme toggle button
+  // initializeSettingsMenu() - removed
 });
 
 /**
@@ -64,10 +65,10 @@ function initializeUserMenu() {
   logoutButtons.forEach(button => {
     button.addEventListener('click', (event) => {
       event.preventDefault();
-      if (window.authManager && typeof window.authManager.logout === 'function') {
-        window.authManager.logout();
+      if (window.authService && typeof window.authService.logout === 'function') {
+        window.authService.logout();
       } else {
-        console.warn('[UserMenu] AuthManager not available for logout');
+        console.warn('[UserMenu] AuthService not available for logout');
         // Fallback to redirect
         window.location.href = '/';
       }
@@ -86,9 +87,9 @@ function initializeUserData() {
   
   if (!userNameDisplay) return;
   
-  // Get user data from AuthManager if available
-  if (window.authManager && window.authManager.user) {
-    const user = window.authManager.user;
+  // Get user data from AuthService if available
+  if (window.authService && window.authService.getCurrentUser()) {
+    const user = window.authService.getCurrentUser();
     
     // Update username display
     if (user.displayName || user.name || user.email) {
@@ -105,53 +106,7 @@ function initializeUserData() {
 }
 
 /**
- * Initialize settings menu functionality
+ * Settings menu functionality has been removed
+ * The settings dropdown was replaced with a direct theme toggle button
+ * which is handled by theme-toggle.js
  */
-function initializeSettingsMenu() {
-  const settingsButton = document.getElementById('desktop-settings-button');
-  const settingsPanel = document.getElementById('desktop-settings-panel');
-  
-  if (!settingsButton || !settingsPanel) {
-    console.warn('[Settings] Settings menu elements not found');
-    return;
-  }
-
-  // Set initial ARIA state
-  settingsButton.setAttribute('aria-expanded', 'false');
-  
-  // Handle toggle click
-  settingsButton.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const isExpanded = settingsButton.getAttribute('aria-expanded') === 'true';
-    settingsButton.setAttribute('aria-expanded', (!isExpanded).toString());
-    settingsPanel.classList.toggle('hidden');
-    
-    // Close user dropdown if open
-    const userDropdown = document.getElementById('user-dropdown');
-    const userMenuButton = document.getElementById('user-menu-button');
-    if (userDropdown && !userDropdown.classList.contains('hidden')) {
-      userDropdown.classList.add('hidden');
-      if (userMenuButton) userMenuButton.setAttribute('aria-expanded', 'false');
-    }
-  });
-  
-  // Handle click outside
-  document.addEventListener('click', (event) => {
-    if (!settingsPanel.classList.contains('hidden')) {
-      if (!settingsPanel.contains(event.target) && !settingsButton.contains(event.target)) {
-        settingsButton.setAttribute('aria-expanded', 'false');
-        settingsPanel.classList.add('hidden');
-      }
-    }
-  });
-  
-  // Handle keyboard accessibility
-  settingsButton.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      settingsButton.setAttribute('aria-expanded', 'false');
-      settingsPanel.classList.add('hidden');
-    }
-  });
-  
-  console.log('[Settings] Settings menu initialized successfully');
-}
