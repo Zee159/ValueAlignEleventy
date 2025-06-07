@@ -1,9 +1,224 @@
 ---
-layout: portal.njk
-title: Journal
+layout: layouts/dashboard.njk
+title: Journal | ValueAlign Dashboard
 pageTitle: Values Journal
-metaDescription: Journal your thoughts and reflections on values alignment
-requiresAuth: true
+pageDescription: Track your thoughts and reflections on values alignment
+meta_description: Record your reflections, insights, and progress in living according to your core values.
+requires_auth: true
+eleventyNavigation:
+  key: Journal
+  parent: Dashboard
+  order: 4
+showActionButtons: true
 ---
 
-{% include "_portal_journal.html" %}
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+  <!-- Journal Entry List and Creation Interface -->
+  <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Journal Entry Form -->
+    <div class="flex-1 order-2 lg:order-1">
+      <h2 class="text-xl font-medium mb-4">New Journal Entry</h2>
+      
+      <form id="journal-form" class="space-y-4">
+        <div>
+          <label for="journal-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+          <input type="text" id="journal-title" name="title" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white" placeholder="Today's Reflections">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Relevant Values</label>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <button type="button" class="value-tag px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition">Honesty</button>
+            <button type="button" class="value-tag px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition">Compassion</button>
+            <button type="button" class="value-tag px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition">Growth</button>
+            <button type="button" class="value-tag px-3 py-1 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition">+ Add Value</button>
+          </div>
+        </div>
+        
+        <div>
+          <label for="journal-content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Journal Entry</label>
+          <textarea id="journal-content" name="content" rows="8" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white" placeholder="What reflections do you have about living according to your values today?"></textarea>
+        </div>
+        
+        <div class="flex justify-between items-center">
+          <div>
+            <label class="relative inline-flex items-center">
+              <input type="checkbox" id="journal-private" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">Private Entry</span>
+            </label>
+          </div>
+          
+          <div>
+            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-sm transition">Save Entry</button>
+            <button type="reset" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 rounded-md shadow-sm transition ml-2">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Journal Entries List -->
+    <div class="lg:w-1/3 order-1 lg:order-2">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-medium">Recent Entries</h2>
+        <div>
+          <select id="journal-filter" class="text-sm border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white">
+            <option value="all">All Entries</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="space-y-4 journal-entries-list">
+        <!-- Example Journal Entry -->
+        <div class="journal-entry p-4 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-750 transition cursor-pointer">
+          <div class="flex justify-between items-start">
+            <h3 class="font-medium">Finding Balance</h3>
+            <span class="text-xs text-gray-500 dark:text-gray-400">June 5, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-1 mb-2">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Balance</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Growth</span>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Today I made conscious decisions to balance work commitments with personal time. I noticed how this aligns with my core value of balanced living...</p>
+        </div>
+        
+        <!-- Example Journal Entry 2 -->
+        <div class="journal-entry p-4 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-750 transition cursor-pointer">
+          <div class="flex justify-between items-start">
+            <h3 class="font-medium">Compassion Practice</h3>
+            <span class="text-xs text-gray-500 dark:text-gray-400">June 3, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-1 mb-2">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Compassion</span>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">I practiced responding with compassion in a difficult conversation today. I noticed how this created a sense of connection rather than conflict...</p>
+        </div>
+        
+        <!-- Example Journal Entry 3 -->
+        <div class="journal-entry p-4 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-750 transition cursor-pointer">
+          <div class="flex justify-between items-start">
+            <h3 class="font-medium">Honesty Reflection</h3>
+            <span class="text-xs text-gray-500 dark:text-gray-400">June 1, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-1 mb-2">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Honesty</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Courage</span>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Today I practiced radical honesty in my communications. It was challenging at first but ultimately led to deeper connections...</p>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-center">
+        <a href="/dashboard/journal/archive/" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">View All Journal Entries →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Journal Page Scripts -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Journal] Initializing journal page components');
+    
+    // Initialize the journal form
+    const journalForm = document.getElementById('journal-form');
+    const valueTags = document.querySelectorAll('.value-tag');
+    
+    // Toggle value tag selection
+    valueTags.forEach(tag => {
+      tag.addEventListener('click', function() {
+        if (tag.textContent === '+ Add Value') {
+          const newValue = prompt('Enter a new value:');
+          if (newValue && newValue.trim() !== '') {
+            const newTag = document.createElement('button');
+            newTag.type = 'button';
+            newTag.className = 'value-tag px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition';
+            newTag.textContent = newValue.trim();
+            
+            // Add click handler to the new tag
+            newTag.addEventListener('click', function() {
+              newTag.classList.toggle('bg-blue-100');
+              newTag.classList.toggle('bg-green-100');
+              newTag.classList.toggle('text-blue-800');
+              newTag.classList.toggle('text-green-800');
+            });
+            
+            // Insert before the + Add Value button
+            tag.parentNode.insertBefore(newTag, tag);
+          }
+        } else {
+          // Toggle selection state
+          tag.classList.toggle('bg-blue-100');
+          tag.classList.toggle('bg-green-100');
+          tag.classList.toggle('text-blue-800');
+          tag.classList.toggle('text-green-800');
+        }
+      });
+    });
+    
+    // Handle journal form submission
+    if (journalForm) {
+      journalForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('journal-title').value;
+        const content = document.getElementById('journal-content').value;
+        const isPrivate = document.getElementById('journal-private').checked;
+        
+        // Get selected values
+        const selectedValues = [];
+        document.querySelectorAll('.value-tag').forEach(tag => {
+          if (tag.textContent !== '+ Add Value' && tag.classList.contains('bg-green-100')) {
+            selectedValues.push(tag.textContent);
+          }
+        });
+        
+        // Here you would typically save the journal entry to your backend
+        console.log('[Journal] Saving journal entry:', { title, content, selectedValues, isPrivate });
+        
+        // Simulate a successful save
+        alert('Journal entry saved successfully!');
+        
+        // Reset form
+        journalForm.reset();
+        
+        // Reset value tags
+        valueTags.forEach(tag => {
+          if (tag.textContent !== '+ Add Value') {
+            tag.classList.remove('bg-green-100', 'text-green-800');
+            tag.classList.add('bg-blue-100', 'text-blue-800');
+          }
+        });
+        
+        // Remove any dynamically added value tags
+        document.querySelectorAll('.value-tag:not(:last-child)').forEach(tag => {
+          if (!['Honesty', 'Compassion', 'Growth'].includes(tag.textContent)) {
+            tag.remove();
+          }
+        });
+      });
+    }
+    
+    // Make journal entries clickable
+    document.querySelectorAll('.journal-entry').forEach(entry => {
+      entry.addEventListener('click', function() {
+        const title = this.querySelector('h3').textContent;
+        console.log('[Journal] Opening entry:', title);
+        // Here you would navigate to the journal entry detail page
+        alert(`Opening journal entry: ${title}`);
+      });
+    });
+    
+    // Initialize journal filter
+    const journalFilter = document.getElementById('journal-filter');
+    if (journalFilter) {
+      journalFilter.addEventListener('change', function() {
+        const filterValue = this.value;
+        console.log('[Journal] Filtering entries by:', filterValue);
+        // Here you would filter the journal entries based on the selected option
+      });
+    }
+  });
+</script>

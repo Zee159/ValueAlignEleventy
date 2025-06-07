@@ -1,0 +1,78 @@
+<!-- 
+  Dashboard Content Template - Default layout for dashboard content pages
+  This provides a consistent framework for all dashboard pages
+-->
+
+<div class="dashboard-container mx-auto px-4 py-8">
+  <div class="section-header mb-6">
+    <h1 id="page-heading" class="text-2xl font-bold text-gray-800 dark:text-white">{{ pageTitle | default("Dashboard") }}</h1>
+    {% if pageDescription %}
+      <p class="mt-2 text-gray-600 dark:text-gray-400">{{ pageDescription }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Content slot - filled by specific pages -->
+  <div class="dashboard-content-area">
+    {{ content | safe }}
+  </div>
+
+  <!-- Standard action buttons area -->
+  {% if showActionButtons %}
+  <div class="action-buttons flex flex-wrap gap-4 mt-8">
+    <a href="/dashboard/" class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition-colors">
+      Dashboard Home
+    </a>
+    {% if backLink %}
+    <a href="{{ backLink }}" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white transition-colors">
+      Back
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Dashboard UI enhancement script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Dashboard Content] Initializing content area');
+    
+    // Add any dashboard-specific content enhancements here
+    
+    // Apply proper ARIA attributes
+    const mainHeading = document.getElementById('page-heading');
+    if (mainHeading) {
+      const mainContent = mainHeading.closest('main') || mainHeading.parentElement;
+      if (mainContent && !mainContent.hasAttribute('aria-labelledby')) {
+        mainContent.setAttribute('aria-labelledby', 'page-heading');
+      }
+    }
+    
+    // Initialize any interactive components that need JavaScript
+    const initializeInteractiveComponents = () => {
+      // Add component initialization here
+      
+      // Example:
+      // const dropdowns = document.querySelectorAll('.dashboard-dropdown');
+      // dropdowns.forEach(dropdown => new DropdownComponent(dropdown));
+    };
+    
+    // Check theme and apply any theme-specific UI adjustments
+    const applyThemeSpecificUI = () => {
+      const isDarkTheme = document.documentElement.classList.contains('dark');
+      const themeClass = isDarkTheme ? 'dark-theme' : 'light-theme';
+      
+      // Apply any theme-specific classes or attributes
+      document.querySelectorAll('[data-theme-aware]').forEach(el => {
+        el.classList.remove('light-theme', 'dark-theme');
+        el.classList.add(themeClass);
+      });
+    };
+    
+    // Listen for theme changes
+    document.addEventListener('themechange', applyThemeSpecificUI);
+    
+    // Initial setup
+    initializeInteractiveComponents();
+    applyThemeSpecificUI();
+  });
+</script>

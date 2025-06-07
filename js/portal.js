@@ -540,7 +540,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const footerPlaceholder = document.getElementById('portal-footer-placeholder');
     if (footerPlaceholder) {
-        fetch('_portal_footer.html')
+        fetch('_includes/dashboard-footer.html')
             .then(response => response.text())
             .then(data => {
                 footerPlaceholder.innerHTML = data;
@@ -565,7 +565,7 @@ function initializeLoggedInPortalState(user) {
     const portalHeaderPlaceholder = document.getElementById('portal-header-placeholder');
 
     if (portalHeaderPlaceholder) {
-        fetch('_portal_header_loggedin.html')
+        fetch('_includes/dashboard-header.html')
             .then(response => response.ok ? response.text() : Promise.reject('Failed to load logged-in header'))
             .then(data => {
                 console.log(`[Portal TRACE ${portalStateInitCallCount}] (NEW) About to set innerHTML for portalHeaderPlaceholder. Current innerHTML: ${portalHeaderPlaceholder.innerHTML}`);
@@ -624,13 +624,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Load logged-out header.
         console.log('[Portal] User not logged in (or on public page). Loading logged-out header.');
         if (portalHeaderPlaceholder) {
-            console.log('[Portal DEBUG] Attempting to fetch _portal_header_loggedout.html');
-            fetch('_portal_header_loggedout.html')
+            console.log('[Portal DEBUG] Attempting to fetch _includes/dashboard-header-loggedout.html');
+            fetch('_includes/dashboard-header-loggedout.html')
                 .then(response => {
-                    console.log('[Portal DEBUG] Fetched _portal_header_loggedout.html response. Status:', response.status, 'OK:', response.ok);
+                    console.log('[Portal DEBUG] Fetched _includes/dashboard-header-loggedout.html response. Status:', response.status, 'OK:', response.ok);
                     if (!response.ok) {
-                        console.error('[Portal ERROR] Failed to load _portal_header_loggedout.html. Status:', response.status);
-                        return Promise.reject(`Failed to load _portal_header_loggedout.html. Status: ${response.status}`);
+                        console.error('[Portal ERROR] Failed to load _includes/dashboard-header-loggedout.html. Status:', response.status);
+                        return Promise.reject(`Failed to load _includes/dashboard-header-loggedout.html. Status: ${response.status}`);
                     }
                     return response.text();
                 })
@@ -641,14 +641,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     initializeSettingsCog(); // Initialize settings cog for logged-out pages
                 })
                 .catch(error => {
-                    console.error('[Portal CRITICAL] CRITICAL Error loading _portal_header_loggedout.html or processing its data:', error);
+                    console.error('[Portal CRITICAL] CRITICAL Error loading _includes/dashboard-header-loggedout.html or processing its data:', error);
                 });
         }
     }
 
     const portalFooterPlaceholder = document.getElementById('portal-footer-placeholder');
     if (portalFooterPlaceholder) {
-        fetch('_portal_footer.html')
+        fetch('_includes/dashboard-footer.html')
             .then(response => response.ok ? response.text() : Promise.reject('Failed to load footer'))
             .then(data => {
                 portalFooterPlaceholder.innerHTML = data;

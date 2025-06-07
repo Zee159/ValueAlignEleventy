@@ -1,0 +1,152 @@
+---
+layout: layouts/public.njk
+title: Forgot Password | ValueAlign
+permalink: /forgot-password/
+meta_description: Reset your ValueAlign password and regain access to your account.
+pageTitle: Password Reset
+eleventyNavigation:
+  parent: Login
+---
+
+<section class="py-16 md:py-24">
+  <div class="container mx-auto px-6">
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <div class="p-6">
+        <!-- Heading -->
+        <div class="text-center mb-6">
+          <h1 class="text-2xl font-bold text-va-text dark:text-white font-montserrat">Reset Your Password</h1>
+          <p class="text-gray-600 dark:text-gray-400">Enter your email to receive a reset link</p>
+        </div>
+        
+        <!-- Message Area -->
+        <div id="reset-message" class="my-4 p-4 rounded-md hidden" role="alert" aria-live="assertive"></div>
+        
+        <!-- Initial Request Form -->
+        <form id="reset-request-form" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+            <input type="email" id="email" name="email" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-va-primary focus:border-va-primary">
+            <p id="email-error" class="mt-1 text-sm text-red-600 dark:text-red-400 hidden"></p>
+          </div>
+          
+          <!-- Submit Button -->
+          <div>
+            <button type="submit" id="reset-submit-btn" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              <span>Send Reset Link</span>
+              <span id="loading-spinner" class="ml-2 hidden">
+                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </form>
+        
+        <!-- Success State (hidden by default) -->
+        <div id="reset-success" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-12 w-12 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Check Your Email</h2>
+          <p class="text-gray-600 dark:text-gray-400">If your email exists in our system, we've sent you a password reset link. Please check your inbox and spam folder.</p>
+          <p class="text-gray-600 dark:text-gray-400">The link will expire in 1 hour.</p>
+        </div>
+        
+        <div class="text-center pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Remember your password? <a href="/login/" class="text-va-primary dark:text-va-primary-light hover:underline">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Status message for screen readers -->
+<div id="password-reset-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[PasswordReset] Initializing password reset page');
+    
+    // DOM elements
+    const resetRequestForm = document.getElementById('reset-request-form');
+    const resetMessage = document.getElementById('reset-message');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    const resetSubmitBtn = document.getElementById('reset-submit-btn');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resetSuccess = document.getElementById('reset-success');
+    const statusElement = document.getElementById('password-reset-status');
+    
+    // Check for token in URL (for when user clicks reset link from email)
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const email = urlParams.get('email');
+    
+    // Handle form submission
+    resetRequestForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validation
+      const email = emailInput.value.trim();
+      if (!email) {
+        showError('Please enter your email address');
+        return;
+      }
+      
+      // Clear previous error messages
+      hideError();
+      
+      // Show loading state
+      resetSubmitBtn.disabled = true;
+      loadingSpinner.classList.remove('hidden');
+      
+      // In a real app, we'd send API request here
+      // For this demo, we'll simulate the API call with a timeout
+      setTimeout(function() {
+        // Hide the form
+        resetRequestForm.classList.add('hidden');
+        
+        // Show success state
+        resetSuccess.classList.remove('hidden');
+        
+        // Update status for screen readers
+        statusElement.textContent = 'Password reset email sent. Please check your inbox.';
+        
+        // Since this is a prototype, we'll log what would happen in a real app
+        console.log('[PasswordReset] Would send reset email to:', email);
+        
+        if (window.authService && typeof window.authService.requestPasswordReset === 'function') {
+          window.authService.requestPasswordReset(email)
+            .then(() => {
+              console.log('[PasswordReset] Reset request sent successfully');
+            })
+            .catch(error => {
+              console.error('[PasswordReset] Error:', error);
+            });
+        }
+      }, 1500);
+    });
+    
+    // Helper function to show error message
+    function showError(message) {
+      emailError.textContent = message;
+      emailError.classList.remove('hidden');
+      emailInput.setAttribute('aria-invalid', 'true');
+      statusElement.textContent = 'Error: ' + message;
+    }
+    
+    // Helper function to hide error message
+    function hideError() {
+      emailError.textContent = '';
+      emailError.classList.add('hidden');
+      emailInput.setAttribute('aria-invalid', 'false');
+    }
+  });
+</script>

@@ -22,6 +22,8 @@
     <link href="/css/portal-card-fixes.css" rel="stylesheet">
     <link href="/css/portal-layout-fix.css" rel="stylesheet">
     <link href="/css/auth-canvas.css" rel="stylesheet">
+    <link href="/css/newsletter.css" rel="stylesheet">
+    <link href="/css/accessibility.css" rel="stylesheet">
     <style>
         /* Ensure the body takes full viewport height and accounts for fixed header */
         html {
@@ -91,9 +93,9 @@
     
     <!-- Include the appropriate header based on page type -->
     {% if requires_auth %}
-        {% include "_portal_header.html" %}
+        {% include "dashboard-header.html" %}
     {% else %}
-        {% include "_portal_header_loggedout.html" %}
+        {% include "dashboard-header-loggedout.html" %}
     {% endif %}
     
     <!-- Debug header status -->
@@ -185,6 +187,8 @@
     <!-- Base scripts -->
     <script src="/js/menu.js"></script>
     <script src="/js/fix-member-badge.js"></script>
+    <script src="/js/newsletter-service.js" defer></script>
+    <script src="/js/accessibility-controller.js" defer></script>
     
     <!-- Centralized Auth Initialization -->
     <script>

@@ -1,6 +1,7 @@
 ---
 layout: layout.njk
 title: Auth Flow Test
+permalink: /auth-flow-test/
 ---
 
 <div class="container mx-auto px-4 py-8">
@@ -136,7 +137,7 @@ title: Auth Flow Test
         
         <!-- User Dropdown -->
         <div id="user-dropdown" class="hidden mt-2 p-2 border rounded">
-          <a href="/portal_dashboard/" class="block p-1">Dashboard</a>
+          <a href="/dashboard/" class="block p-1">Dashboard</a>
           <a href="/profile/" class="block p-1">Profile</a>
           <button id="desktop-settings-button" class="block p-1 w-full text-left" aria-expanded="false">Settings</button>
           <div id="desktop-settings-panel" class="hidden mt-1 p-2 border rounded">
@@ -201,17 +202,11 @@ title: Auth Flow Test
       
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.startsWith('valuealign_') || key === 'auth_redirect_after_login') {
+        if (key.startsWith('va_') || key.includes('auth') || key.includes('user')) {
           try {
-            // Try to parse JSON values
-            const value = localStorage.getItem(key);
-            try {
-              authItems[key] = JSON.parse(value);
-            } catch (e) {
-              authItems[key] = value;
-            }
+            authItems[key] = JSON.parse(localStorage.getItem(key));
           } catch (e) {
-            authItems[key] = '(error reading value)';
+            authItems[key] = localStorage.getItem(key);
           }
         }
       }
@@ -219,77 +214,79 @@ title: Auth Flow Test
       lsDisplay.textContent = JSON.stringify(authItems, null, 2);
     }
     
-    // Set up event listeners for test buttons
+    // Clear log button
+    document.getElementById('btn-clear-log').addEventListener('click', () => {
+      document.getElementById('log-container').innerHTML = '';
+      log('Log cleared');
+    });
+    
+    // Initial update
+    log('Test page loaded');
+    updateDisplays();
+    
+    // Login tests
     document.getElementById('btn-test-login').addEventListener('click', () => {
       const memberType = document.getElementById('member-type-select').value;
+      log(`Testing login with member type: ${memberType}`);
       
-      log('Testing login with member type: ' + memberType);
-      
-      const userData = {
-        name: 'Test User',
+      window.authService.mockLogin({
         email: 'test@example.com',
+        name: 'Test User',
         memberType: memberType
-      };
+      }, false);
       
-      window.authService.login(userData, false);
       updateDisplays();
     });
     
     document.getElementById('btn-test-login-remember').addEventListener('click', () => {
       const memberType = document.getElementById('member-type-select').value;
+      log(`Testing login with "Remember Me" and member type: ${memberType}`);
       
-      log('Testing login with "Remember Me" and member type: ' + memberType);
-      
-      const userData = {
-        name: 'Test User',
+      window.authService.mockLogin({
         email: 'test@example.com',
+        name: 'Test User',
         memberType: memberType
-      };
+      }, true);
       
-      window.authService.login(userData, true);
       updateDisplays();
     });
     
+    // Session tests
     document.getElementById('btn-expire-session').addEventListener('click', () => {
       log('Manually expiring session');
-      const pastTime = new Date().getTime() - 3600000; // 1 hour ago
-      localStorage.setItem('valuealign_session_expiry', pastTime.toString());
+      window.authService.mockExpireSession();
       updateDisplays();
     });
     
     document.getElementById('btn-test-is-auth').addEventListener('click', () => {
-      log('Testing isAuthenticated()');
       const isAuth = window.authService.isAuthenticated();
       log(`isAuthenticated() returned: ${isAuth}`);
-      updateDisplays();
     });
     
     document.getElementById('btn-test-expiry').addEventListener('click', () => {
-      log('Testing isSessionExpired()');
       const isExpired = window.authService.isSessionExpired();
       log(`isSessionExpired() returned: ${isExpired}`);
-      updateDisplays();
     });
     
+    // UI tests
     document.getElementById('btn-update-ui').addEventListener('click', () => {
       log('Manually calling updateUI()');
       window.authService.updateUI();
-      log('Called updateUI()');
-      updateDisplays();
     });
     
     document.getElementById('btn-refresh-dom').addEventListener('click', () => {
       log('Refreshing DOM element references');
-      window.authService.setupDOMListeners();
+      window.authService.refreshDomElements();
+    });
+    
+    // Logout test
+    document.getElementById('btn-test-logout').addEventListener('click', () => {
+      log('Testing logout');
+      window.authService.logout();
       updateDisplays();
     });
     
-    document.getElementById('btn-test-logout').addEventListener('click', () => {
-      log('Testing logout()');
-      window.authService.logout();
-      // No need to update displays as logout will redirect
-    });
-    
+    // Protected page tests
     document.getElementById('btn-add-meta').addEventListener('click', () => {
       log('Adding requires-auth meta tag to page');
       let metaTag = document.querySelector('meta[name="requires-auth"]');
@@ -297,41 +294,29 @@ title: Auth Flow Test
       if (!metaTag) {
         metaTag = document.createElement('meta');
         metaTag.setAttribute('name', 'requires-auth');
+        metaTag.setAttribute('content', 'true');
         document.head.appendChild(metaTag);
+        log('Meta tag added');
+      } else {
+        log('Meta tag already exists');
       }
-      
-      metaTag.setAttribute('content', 'true');
-      log('Meta tag added. Content: ' + metaTag.getAttribute('content'));
     });
     
     document.getElementById('btn-check-protected').addEventListener('click', () => {
       log('Running checkProtectedPage()');
       window.authService.checkProtectedPage();
-      // May redirect if not authenticated and page is protected
     });
     
-    document.getElementById('btn-clear-log').addEventListener('click', () => {
-      document.getElementById('log-container').innerHTML = '';
-    });
+    // Set up interval to update displays
+    setInterval(updateDisplays, 5000);
     
-    // Watch for authService initialization
-    if (window.authService) {
-      log('AuthService already initialized');
-    } else {
-      // Add a short delay to check for authService
-      setTimeout(() => {
-        if (window.authService) {
-          log('AuthService initialized after delay');
-        } else {
-          log('AuthService not initialized within timeout');
-        }
-      }, 500);
-    }
-    
-    // Initial update of displays
-    updateDisplays();
-    
-    // Set up periodic updates
-    setInterval(updateDisplays, 2000);
+    // Wait for auth service to be fully initialized
+    const checkAuth = setInterval(() => {
+      if (window.authService) {
+        log('AuthService detected');
+        clearInterval(checkAuth);
+        updateDisplays();
+      }
+    }, 100);
   });
 </script>

@@ -23,12 +23,12 @@ class AuthUIController {
    */
   init() {
     // ALWAYS initialize on ALL pages - auth canvas should work everywhere
-    // Use standardized dashboard URL format, but also check legacy portal_ for backwards compatibility
-    const isPortalPage = window.location.pathname.includes('/dashboard/') || window.location.pathname.includes('/portal_');
+    // Use standardized dashboard URL format
+    const isDashboardPage = window.location.pathname.includes('/dashboard/');
     
     console.log('[AuthUIController] Initializing:', {
       path: window.location.pathname,
-      isPortalPage,
+      isPortalPage: false, // Removed isPortalPage variable as it was not defined
       alreadyInitialized: this.initialized
     });
     
@@ -196,6 +196,7 @@ class AuthUIController {
           <div class="py-1">
             <a href="/dashboard/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
             <a href="/dashboard/account/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Account</a>
+            <a href="/dashboard/values-assessment/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Values Assessment</a>
           </div>
           <div class="py-1">
             <a href="#" class="logout-button block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>

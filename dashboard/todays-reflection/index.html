@@ -1,9 +1,209 @@
 ---
-layout: portal.njk
-title: Today's Reflection
+layout: layouts/dashboard.njk
+title: Today's Reflection | ValueAlign Dashboard
 pageTitle: Today's Reflection
-metaDescription: Reflect on your values alignment for today
-requiresAuth: true
+pageDescription: Reflect on your values alignment for today
+meta_description: Take a moment to reflect on how your actions today aligned with your core values.
+requires_auth: true
+eleventyNavigation:
+  key: Today's Reflection
+  parent: Dashboard
+  order: 2
 ---
 
-{% include "_portal_todays_reflection.html" %}
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+  <!-- Reflection Page Header -->
+  <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-medium text-gray-900 dark:text-white">Today's Reflection</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Take a moment to reflect on your values alignment today</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflection Content -->
+  <div class="p-6">
+    <div id="todays-reflection-container" class="reflection-container">
+      <!-- Reflection interface will be loaded here -->
+      <div class="reflection-loading text-center py-10">
+        <p class="text-gray-600 dark:text-gray-400">Loading your reflection...</p>
+        <div class="flex justify-center items-center mt-4">
+          <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Default reflection form (shown if dynamic loading fails) -->
+      <div id="reflection-fallback" class="hidden">
+        <form id="reflection-form-fallback" class="space-y-6">
+          <div>
+            <label for="reflection-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+            <input type="date" id="reflection-date" name="reflection-date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" readonly>
+          </div>
+
+          <div>
+            <label for="reflection-mood" class="block text-sm font-medium text-gray-700 dark:text-gray-300">How are you feeling today?</label>
+            <select id="reflection-mood" name="reflection-mood" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+              <option value="">Select your mood</option>
+              <option value="great">Great</option>
+              <option value="good">Good</option>
+              <option value="okay">Okay</option>
+              <option value="not-great">Not great</option>
+              <option value="struggling">Struggling</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="reflection-content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Reflect on how your actions today aligned with your values</label>
+            <textarea id="reflection-content" name="reflection-content" rows="5" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Write your reflection here..."></textarea>
+          </div>
+
+          <div>
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Save Reflection
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Reflection Complete Message -->
+    <div id="reflection-complete" class="hidden mt-8 p-6 bg-green-50 dark:bg-green-900/30 rounded-lg">
+      <h2 class="text-xl font-semibold text-green-800 dark:text-green-200 mb-3">Reflection Saved!</h2>
+      <p class="text-green-700 dark:text-green-300 mb-4">Your reflection has been saved to your journal.</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/dashboard/journal/" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          View My Journal
+        </a>
+        <button id="start-new-reflection" class="inline-flex items-center px-4 py-2 border border-green-600 text-base font-medium rounded-md shadow-sm text-green-700 dark:text-green-300 bg-white dark:bg-gray-800 hover:bg-green-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          Start New Reflection
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reflection Guidance -->
+<div class="mt-8 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg shadow-sm">
+  <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Tips for Daily Reflection</h3>
+  <ul class="list-disc pl-5 text-blue-700 dark:text-blue-300 space-y-2">
+    <li>Be honest with yourself about your actions today</li>
+    <li>Consider how your actions aligned with your core values</li>
+    <li>Identify patterns in your behavior over time</li>
+    <li>Celebrate moments of values alignment</li>
+    <li>Learn from moments when you strayed from your values</li>
+  </ul>
+</div>
+
+<!-- Status Message for Accessibility Announcements -->
+<div id="reflection-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[ReflectionController] Initializing Today\'s Reflection');
+    
+    // Set today's date
+    const today = new Date();
+    const dateInput = document.getElementById('reflection-date');
+    if (dateInput) {
+      dateInput.value = today.toISOString().split('T')[0];
+    }
+    
+    // DOM elements
+    const reflectionContainer = document.getElementById('todays-reflection-container');
+    const loadingElement = reflectionContainer.querySelector('.reflection-loading');
+    const fallbackForm = document.getElementById('reflection-fallback');
+    const completeMessage = document.getElementById('reflection-complete');
+    const startNewButton = document.getElementById('start-new-reflection');
+    const statusElement = document.getElementById('reflection-status');
+    
+    // Attempt to load the dynamic reflection module
+    function loadReflectionModule() {
+      try {
+        // First, try to load using a script tag (preferred approach based on memory)
+        const script = document.createElement('script');
+        script.src = '/js/daily-reflection.js?v=' + Date.now(); // Cache-busting parameter
+        script.onload = function() {
+          console.log('[ReflectionController] Successfully loaded daily-reflection.js');
+          statusElement.textContent = 'Reflection module loaded';
+          
+          // The script should handle initialization through global registration
+          if (window.DailyReflection && typeof window.DailyReflection.initialize === 'function') {
+            window.DailyReflection.initialize(reflectionContainer);
+          } else {
+            console.error('[ReflectionController] DailyReflection module not properly initialized');
+            showFallbackForm();
+          }
+        };
+        script.onerror = function(error) {
+          console.error('[ReflectionController] Failed to load daily-reflection.js:', error);
+          showFallbackForm();
+        };
+        document.body.appendChild(script);
+      } catch (error) {
+        console.error('[ReflectionController] Error in module loading:', error);
+        showFallbackForm();
+      }
+    }
+    
+    // Show fallback form if dynamic loading fails
+    function showFallbackForm() {
+      loadingElement.classList.add('hidden');
+      fallbackForm.classList.remove('hidden');
+      statusElement.textContent = 'Using basic reflection form';
+    }
+    
+    // Initialize the reflection interface
+    loadReflectionModule();
+    
+    // Handle fallback form submission
+    const fallbackFormElement = document.getElementById('reflection-form-fallback');
+    if (fallbackFormElement) {
+      fallbackFormElement.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Basic validation
+        const mood = document.getElementById('reflection-mood').value;
+        const content = document.getElementById('reflection-content').value;
+        
+        if (!mood || !content) {
+          alert('Please complete all fields');
+          return;
+        }
+        
+        // Mock saving reflection
+        console.log('[ReflectionController] Saving reflection:', {
+          date: document.getElementById('reflection-date').value,
+          mood: mood,
+          content: content
+        });
+        
+        // Show completion message
+        reflectionContainer.classList.add('hidden');
+        completeMessage.classList.remove('hidden');
+        statusElement.textContent = 'Reflection saved successfully';
+      });
+    }
+    
+    // Handle starting a new reflection
+    if (startNewButton) {
+      startNewButton.addEventListener('click', function() {
+        completeMessage.classList.add('hidden');
+        reflectionContainer.classList.remove('hidden');
+        
+        // Reset form if using fallback
+        if (!loadingElement.classList.contains('hidden')) {
+          // Dynamic interface is handling this
+        } else if (fallbackFormElement) {
+          fallbackFormElement.reset();
+          document.getElementById('reflection-date').value = today.toISOString().split('T')[0];
+        }
+        
+        statusElement.textContent = 'Starting a new reflection';
+      });
+    }
+  });
+</script>

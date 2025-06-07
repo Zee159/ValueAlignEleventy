@@ -1,0 +1,27 @@
+# ValueAlign URL Standardization Redirects
+
+# Legacy portal paths to dashboard paths
+/portal_journal /dashboard/journal/ 301
+/portal_account /dashboard/account/ 301
+/portal_exercises /dashboard/exercises/ 301
+/portal_acts /dashboard/acts/ 301
+/portal_progress /dashboard/progress/ 301
+/portal_reflection /dashboard/reflection/ 301
+/portal_values_assessment /dashboard/values-assessment/ 301
+/portal_test /dashboard/test/ 301
+/portal_todays_reflection.html /dashboard/todays-reflection/ 301
+/portal_act.html /dashboard/act/ 301
+
+# Directory structure standardization
+/register /register/ 301
+/login /login/ 301
+/signup /signup/ 301
+/discover /discover/ 301
+/about /about/ 301
+/faq /faq/ 301
+/auth-flow-test /auth-flow-test/ 301
+/test-auth /test-auth/ 301
+/test-auth-meta /test-auth-meta/ 301
+
+# Enforce trailing slashes on all pages
+/* /:splat/ 301!

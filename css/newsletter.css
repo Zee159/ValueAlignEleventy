@@ -1,0 +1,70 @@
+/**
+ * Newsletter Component Styles
+ * Enhances the default newsletter signup form with additional styling
+ */
+
+.newsletter-form {
+  position: relative;
+}
+
+.newsletter-status {
+  min-height: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.newsletter-status.text-green-600 {
+  animation: fadeInOut 4s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Focus state improvements for accessibility */
+.newsletter-form input:focus {
+  outline: 2px solid var(--va-primary, #2563eb);
+  outline-offset: 1px;
+}
+
+/* Improve hover states */
+.newsletter-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.newsletter-form button:active {
+  transform: translateY(0);
+}
+
+/* Dark mode enhancements */
+.dark .newsletter-status.text-green-600 {
+  color: #4ade80 !important; /* Brighter green for dark mode */
+}
+
+/* Loading state */
+.newsletter-form.is-submitting button {
+  position: relative;
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.newsletter-form.is-submitting button::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  right: 0.75rem;
+  top: calc(50% - 0.5rem);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

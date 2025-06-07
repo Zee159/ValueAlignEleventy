@@ -1,9 +1,169 @@
 ---
-layout: portal.njk
-title: Exercises
+layout: layouts/dashboard.njk
+title: Exercises | ValueAlign Dashboard
 pageTitle: Value-Based Exercises
-metaDescription: Practice exercises to strengthen your values alignment
-requiresAuth: true
+pageDescription: Practice exercises to strengthen your values alignment
+meta_description: Build skills to live in alignment with your core values through guided exercises.
+requires_auth: true
+eleventyNavigation:
+  key: Exercises
+  parent: Dashboard
+  order: 2
+showActionButtons: true
 ---
 
-{% include "_portal_exercises.html" %}
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+  <!-- Exercise Categories -->
+  <div class="border-b border-gray-200 dark:border-gray-700">
+    <nav class="-mb-px flex space-x-6 px-6 pt-4" aria-label="Exercise categories">
+      <button class="category-tab border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600 dark:text-blue-400" aria-current="page" data-category="all">All Exercises</button>
+      <button class="category-tab border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400" data-category="mindfulness">Mindfulness</button>
+      <button class="category-tab border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400" data-category="reflection">Reflection</button>
+      <button class="category-tab border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400" data-category="behavior">Behavior Change</button>
+    </nav>
+  </div>
+
+  <div class="px-6 py-4">
+    <div class="exercise-search-bar mb-6">
+      <div class="relative rounded-md shadow-sm">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <input type="text" id="exercise-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md py-2" placeholder="Search exercises...">
+      </div>
+    </div>
+
+    <!-- Exercise Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 exercise-grid">
+      <!-- Mindfulness Exercise 1 -->
+      <div class="exercise-card bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-600" data-category="mindfulness">
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 mb-2">Mindfulness</span>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">Present Moment Awareness</h3>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">10 min</span>
+          </div>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">A guided practice to bring your attention to the present moment and connect with your values.</p>
+          <div class="mt-4 flex">
+            <a href="/dashboard/exercises/mindfulness/present-moment/" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Start Exercise
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reflection Exercise -->
+      <div class="exercise-card bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-600" data-category="reflection">
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100 mb-2">Reflection</span>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">Values Exploration</h3>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">15 min</span>
+          </div>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">Reflect on how your daily actions align with your core values and identify areas for growth.</p>
+          <div class="mt-4 flex">
+            <a href="/dashboard/exercises/reflection/values-exploration/" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+              Start Exercise
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Behavior Exercise -->
+      <div class="exercise-card bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-600" data-category="behavior">
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 mb-2">Behavior Change</span>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">Values-Based Action Plan</h3>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">20 min</span>
+          </div>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">Create a concrete plan to align your daily behaviors with your most important values.</p>
+          <div class="mt-4 flex">
+            <a href="/dashboard/exercises/behavior/action-plan/" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              Start Exercise
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- More exercises would be populated here, following the same pattern -->
+      <!-- Mindfulness Exercise 2 -->
+      <div class="exercise-card bg-white dark:bg-gray-700 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-600" data-category="mindfulness">
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 mb-2">Mindfulness</span>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">Values-Centered Breathing</h3>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">8 min</span>
+          </div>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">Connect your breath with your core values to strengthen your commitment to living authentically.</p>
+          <div class="mt-4 flex">
+            <a href="/dashboard/exercises/mindfulness/values-breathing/" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Start Exercise
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const search = document.getElementById('exercise-search');
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    const exerciseCards = document.querySelectorAll('.exercise-card');
+    
+    // Function to filter exercises
+    function filterExercises() {
+      const searchTerm = search.value.toLowerCase();
+      const activeCategory = document.querySelector('.category-tab[aria-current="page"]').getAttribute('data-category');
+      
+      exerciseCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        const category = card.getAttribute('data-category');
+        
+        const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+        const matchesCategory = activeCategory === 'all' || category === activeCategory;
+        
+        if (matchesSearch && matchesCategory) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+    
+    // Set up search
+    search.addEventListener('input', filterExercises);
+    
+    // Set up category tabs
+    categoryTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update active state
+        categoryTabs.forEach(t => {
+          t.classList.remove('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+          t.classList.add('border-transparent', 'text-gray-500');
+          t.removeAttribute('aria-current');
+        });
+        
+        tab.classList.remove('border-transparent', 'text-gray-500');
+        tab.classList.add('border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+        tab.setAttribute('aria-current', 'page');
+        
+        // Filter exercises
+        filterExercises();
+      });
+    });
+  });
+</script>

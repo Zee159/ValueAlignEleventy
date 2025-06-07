@@ -1,0 +1,259 @@
+---
+layout: layouts/public.njk
+title: Reset Password | ValueAlign
+permalink: /reset-password/
+meta_description: Create a new password for your ValueAlign account.
+pageTitle: Reset Password
+eleventyNavigation:
+  parent: Login
+---
+
+<section class="py-16 md:py-24">
+  <div class="container mx-auto px-6">
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <div class="p-6">
+        <!-- Heading -->
+        <div class="text-center mb-6">
+          <h1 class="text-2xl font-bold text-va-text dark:text-white font-montserrat">Create New Password</h1>
+          <p class="text-gray-600 dark:text-gray-400">Enter and confirm your new password</p>
+        </div>
+        
+        <!-- Message Area -->
+        <div id="reset-message" class="my-4 p-4 rounded-md hidden" role="alert" aria-live="assertive"></div>
+        
+        <!-- Token Invalid State (hidden by default) -->
+        <div id="token-invalid" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-12 w-12 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Invalid or Expired Link</h2>
+          <p class="text-gray-600 dark:text-gray-400">This password reset link is invalid or has expired.</p>
+          <p class="text-gray-600 dark:text-gray-400">Please request a new password reset link.</p>
+          <div class="mt-4">
+            <a href="/forgot-password/" 
+               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              Request New Link
+            </a>
+          </div>
+        </div>
+        
+        <!-- Reset Password Form -->
+        <form id="reset-password-form" class="space-y-4">
+          <input type="hidden" id="reset-token" name="token">
+          <input type="hidden" id="reset-email" name="email">
+          
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
+            <input type="password" id="password" name="password" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-va-primary focus:border-va-primary"
+                   minlength="8" aria-describedby="password-strength">
+            <div id="password-strength-container" class="mt-1 rounded-md bg-gray-100 dark:bg-gray-700 p-1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="password-strength-text">
+              <div id="password-strength-meter" class="h-1 rounded transition-all duration-300 bg-gray-300 dark:bg-gray-600" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-1">
+              <p id="password-strength-text" class="text-xs text-gray-500 dark:text-gray-400">Password strength: <span id="strength-text">Enter a password</span></p>
+              <span id="password-feedback" class="text-xs text-right text-orange-500 dark:text-orange-400"></span>
+            </div>
+          </div>
+          
+          <div>
+            <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required
+                   class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-va-primary focus:border-va-primary"
+                   aria-describedby="password-match-hint">
+            <p id="password-match-hint" class="mt-1 text-xs text-gray-500 dark:text-gray-400 hidden"></p>
+          </div>
+          
+          <!-- Submit Button -->
+          <div>
+            <button type="submit" id="reset-submit-btn" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              <span>Reset Password</span>
+              <span id="loading-spinner" class="ml-2 hidden">
+                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </form>
+        
+        <!-- Success State (hidden by default) -->
+        <div id="reset-success" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-12 w-12 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Password Reset Successfully</h2>
+          <p class="text-gray-600 dark:text-gray-400">Your password has been updated. You can now log in with your new password.</p>
+          <div class="mt-4">
+            <a href="/login/" 
+               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              Go to Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Status message for screen readers -->
+<div id="password-reset-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<script src="/js/password-strength.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[PasswordReset] Initializing password reset confirmation page');
+    
+    // DOM elements
+    const resetPasswordForm = document.getElementById('reset-password-form');
+    const resetMessage = document.getElementById('reset-message');
+    const tokenInvalid = document.getElementById('token-invalid');
+    const tokenInput = document.getElementById('reset-token');
+    const emailInput = document.getElementById('reset-email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const passwordMatchHint = document.getElementById('password-match-hint');
+    const resetSubmitBtn = document.getElementById('reset-submit-btn');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resetSuccess = document.getElementById('reset-success');
+    const statusElement = document.getElementById('password-reset-status');
+    
+    // Initialize password strength meter
+    if (window.VAPasswordStrength && typeof window.VAPasswordStrength.initStrengthMeter === 'function') {
+      const strengthMeter = VAPasswordStrength.initStrengthMeter(
+        passwordInput,
+        document.getElementById('password-strength-meter'),
+        document.getElementById('strength-text'),
+        document.getElementById('password-feedback')
+      );
+      
+      console.log('[PasswordReset] Password strength meter initialized');
+    } else {
+      console.error('[PasswordReset] Password strength module not loaded');
+    }
+    
+    // Check for token in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const email = urlParams.get('email');
+    
+    // Validate token and email presence
+    if (!token || !email) {
+      // Show invalid token state
+      resetPasswordForm.classList.add('hidden');
+      tokenInvalid.classList.remove('hidden');
+      statusElement.textContent = 'Invalid password reset link. Token or email is missing.';
+      console.error('[PasswordReset] Token or email missing from URL');
+      return;
+    }
+    
+    // Set token and email in form
+    tokenInput.value = token;
+    emailInput.value = email;
+    
+    // In a real app, we'd validate the token with the server here
+    // For this demo, we'll assume it's valid and show the form
+    console.log('[PasswordReset] Token and email found in URL, showing password reset form');
+    
+    // Check for password match when confirm password changes
+    confirmPasswordInput.addEventListener('input', function() {
+      if (this.value && this.value !== passwordInput.value) {
+        passwordMatchHint.textContent = 'Passwords do not match';
+        passwordMatchHint.classList.remove('hidden', 'text-green-600', 'dark:text-green-400');
+        passwordMatchHint.classList.add('text-red-600', 'dark:text-red-400');
+      } else if (this.value) {
+        passwordMatchHint.textContent = 'Passwords match';
+        passwordMatchHint.classList.remove('hidden', 'text-red-600', 'dark:text-red-400');
+        passwordMatchHint.classList.add('text-green-600', 'dark:text-green-400');
+      } else {
+        passwordMatchHint.classList.add('hidden');
+      }
+    });
+    
+    // Handle form submission
+    resetPasswordForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validation
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      
+      if (!password || password.length < 8) {
+        showMessage('Password must be at least 8 characters long', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showMessage('Passwords do not match', 'error');
+        return;
+      }
+      
+      // Show loading state
+      resetSubmitBtn.disabled = true;
+      loadingSpinner.classList.remove('hidden');
+      
+      // In a real app, we'd send API request here
+      // For this demo, we'll simulate the API call with a timeout
+      setTimeout(function() {
+        if (window.authService && typeof window.authService.resetPassword === 'function') {
+          window.authService.resetPassword(email, token, password)
+            .then(() => {
+              console.log('[PasswordReset] Password reset successfully');
+              
+              // Hide the form
+              resetPasswordForm.classList.add('hidden');
+              
+              // Show success state
+              resetSuccess.classList.remove('hidden');
+              
+              // Update status for screen readers
+              statusElement.textContent = 'Password reset successful. You can now log in with your new password.';
+            })
+            .catch(error => {
+              console.error('[PasswordReset] Error:', error);
+              showMessage('An error occurred while resetting your password. Please try again.', 'error');
+              
+              // Reset form state
+              resetSubmitBtn.disabled = false;
+              loadingSpinner.classList.add('hidden');
+            });
+        } else {
+          // Mock successful password reset for demo
+          // Hide the form
+          resetPasswordForm.classList.add('hidden');
+          
+          // Show success state
+          resetSuccess.classList.remove('hidden');
+          
+          // Update status for screen readers
+          statusElement.textContent = 'Password reset successful. You can now log in with your new password.';
+          
+          console.log('[PasswordReset] Would reset password for:', email);
+        }
+      }, 1500);
+    });
+    
+    // Helper function to show message
+    function showMessage(message, type = 'info') {
+      resetMessage.textContent = message;
+      resetMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-blue-100', 'text-blue-800');
+      
+      if (type === 'success') {
+        resetMessage.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-800', 'dark:text-green-100');
+      } else if (type === 'error') {
+        resetMessage.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-800', 'dark:text-red-100');
+      } else {
+        resetMessage.classList.add('bg-blue-100', 'text-blue-800', 'dark:bg-blue-800', 'dark:text-blue-100');
+      }
+      
+      statusElement.textContent = message;
+    }
+  });
+</script>

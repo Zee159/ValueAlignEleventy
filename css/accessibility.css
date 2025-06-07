@@ -1,0 +1,150 @@
+/**
+ * Accessibility Enhancement Styles
+ * These styles provide visual enhancements for accessibility features
+ */
+
+/* Text size utility classes - applied by JavaScript */
+.a11y-text-larger {
+  font-size: 1.15em !important;
+}
+
+.a11y-text-largest {
+  font-size: 1.3em !important;
+}
+
+/* High contrast mode - applied by JavaScript */
+.a11y-high-contrast {
+  --va-bg: #000000;
+  --va-text: #ffffff;
+  --va-primary: #ffff00;
+  --va-primary-light: #ffff99;
+  --va-primary-dark: #cccc00;
+  --va-secondary: #00ffff;
+  
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.a11y-high-contrast input,
+.a11y-high-contrast select,
+.a11y-high-contrast textarea,
+.a11y-high-contrast button:not(.high-contrast-exempt) {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+.a11y-high-contrast a:not(.high-contrast-exempt) {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+
+.a11y-high-contrast button:focus,
+.a11y-high-contrast a:focus,
+.a11y-high-contrast input:focus,
+.a11y-high-contrast select:focus,
+.a11y-high-contrast textarea:focus {
+  outline: 3px solid #00ffff !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduced motion - applied by JavaScript */
+.a11y-reduced-motion * {
+  animation-duration: 0.001s !important;
+  transition-duration: 0.001s !important;
+}
+
+/* Enhanced focus indicators - applied by JavaScript */
+.a11y-enhanced-focus :focus {
+  outline: 3px solid var(--va-primary, #2563eb) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Accessibility toolbar styles */
+.a11y-toolbar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.3s ease;
+}
+
+.dark .a11y-toolbar {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.a11y-toolbar.collapsed {
+  transform: translateX(calc(100% - 40px));
+}
+
+.a11y-toolbar-toggle {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 40px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dark .a11y-toolbar-toggle {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.a11y-toolbar button {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #111827;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .a11y-toolbar button {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+.a11y-toolbar button.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.dark .a11y-toolbar button.active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* Active state for toggle buttons */
+button[aria-pressed="true"] .ml-2 {
+  background-color: #2563eb !important;
+}
+
+.dark button[aria-pressed="true"] .ml-2 {
+  background-color: #3b82f6 !important;
+}

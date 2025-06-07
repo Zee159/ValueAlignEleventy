@@ -1,9 +1,745 @@
 ---
-layout: portal.njk
-title: Account
+layout: layouts/dashboard.njk
+title: Account | ValueAlign Dashboard
 pageTitle: Your Account
-metaDescription: Manage your account settings and preferences
-requiresAuth: true
+pageDescription: Manage your account settings and preferences
+meta_description: Manage your ValueAlign account settings, profile, and preferences.
+requires_auth: true
+eleventyNavigation:
+  key: Account
+  parent: Dashboard
+  order: 7
+showActionButtons: true
 ---
 
-{% include "_portal_account.html" %}
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+  <h2 class="text-xl font-medium mb-6">Account Settings</h2>
+  
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Profile Information -->
+    <div class="mb-6">
+      <h3 class="font-medium mb-3">Profile Information</h3>
+      <form id="profile-form" class="space-y-4">
+        <div>
+          <label for="display-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Display Name</label>
+          <input type="text" id="display-name" name="displayName" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white">
+        </div>
+        
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+          <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white">
+        </div>
+        
+        <div>
+          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-sm transition">Update Profile</button>
+        </div>
+      </form>
+      
+      <!-- Email Verification Status -->
+      <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Email Verification</span>
+          <div id="email-verification-status">
+            <!-- Will be populated by JavaScript -->
+            <div class="skeleton-loading animate-pulse h-6 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
+        </div>
+        <p id="verification-message" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Verifying status...</p>
+        <div id="verification-actions" class="mt-3 hidden">
+          <button id="resend-verification-email" type="button" class="text-sm text-va-primary dark:text-va-primary-light hover:underline inline-flex items-center">
+            <span>Resend verification email</span>
+            <span id="verification-spinner" class="ml-2 hidden">
+              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Password Management -->
+    <div class="mb-6">
+      <h3 class="font-medium mb-3">Password Management</h3>
+      <form id="password-form" class="space-y-4">
+        <div>
+          <label for="current-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
+          <input type="password" id="current-password" name="currentPassword" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white">
+          <p id="current-password-error" class="mt-1 text-sm text-red-600 dark:text-red-400 hidden"></p>
+        </div>
+        
+        <div>
+          <label for="new-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+          <input type="password" id="new-password" name="newPassword" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white"
+                 aria-describedby="password-meter-label password-requirements">
+          <p id="new-password-error" class="mt-1 text-sm text-red-600 dark:text-red-400 hidden"></p>
+          
+          <!-- Password Strength Meter -->
+          <div class="mt-2">
+            <div class="flex items-center justify-between mb-1">
+              <label id="password-meter-label" class="text-xs font-medium text-gray-700 dark:text-gray-400">Password Strength</label>
+              <span id="password-strength-text" class="text-xs font-medium text-gray-500 dark:text-gray-400">None</span>
+            </div>
+            <div class="h-1 w-full bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+              <div id="password-strength-meter" class="h-full bg-gray-300 dark:bg-gray-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="password-requirements" class="mt-1 text-xs text-gray-500 dark:text-gray-400">Use 8+ characters with a mix of letters, numbers & symbols</p>
+          </div>
+        </div>
+        
+        <div>
+          <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
+          <input type="password" id="confirm-password" name="confirmPassword" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-va-primary focus:border-va-primary bg-white dark:bg-gray-700 dark:text-white">
+          <p id="confirm-password-error" class="mt-1 text-sm text-red-600 dark:text-red-400 hidden"></p>
+        </div>
+        
+        <div class="pt-2">
+          <button type="submit" id="change-password-button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-sm transition inline-flex items-center">
+            <span>Change Password</span>
+            <span id="password-spinner" class="ml-2 hidden">
+              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Preferences -->
+  <div class="mt-8">
+    <h3 class="font-medium mb-3">Preferences</h3>
+    <div class="space-y-4">
+      <!-- Theme Preference -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Theme Preference</span>
+        <div class="theme-toggle-group flex space-x-2">
+          <button id="light-theme-button" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+            <span class="flex items-center">
+              <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Light
+            </span>
+          </button>
+          
+          <button id="dark-theme-button" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+            <span class="flex items-center">
+              <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+              Dark
+            </span>
+          </button>
+          
+          <button id="system-theme-button" class="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+            <span class="flex items-center">
+              <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              System
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Email Notifications -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</span>
+        <label class="switch">
+          <input type="checkbox" id="email-notifications" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Session Settings -->
+  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <h3 class="font-medium mb-3">Session Settings</h3>
+    <div class="space-y-4">
+      <!-- Remember Me Setting -->
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Remember Me</span>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Keep you signed in for 30 days</p>
+        </div>
+        <label class="switch" for="remember-me-toggle">
+          <input type="checkbox" id="remember-me-toggle" aria-describedby="remember-me-description">
+          <span class="slider round"></span>
+          <span id="remember-me-description" class="sr-only">Toggle remember me functionality</span>
+        </label>
+      </div>
+      
+      <!-- Active Sessions -->
+      <div class="mt-4">
+        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Active Sessions</h4>
+        <div id="active-sessions" class="text-sm text-gray-600 dark:text-gray-400 p-3 border border-gray-200 dark:border-gray-700 rounded-md">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium">Current Session</p>
+              <p class="text-xs">Started: <span id="session-start-time">Loading...</span></p>
+              <p class="text-xs">Expires: <span id="session-expiry-time">Loading...</span></p>
+            </div>
+            <button id="end-all-sessions" class="text-red-600 dark:text-red-400 hover:underline text-xs">End All Sessions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Connected Accounts -->
+  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <h3 class="font-medium mb-3">Connected Accounts</h3>
+    <div class="space-y-4">
+      <!-- Google Account -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Google</span>
+        </div>
+        <button id="connect-google" class="text-sm text-va-primary dark:text-va-primary-light hover:underline">Connect</button>
+      </div>
+      
+      <!-- GitHub Account -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">GitHub</span>
+        </div>
+        <button id="connect-github" class="text-sm text-va-primary dark:text-va-primary-light hover:underline">Connect</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Legal Agreements -->
+  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <h3 class="font-medium mb-3">Legal Agreements</h3>
+    <div class="space-y-2 text-sm">
+      <div class="flex items-center">
+        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="text-gray-700 dark:text-gray-300">Terms of Service agreed on <span id="terms-date">Loading...</span></span>
+      </div>
+      <div class="flex items-center">
+        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="text-gray-700 dark:text-gray-300">Privacy Policy agreed on <span id="privacy-date">Loading...</span></span>
+      </div>
+      <div class="mt-2">
+        <a href="/terms/" class="text-sm text-va-primary dark:text-va-primary-light hover:underline mr-4">View Terms of Service</a>
+        <a href="/privacy/" class="text-sm text-va-primary dark:text-va-primary-light hover:underline">View Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Danger Zone -->
+  <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <h3 class="text-red-600 dark:text-red-400 font-medium mb-3">Danger Zone</h3>
+    <div class="flex flex-wrap gap-4">
+      <button id="deactivate-button" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-md shadow-sm transition">Deactivate Account</button>
+      <button id="delete-button" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm transition">Delete Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- Account Page Scripts -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Account Page] Initializing account page components');
+    
+    // Theme button functionality
+    const lightButton = document.getElementById('light-theme-button');
+    const darkButton = document.getElementById('dark-theme-button');
+    const systemButton = document.getElementById('system-theme-button');
+    
+    if (lightButton && darkButton && systemButton && window.themeSystem) {
+      // Highlight active theme button
+      const updateThemeButtons = () => {
+        const currentTheme = window.themeSystem.getTheme();
+        lightButton.classList.toggle('bg-blue-200', currentTheme === 'light');
+        darkButton.classList.toggle('bg-blue-200', currentTheme === 'dark');
+        systemButton.classList.toggle('bg-blue-200', currentTheme === 'system');
+      };
+      
+      // Set theme on button click
+      lightButton.addEventListener('click', () => {
+        window.themeSystem.setTheme('light');
+        updateThemeButtons();
+      });
+      
+      darkButton.addEventListener('click', () => {
+        window.themeSystem.setTheme('dark');
+        updateThemeButtons();
+      });
+      
+      systemButton.addEventListener('click', () => {
+        window.themeSystem.setTheme('system');
+        updateThemeButtons();
+      });
+      
+      // Initialize button states
+      updateThemeButtons();
+    }
+    
+    // Load user profile data from auth service
+    const populateUserData = () => {
+      if (window.authService && window.authService.isAuthenticated()) {
+        const user = window.authService.getCurrentUser();
+        if (user) {
+          const displayNameInput = document.getElementById('display-name');
+          const emailInput = document.getElementById('email');
+          
+          if (displayNameInput && user.displayName) {
+            displayNameInput.value = user.displayName;
+          }
+          
+          if (emailInput && user.email) {
+            emailInput.value = user.email;
+          }
+          
+          // Update email verification status
+          updateVerificationStatus(user);
+          
+          // Update legal agreements information
+          updateLegalAgreements(user);
+        }
+      }
+    };
+    
+    // Update the email verification status section
+    const updateVerificationStatus = (user) => {
+      const statusElement = document.getElementById('email-verification-status');
+      const messageElement = document.getElementById('verification-message');
+      const actionsElement = document.getElementById('verification-actions');
+      
+      if (statusElement && messageElement && actionsElement) {
+        if (user.emailVerified) {
+          // Email is verified
+          statusElement.innerHTML = `
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
+              <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                <circle cx="4" cy="4" r="3" />
+              </svg>
+              Verified
+            </span>
+          `;
+          messageElement.textContent = 'Your email address has been verified.';
+          actionsElement.classList.add('hidden');
+        } else {
+          // Email is not verified
+          statusElement.innerHTML = `
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
+              <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-yellow-400" fill="currentColor" viewBox="0 0 8 8">
+                <circle cx="4" cy="4" r="3" />
+              </svg>
+              Unverified
+            </span>
+          `;
+          messageElement.textContent = 'Please verify your email address to activate all account features.';
+          actionsElement.classList.remove('hidden');
+          
+          // Set up resend verification button
+          const resendButton = document.getElementById('resend-verification-email');
+          const spinner = document.getElementById('verification-spinner');
+          
+          if (resendButton && spinner) {
+            resendButton.addEventListener('click', async function() {
+              if (resendButton.disabled) return;
+              
+              resendButton.disabled = true;
+              spinner.classList.remove('hidden');
+              
+              try {
+                if (window.authService && typeof window.authService.resendVerificationEmail === 'function') {
+                  await window.authService.resendVerificationEmail(user.email);
+                  messageElement.textContent = 'Verification email sent! Please check your inbox.';
+                  messageElement.className = 'text-sm text-green-600 dark:text-green-400 mt-1';
+                } else {
+                  console.log('[Account] Simulating resend verification email for:', user.email);
+                  setTimeout(() => {
+                    messageElement.textContent = 'Verification email sent! Please check your inbox.';
+                    messageElement.className = 'text-sm text-green-600 dark:text-green-400 mt-1';
+                  }, 1500);
+                }
+              } catch (error) {
+                console.error('[Account] Error resending verification email:', error);
+                messageElement.textContent = 'Error sending verification email. Please try again later.';
+                messageElement.className = 'text-sm text-red-600 dark:text-red-400 mt-1';
+              } finally {
+                setTimeout(() => {
+                  resendButton.disabled = false;
+                  spinner.classList.add('hidden');
+                }, 1500);
+              }
+            });
+          }
+        }
+      }
+    };
+    
+    // Update legal agreements information
+    const updateLegalAgreements = (user) => {
+      const termsDateElement = document.getElementById('terms-date');
+      const privacyDateElement = document.getElementById('privacy-date');
+      
+      if (termsDateElement && privacyDateElement) {
+        // In a real implementation, these dates would come from the user object
+        // For now, we'll use placeholder dates
+        const termsDate = user.termsAgreedDate || new Date().toLocaleDateString();
+        const privacyDate = user.privacyAgreedDate || new Date().toLocaleDateString();
+        
+        termsDateElement.textContent = termsDate;
+        privacyDateElement.textContent = privacyDate;
+      }
+    };
+    
+    // Password strength evaluation
+    const evaluatePasswordStrength = (password) => {
+      if (!password) return 0; // No password
+      
+      let strength = 0;
+      
+      // Length check
+      if (password.length >= 8) strength += 1;
+      if (password.length >= 12) strength += 1;
+      
+      // Character types
+      if (/[A-Z]/.test(password)) strength += 1; // Uppercase
+      if (/[a-z]/.test(password)) strength += 1; // Lowercase
+      if (/[0-9]/.test(password)) strength += 1; // Numbers
+      if (/[^A-Za-z0-9]/.test(password)) strength += 1; // Special chars
+      
+      return Math.min(5, strength); // Max strength is 5
+    };
+    
+    // Update password strength meter
+    const updatePasswordStrengthMeter = (password) => {
+      const strengthMeter = document.getElementById('password-strength-meter');
+      const strengthText = document.getElementById('password-strength-text');
+      
+      if (!strengthMeter || !strengthText) return;
+      
+      const strength = evaluatePasswordStrength(password);
+      
+      // Update meter width
+      strengthMeter.style.width = `${(strength / 5) * 100}%`;
+      
+      // Update text and color based on strength
+      let text, color;
+      switch (strength) {
+        case 0:
+          text = 'None';
+          color = 'bg-gray-300 dark:bg-gray-500';
+          break;
+        case 1:
+          text = 'Very Weak';
+          color = 'bg-red-500';
+          break;
+        case 2:
+          text = 'Weak';
+          color = 'bg-orange-500';
+          break;
+        case 3:
+          text = 'Moderate';
+          color = 'bg-yellow-500';
+          break;
+        case 4:
+          text = 'Strong';
+          color = 'bg-blue-500';
+          break;
+        case 5:
+          text = 'Very Strong';
+          color = 'bg-green-500';
+          break;
+        default:
+          text = 'Unknown';
+          color = 'bg-gray-300 dark:bg-gray-500';
+      }
+      
+      // Update text
+      strengthText.textContent = text;
+      
+      // Remove all color classes and add the appropriate one
+      strengthMeter.className = 'h-full transition-all duration-300 ' + color;
+    };
+    
+    // Initialize forms
+    const initForms = () => {
+      const profileForm = document.getElementById('profile-form');
+      const passwordForm = document.getElementById('password-form');
+      
+      if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          console.log('[Account] Profile update submitted');
+          
+          const displayName = document.getElementById('display-name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          
+          if (!email) {
+            alert('Email is required');
+            return;
+          }
+          
+          // In a real implementation, this would call the AuthService to update the profile
+          console.log('[Account] Updating profile with:', { displayName, email });
+          
+          // Mock success
+          alert('Profile updated successfully!');
+        });
+      }
+      
+      // Password form handling with password strength
+      if (passwordForm) {
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const currentPasswordInput = document.getElementById('current-password');
+        
+        if (newPasswordInput) {
+          // Monitor password input for strength evaluation
+          newPasswordInput.addEventListener('input', function() {
+            updatePasswordStrengthMeter(this.value);
+          });
+        }
+        
+        passwordForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const spinner = document.getElementById('password-spinner');
+          const submitBtn = document.getElementById('change-password-button');
+          
+          console.log('[Account] Password change submitted');
+          
+          // Get values
+          const currentPassword = currentPasswordInput.value;
+          const newPassword = newPasswordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+          
+          // Reset error messages
+          document.getElementById('current-password-error').classList.add('hidden');
+          document.getElementById('new-password-error').classList.add('hidden');
+          document.getElementById('confirm-password-error').classList.add('hidden');
+          
+          // Validate
+          let isValid = true;
+          
+          if (!currentPassword) {
+            document.getElementById('current-password-error').textContent = 'Current password is required';
+            document.getElementById('current-password-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (!newPassword) {
+            document.getElementById('new-password-error').textContent = 'New password is required';
+            document.getElementById('new-password-error').classList.remove('hidden');
+            isValid = false;
+          } else if (evaluatePasswordStrength(newPassword) < 3) {
+            document.getElementById('new-password-error').textContent = 'Password is too weak';
+            document.getElementById('new-password-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (newPassword !== confirmPassword) {
+            document.getElementById('confirm-password-error').textContent = 'Passwords do not match';
+            document.getElementById('confirm-password-error').classList.remove('hidden');
+            isValid = false;
+          }
+          
+          if (!isValid) return;
+          
+          // Show spinner and disable button
+          if (spinner) spinner.classList.remove('hidden');
+          if (submitBtn) submitBtn.disabled = true;
+          
+          // Use AuthService to change password if available
+          const changePassword = async () => {
+            try {
+              if (window.authService && typeof window.authService.changePassword === 'function') {
+                await window.authService.changePassword(currentPassword, newPassword);
+              } else {
+                // Mock implementation for simulation
+                console.log('[Account] Simulating password change');
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+              }
+              
+              alert('Password changed successfully!');
+              passwordForm.reset();
+              updatePasswordStrengthMeter(''); // Reset strength meter
+            } catch (error) {
+              console.error('[Account] Password change error:', error);
+              document.getElementById('current-password-error').textContent = 'Invalid password';
+              document.getElementById('current-password-error').classList.remove('hidden');
+            } finally {
+              if (spinner) spinner.classList.add('hidden');
+              if (submitBtn) submitBtn.disabled = false;
+            }
+          };
+          
+          changePassword();
+        });
+      }
+    };
+    
+    // Initialize session management functionality
+    const initSessionManagement = () => {
+      const rememberMeToggle = document.getElementById('remember-me-toggle');
+      const endAllSessionsBtn = document.getElementById('end-all-sessions');
+      const sessionStartTime = document.getElementById('session-start-time');
+      const sessionExpiryTime = document.getElementById('session-expiry-time');
+      
+      // Update session information
+      const updateSessionInfo = () => {
+        if (!window.authService || !window.authService.isAuthenticated()) return;
+        
+        const authState = window.authService.getAuthState();
+        if (!authState) return;
+        
+        // Session timestamps
+        if (sessionStartTime && authState.sessionStart) {
+          const startDate = new Date(authState.sessionStart);
+          sessionStartTime.textContent = startDate.toLocaleString();
+        }
+        
+        if (sessionExpiryTime && authState.sessionExpiry) {
+          const expiryDate = new Date(authState.sessionExpiry);
+          sessionExpiryTime.textContent = expiryDate.toLocaleString();
+        }
+        
+        // Remember Me toggle state
+        if (rememberMeToggle) {
+          rememberMeToggle.checked = !!authState.rememberMe;
+        }
+      };
+      
+      // Initialize Remember Me toggle
+      if (rememberMeToggle) {
+        // Set initial state
+        if (window.authService && window.authService.isAuthenticated()) {
+          const authState = window.authService.getAuthState();
+          rememberMeToggle.checked = authState && authState.rememberMe;
+        }
+        
+        // Handle toggle changes
+        rememberMeToggle.addEventListener('change', function() {
+          if (window.authService && typeof window.authService.setRememberMe === 'function') {
+            window.authService.setRememberMe(this.checked);
+            console.log(`[Account] Remember Me set to: ${this.checked}`);
+            
+            // Update session expiry display
+            updateSessionInfo();
+          } else {
+            console.log(`[Account] Simulating Remember Me set to: ${this.checked}`);
+          }
+        });
+      }
+      
+      // End all sessions button
+      if (endAllSessionsBtn) {
+        endAllSessionsBtn.addEventListener('click', function() {
+          if (confirm('Are you sure you want to end all active sessions? You will be logged out.')) {
+            console.log('[Account] End all sessions requested');
+            
+            if (window.authService && typeof window.authService.logoutAllSessions === 'function') {
+              window.authService.logoutAllSessions();
+              // Redirect will happen via auth guard
+            } else {
+              // Fallback if service not available
+              console.log('[Account] Simulating end all sessions');
+              setTimeout(() => {
+                window.location.href = '/login/';
+              }, 1000);
+            }
+          }
+        });
+      }
+      
+      // Initialize session info
+      updateSessionInfo();
+    };
+    
+    // Initialize social account connections
+    const initSocialConnections = () => {
+      const connectGoogle = document.getElementById('connect-google');
+      const connectGithub = document.getElementById('connect-github');
+      
+      // For demo purposes, just log the intent
+      if (connectGoogle) {
+        connectGoogle.addEventListener('click', function() {
+          console.log('[Account] Connect Google account requested');
+          alert('Google account connection feature will be available in the next update.');
+        });
+      }
+      
+      if (connectGithub) {
+        connectGithub.addEventListener('click', function() {
+          console.log('[Account] Connect GitHub account requested');
+          alert('GitHub account connection feature will be available in the next update.');
+        });
+      }
+    };
+    
+    // Initialize danger zone buttons
+    const initDangerButtons = () => {
+      const deactivateButton = document.getElementById('deactivate-button');
+      const deleteButton = document.getElementById('delete-button');
+      
+      if (deactivateButton) {
+        deactivateButton.addEventListener('click', function() {
+          if (confirm('Are you sure you want to deactivate your account? This will temporarily disable your account.')) {
+            console.log('[Account] Deactivate account requested');
+            // Implement deactivation logic here
+            alert('Account deactivated successfully!');
+          }
+        });
+      }
+      
+      if (deleteButton) {
+        deleteButton.addEventListener('click', function() {
+          if (confirm('WARNING: This action cannot be undone. Are you absolutely certain you want to delete your account permanently?')) {
+            console.log('[Account] Delete account requested');
+            
+            if (window.authService && typeof window.authService.deleteAccount === 'function') {
+              try {
+                window.authService.deleteAccount();
+                // Redirect will happen via auth service
+              } catch (error) {
+                console.error('[Account] Error deleting account:', error);
+                alert('Error deleting account. Please try again later.');
+              }
+            } else {
+              // Fallback implementation
+              console.log('[Account] Simulating account deletion');
+              setTimeout(() => {
+                alert('Account deleted successfully!');
+                window.location.href = '/';
+              }, 1500);
+            }
+          }
+        });
+      }
+    };
+    
+    // Initialize everything
+    populateUserData();
+    initForms();
+    initSessionManagement();
+    initSocialConnections();
+    initDangerButtons();
+  });
+</script>

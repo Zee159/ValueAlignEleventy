@@ -1,0 +1,42 @@
+[build]
+  publish = "_site"
+  command = "npm run build"
+  
+[build.environment]
+  NODE_VERSION = "16"
+  NODE_ENV = "production"
+
+# Redirect all URLs without trailing slashes to URLs with trailing slashes
+[[redirects]]
+  from = "/*"
+  to = "/:splat/"
+  status = 301
+  force = false
+  conditions = {Path = {ends_with = "/index.html"}}
+  
+[[redirects]]
+  from = "/*"
+  to = "/:splat/"
+  status = 301
+  force = false
+  conditions = {Path = {ends_with = ".html"}}
+
+# Handle trailing slash enforcement (exclude files with extensions)
+[[redirects]]
+  from = "/*"
+  to = "/:splat/"
+  status = 301
+  force = false
+  conditions = {Path = {ends_with = ""}}
+
+# Handle single page app routing for dashboard
+[[redirects]]
+  from = "/dashboard/*"
+  to = "/dashboard/index.html"
+  status = 200
+
+# Custom 404 page
+[[redirects]]
+  from = "/*"
+  to = "/404/index.html"
+  status = 404

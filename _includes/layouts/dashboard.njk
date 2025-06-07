@@ -1,0 +1,59 @@
+---
+layout: base
+---
+
+<div class="dashboard-container bg-white dark:bg-gray-800 rounded-lg shadow-lg mx-auto my-6 max-w-5xl" role="region">
+  <div class="dashboard-sidebar-layout flex flex-col md:flex-row">
+    <aside class="dashboard-sidebar w-full md:w-64 p-4 bg-gray-50 dark:bg-gray-700 rounded-l-lg" role="complementary" aria-label="Dashboard navigation">
+      <nav role="navigation" aria-labelledby="dashboard-nav-heading">
+        <h2 id="dashboard-nav-heading" class="text-xl font-bold mb-4 text-blue-800 dark:text-blue-300 sr-only">Dashboard Navigation</h2>
+        <ul class="space-y-2" role="list">
+          <li role="listitem"><a href="/dashboard/values-assessment/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/values-assessment/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/values-assessment/' %}page{% endif %}">Values Assessment</a></li>
+          <li role="listitem"><a href="/dashboard/exercises/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/exercises/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/exercises/' %}page{% endif %}">Exercises</a></li>
+          <li role="listitem"><a href="/dashboard/reflection/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/reflection/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/reflection/' %}page{% endif %}">Reflection</a></li>
+          <li role="listitem"><a href="/dashboard/journal/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/journal/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/journal/' %}page{% endif %}">Journal</a></li>
+          <li role="listitem"><a href="/dashboard/acts/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/acts/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/acts/' %}page{% endif %}">Value-Based Acts</a></li>
+          <li role="listitem"><a href="/dashboard/progress/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/progress/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/progress/' %}page{% endif %}">Progress</a></li>
+          <li role="listitem"><a href="/dashboard/account/" class="block p-2 rounded hover:bg-blue-100 dark:hover:bg-gray-600 transition {% if page.url == '/dashboard/account/' %}bg-blue-100 dark:bg-gray-600 font-bold{% endif %}" aria-current="{% if page.url == '/dashboard/account/' %}page{% endif %}">Account</a></li>
+        </ul>
+      </nav>
+    </aside>
+    
+    <div class="dashboard-content flex-1 p-6">
+      {{ content | safe }}
+      
+      <!-- Accessibility announcement area for screen readers -->
+      <div id="a11y-status" class="sr-only" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+{# Dashboard-specific scripts #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('[Dashboard] Layout loaded');
+  
+  // Initialize any dashboard-specific functionality
+  const dashboardInit = () => {
+    // Check if user is authenticated via authService
+    if (window.authService && typeof window.authService.isAuthenticated === 'function') {
+      const isAuthenticated = window.authService.isAuthenticated();
+      
+      if (!isAuthenticated) {
+        console.log('[Dashboard] User not authenticated, redirecting to login page');
+        if (window.authService.redirectToLogin) {
+          window.authService.redirectToLogin();
+        }
+      } else {
+        console.log('[Dashboard] User authenticated, initializing dashboard features');
+        // Initialize dashboard-specific features for authenticated users
+      }
+    } else {
+      console.warn('[Dashboard] AuthService not available, authentication check skipped');
+    }
+  };
+  
+  // Initialize with a small delay to ensure authService is loaded
+  setTimeout(dashboardInit, 100);
+});
+</script>

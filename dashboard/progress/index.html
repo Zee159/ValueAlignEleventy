@@ -1,9 +1,111 @@
 ---
-layout: portal.njk
-title: Progress
-pageTitle: Your Progress
-metaDescription: Track your values alignment progress over time
-requiresAuth: true
+layout: layouts/dashboard.njk
+title: Progress | ValueAlign Dashboard
+pageTitle: Progress
+pageDescription: Track your values alignment progress over time
+meta_description: Monitor your growth and track your journey toward living in alignment with your values.
+requires_auth: true
+eleventyNavigation:
+  key: Progress
+  parent: Dashboard
+  order: 4
 ---
 
-{% include "_portal_progress.html" %}
+<div class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+  <!-- Progress Page Header -->
+  <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-medium text-gray-900 dark:text-white">Your Progress</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Track your journey and growth in living according to your values.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Overview Card -->
+  <div class="p-6">
+    <div class="bg-white dark:bg-gray-700 rounded-lg shadow border border-gray-200 dark:border-gray-600 overflow-hidden mb-6">
+      <div class="px-4 py-5 sm:px-6 bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-600">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Progress Overview</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">Visualization of your values alignment journey</p>
+      </div>
+      <div class="px-4 py-5 sm:p-6">
+        <!-- Placeholder chart that will be replaced with dynamic content -->
+        <div class="h-64 bg-gray-100 dark:bg-gray-600 rounded-lg flex items-center justify-center mb-4">
+          <div class="text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Progress data visualization will be displayed here</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Track your progress in living according to your values over time. As you complete activities and reflections, you'll see your progress represented here.</p>
+      </div>
+    </div>
+
+    <!-- Recent Activities Section -->
+    <div class="bg-white dark:bg-gray-700 rounded-lg shadow border border-gray-200 dark:border-gray-600 overflow-hidden">
+      <div class="px-4 py-5 sm:px-6 bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-600">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Recent Activities</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">Your recent value-aligned actions and exercises</p>
+      </div>
+      <div class="px-4 py-5 sm:p-6">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-600">
+          <li class="py-4">
+            <div class="flex space-x-3">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900 dark:text-white">Completed Reflection</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Today's reflection focused on gratitude</p>
+              </div>
+              <div class="text-right text-sm text-gray-500 dark:text-gray-400">
+                <time datetime="2025-06-07">Today</time>
+              </div>
+            </div>
+          </li>
+          <li class="py-4">
+            <div class="flex space-x-3">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900 dark:text-white">Recorded Value-Based Act</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Act: "Had a difficult conversation" (Honesty)</p>
+              </div>
+              <div class="text-right text-sm text-gray-500 dark:text-gray-400">
+                <time datetime="2025-06-07">Today</time>
+              </div>
+            </div>
+          </li>
+          <li class="py-4">
+            <div class="flex space-x-3">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900 dark:text-white">Completed Exercise</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Mindfulness practice for 15 minutes</p>
+              </div>
+              <div class="text-right text-sm text-gray-500 dark:text-gray-400">
+                <time datetime="2025-06-06">Yesterday</time>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Message for Accessibility Announcements -->
+<div id="progress-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // This is a placeholder for the progress.js functionality
+    // It will be expanded with actual charting and progress tracking code
+    console.log('[ProgressController] Initializing progress dashboard');
+    
+    // Announce page loaded for screen readers
+    document.getElementById('progress-status').textContent = 'Progress page loaded';
+    
+    // In the future, this would contain code to:
+    // 1. Fetch user's progress data from API
+    // 2. Render progress charts and visualizations
+    // 3. Update the recent activities list
+    // 4. Set up periodic data refreshes
+  });
+</script>

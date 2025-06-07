@@ -1,0 +1,299 @@
+---
+layout: layouts/public.njk
+title: Accessibility Statement | ValueAlign
+meta_description: Learn about ValueAlign's commitment to WCAG 2.1 Level AA standards, our accessibility features, testing methods, and how we ensure our values alignment platform is accessible to users of all abilities.
+pageTitle: Accessibility Statement
+eleventyNavigation:
+  key: Accessibility
+  order: 7
+social_image: /img/social/accessibility-social.png
+social_title: ValueAlign's Commitment to Digital Accessibility
+social_description: Discover how ValueAlign ensures our platform is accessible to all users, including those with disabilities.
+last_updated: 2025-06-07
+---
+
+<section class="bg-white dark:bg-gray-800 py-16 md:py-24" role="banner" aria-labelledby="accessibility-heading">
+  <div class="container mx-auto px-6 text-center">
+    <h1 id="accessibility-heading" class="text-4xl md:text-5xl font-bold text-va-text dark:text-white mb-4 font-montserrat">Accessibility Statement</h1>
+    <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto">At ValueAlign, we're committed to ensuring our website and platform are accessible to all users, including those with disabilities.</p>
+    <p class="text-base text-gray-600 dark:text-gray-400">Last Updated: June 7, 2025</p>
+  </div>
+</section>
+<!-- Commitment and Standards Section -->
+<!-- Interactive Accessibility Controls Section -->
+<section class="py-12 bg-blue-50 dark:bg-gray-600" aria-labelledby="controls-heading">
+  <div class="container mx-auto px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="controls-heading" class="text-2xl font-bold text-va-text dark:text-white mb-6 font-montserrat">Accessibility Settings</h2>
+      <p class="mb-6 text-gray-700 dark:text-gray-300">Customize your experience with these accessibility options. These settings will apply during your current session but will reset when you close your browser.</p>
+      
+      <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 mb-8">
+        <div class="space-y-6">
+          <!-- Text Size Controls -->
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h3 class="font-medium mb-2 text-va-text dark:text-white">Text Size</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Adjust the size of text on screen for better readability.</p>
+            <div class="flex items-center space-x-4" role="group" aria-label="Text size controls">
+              <button type="button" id="text-size-decrease" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Decrease text size">
+                <span aria-hidden="true">A-</span>
+              </button>
+              <button type="button" id="text-size-reset" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Reset text size to default">
+                <span aria-hidden="true">A</span>
+              </button>
+              <button type="button" id="text-size-increase" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-label="Increase text size">
+                <span aria-hidden="true">A+</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- High Contrast Toggle -->
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h3 class="font-medium mb-2 text-va-text dark:text-white">Contrast</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Improve readability with higher contrast between text and background.</p>
+            <div class="flex items-center">
+              <button type="button" id="high-contrast-toggle" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">
+                <span class="sr-only">Toggle high contrast mode</span>
+                <span>High Contrast Mode</span>
+                <span class="ml-2 inline-block w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Motion Reduction -->
+          <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+            <h3 class="font-medium mb-2 text-va-text dark:text-white">Motion</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Reduce or disable animations and transitions.</p>
+            <div class="flex items-center">
+              <button type="button" id="reduce-motion-toggle" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">
+                <span class="sr-only">Toggle reduced motion</span>
+                <span>Reduce Motion</span>
+                <span class="ml-2 inline-block w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Focus Indicator Enhancement -->
+          <div>
+            <h3 class="font-medium mb-2 text-va-text dark:text-white">Focus Indicators</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Make it easier to see which element has keyboard focus.</p>
+            <div class="flex items-center">
+              <button type="button" id="enhance-focus-toggle" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-va-primary" aria-pressed="false">
+                <span class="sr-only">Toggle enhanced focus indicators</span>
+                <span>Enhanced Focus Indicators</span>
+                <span class="ml-2 inline-block w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Browser Settings Information -->
+      <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
+        <h3 class="text-lg font-semibold mb-4 text-va-text dark:text-white">Browser Accessibility Features</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">ValueAlign is designed to work with your browser's built-in accessibility features:</p>
+        
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium text-va-text dark:text-white mb-2">Text Zoom</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Use your browser's zoom feature to increase text size:</p>
+            <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 mt-2 ml-4">
+              <li>Windows/Linux: Press <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Ctrl</kbd> and <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">+</kbd> to zoom in</li>
+              <li>Mac: Press <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Command</kbd> and <kbd class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">+</kbd> to zoom in</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-medium text-va-text dark:text-white mb-2">Screen Readers</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">ValueAlign is optimized for screen readers like:</p>
+            <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 mt-2 ml-4">
+              <li>NVDA (Windows)</li>
+              <li>JAWS (Windows)</li>
+              <li>VoiceOver (Mac)</li>
+              <li>TalkBack (Android)</li>
+              <li>VoiceOver (iOS)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-12 bg-gray-50 dark:bg-gray-700" aria-labelledby="commitment-heading">
+  <div class="container mx-auto px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="commitment-heading" class="text-2xl font-bold text-va-text dark:text-white mb-6 font-montserrat">Our Commitment to Accessibility</h2>
+      
+      <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+        <p>ValueAlign is committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards to achieve this.</p>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Standards We Follow</h3>
+        <p>ValueAlign strives to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA. These guidelines explain how to make web content more accessible to people with a wide array of disabilities, including:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Visual impairments including blindness, low vision, and color blindness</li>
+          <li>Hearing impairments</li>
+          <li>Motor/mobility limitations</li>
+          <li>Cognitive and neurological disabilities</li>
+          <li>Speech disabilities</li>
+        </ul>
+        
+        <p>The WCAG guidelines are organized around four principles, often referred to as POUR:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Perceivable</strong> - Information and user interface components must be presentable to users in ways they can perceive</li>
+          <li><strong>Operable</strong> - User interface components and navigation must be operable</li>
+          <li><strong>Understandable</strong> - Information and the operation of the user interface must be understandable</li>
+          <li><strong>Robust</strong> - Content must be robust enough to be interpreted reliably by a wide variety of user agents, including assistive technologies</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features and Implementation Section -->
+<section class="py-12 bg-white dark:bg-gray-800" aria-labelledby="features-heading">
+  <div class="container mx-auto px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="features-heading" class="text-2xl font-bold text-va-text dark:text-white mb-6 font-montserrat">Accessibility Features</h2>
+      
+      <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+        <p>ValueAlign has implemented the following features to make our digital content accessible:</p>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Navigation and Structure</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Keyboard Navigation</strong>: All functionality is operable through keyboard interfaces, without requiring specific timing for keystrokes</li>
+          <li><strong>Skip Links</strong>: We provide "Skip to main content" links to bypass repetitive navigation</li>
+          <li><strong>Consistent Navigation</strong>: Navigation mechanisms appear in the same order across the site</li>
+          <li><strong>Focus Indicators</strong>: Visible focus indicators help keyboard users track their position</li>
+          <li><strong>Descriptive Headings</strong>: Content is organized using properly nested headings to assist with navigation</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Content Readability</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Text Resizing</strong>: Text can be resized up to 200% without loss of content or functionality</li>
+          <li><strong>Color Contrast</strong>: All text meets WCAG 2.1 Level AA contrast requirements</li>
+          <li><strong>Non-text Contrast</strong>: Visual information required to identify controls meets contrast requirements</li>
+          <li><strong>Color Independence</strong>: Color is not used as the only visual means of conveying information</li>
+          <li><strong>Customizable Text</strong>: We provide options to adjust text size, spacing, and contrast</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Multimedia</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Text Alternatives</strong>: All non-text content has text alternatives</li>
+          <li><strong>Captions</strong>: All pre-recorded and live video content includes captions</li>
+          <li><strong>Audio Descriptions</strong>: Video content includes audio descriptions for visual elements</li>
+          <li><strong>Transcripts</strong>: Audio-only content includes text transcripts</li>
+          <li><strong>Media Controls</strong>: Audio/video players have accessible controls and don't auto-play</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Assistive Technology Support</h3>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Screen Readers</strong>: Content is compatible with screen readers like JAWS, NVDA, and VoiceOver</li>
+          <li><strong>ARIA Roles</strong>: ARIA attributes are used to enhance accessibility where HTML semantics are insufficient</li>
+          <li><strong>Form Labels</strong>: All form fields have properly associated labels</li>
+          <li><strong>Error Identification</strong>: Form errors are clearly identified and described in text</li>
+          <li><strong>Live Announcements</strong>: Dynamic content changes are announced to screen reader users</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Limitations and Testing Section -->
+<section class="py-12 bg-gray-50 dark:bg-gray-700" aria-labelledby="testing-heading">
+  <div class="container mx-auto px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="testing-heading" class="text-2xl font-bold text-va-text dark:text-white mb-6 font-montserrat">Accessibility Testing and Known Limitations</h2>
+      
+      <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-6 mb-4">Our Testing Process</h3>
+        <p>ValueAlign tests the accessibility of our website and platform using the following methods:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Automated Testing</strong>: We regularly scan our website using tools like Axe, WAVE, and Lighthouse to identify potential accessibility issues</li>
+          <li><strong>Manual Testing</strong>: Our design and development teams perform manual tests using keyboard-only navigation and various screen readers</li>
+          <li><strong>User Testing</strong>: We conduct sessions with users who rely on assistive technologies to gain real-world feedback</li>
+          <li><strong>Third-party Audits</strong>: We periodically engage accessibility specialists to perform comprehensive audits</li>
+          <li><strong>Continuous Integration</strong>: Accessibility checks are built into our development workflow</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Known Limitations</h3>
+        <p>Despite our efforts to ensure accessibility, we recognize that there may be limitations or areas that need improvement. Currently identified challenges include:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Some dynamic content in interactive assessments may be challenging for screen reader users</li>
+          <li>Certain data visualizations in reports have alternative text descriptions, but may not convey all nuances</li>
+          <li>Legacy content from before our accessibility implementation may not fully meet our current standards</li>
+          <li>Some third-party integrations may have accessibility limitations outside our direct control</li>
+        </ul>
+        
+        <p>We are actively working to address these limitations and improve the accessibility of our platform. If you encounter any accessibility barriers not listed here, please let us know using the feedback mechanisms provided below.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feedback and Contact Section -->
+<section class="py-12 bg-white dark:bg-gray-800" aria-labelledby="contact-heading">
+  <div class="container mx-auto px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="contact-heading" class="text-2xl font-bold text-va-text dark:text-white mb-6 font-montserrat">Feedback and Assistance</h2>
+      
+      <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-6 mb-4">Reporting Accessibility Issues</h3>
+        <p>We welcome your feedback on the accessibility of the ValueAlign platform. If you encounter accessibility barriers or have suggestions for improvement, please contact us through one of the following methods:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Email</strong>: <a href="mailto:accessibility@valuealign.com" class="text-va-primary dark:text-va-primary-light hover:underline">accessibility@valuealign.com</a></li>
+          <li><strong>Phone</strong>: <a href="tel:+18005551234" class="text-va-primary dark:text-va-primary-light hover:underline">1-800-555-1234</a> (Toll-free, 9am-5pm Pacific Time)</li>
+          <li><strong>Feedback Form</strong>: Use our <a href="/contact/" class="text-va-primary dark:text-va-primary-light hover:underline">Contact Form</a> and select "Accessibility Feedback" from the dropdown menu</li>
+        </ul>
+        
+        <p>When reporting an issue, please provide:</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>The URL or location where you encountered the issue</li>
+          <li>A description of what you were trying to do</li>
+          <li>The specific barrier or difficulty you experienced</li>
+          <li>Any assistive technology you were using (if applicable)</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Accommodation Requests</h3>
+        <p>If you need specific assistance or accommodations to use the ValueAlign platform, we are here to help. Please contact our Customer Support team, and we will work with you to find an appropriate solution.</p>
+        
+        <p>We aim to respond to all accessibility feedback within 2 business days and to resolve issues as quickly as possible.</p>
+        
+        <h3 class="text-xl font-semibold text-va-text dark:text-white mt-8 mb-4">Compatibility Statement</h3>
+        <p>ValueAlign is designed to be compatible with the following browsers and assistive technologies:</p>
+        
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Browsers</strong>: Chrome, Firefox, Safari, and Edge (current and previous major releases)</li>
+          <li><strong>Screen Readers</strong>: NVDA, JAWS, VoiceOver, and TalkBack (current versions)</li>
+          <li><strong>Operating Systems</strong>: Windows, macOS, iOS, and Android (current and previous major releases)</li>
+        </ul>
+        
+        <div class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg mt-8">
+          <h3 class="text-xl font-semibold text-va-text dark:text-white mb-4">Formal Compliance Statement</h3>
+          <p>ValueAlign is committed to making our website and platform accessible in accordance with:</p>
+          <ul class="list-disc pl-6 space-y-2">
+            <li>Section 508 of the Rehabilitation Act</li>
+            <li>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</li>
+            <li>Americans with Disabilities Act (ADA)</li>
+            <li>European Accessibility Act</li>
+          </ul>
+          <p>We are continuously working to increase the accessibility and usability of our platform and in doing so strive to adhere to many of the available standards and guidelines.</p>
+        </div>
+        
+        <!-- Back to top link for better accessibility -->
+        <div class="mt-10 text-center">
+          <a href="#accessibility-heading" class="inline-flex items-center px-4 py-2 bg-va-primary text-white dark:bg-va-primary-light dark:text-gray-800 rounded-full hover:bg-va-primary-dark dark:hover:bg-va-primary focus:outline-none focus:ring-2 focus:ring-va-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-200" aria-label="Return to the top of the page">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+            Back to Top
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

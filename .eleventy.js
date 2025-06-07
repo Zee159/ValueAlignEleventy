@@ -5,16 +5,20 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("images");
+  eleventyConfig.addPassthroughCopy("scripts");
   
-  // Standard headers - we only need the main ones, not the _new versions
-  eleventyConfig.addPassthroughCopy("_portal_header.html");
-  eleventyConfig.addPassthroughCopy("_portal_header_loggedout.html");
+  // Dashboard components - making them available for direct fetch in JS
+  eleventyConfig.addPassthroughCopy("_includes/dashboard-header.html");
+  eleventyConfig.addPassthroughCopy("_includes/dashboard-header-loggedout.html");
+  eleventyConfig.addPassthroughCopy("_includes/dashboard-footer.html");
   
   // Global data
   eleventyConfig.addGlobalData("currentYear", new Date().getFullYear());
   
+  // ----- URL STANDARDIZATION AND REDIRECTS -----
+  
   // Define redirects from old portal_* paths to new dashboard/* paths
-  const redirects = {
+  const legacyRedirects = {
     "/portal_journal/": "/dashboard/journal/",
     "/portal_account/": "/dashboard/account/",
     "/portal_exercises/": "/dashboard/exercises/",
@@ -27,27 +31,67 @@ module.exports = function(eleventyConfig) {
     "/portal_act.html": "/dashboard/act/"
   };
   
-  // Create redirect pages for each old path
-  Object.entries(redirects).forEach(([oldPath, newPath]) => {
-    // Create a redirect data file for each old path
+  // Add redirects for pages that moved from root to directory-based structure
+  const structureRedirects = {
+    "/register": "/register/",
+    "/login": "/login/",
+    "/signup": "/signup/",
+    "/discover": "/discover/",
+    "/about": "/about/",
+    "/faq": "/faq/",
+    "/auth-flow-test": "/auth-flow-test/",
+    "/test-auth": "/test-auth/",
+    "/test-auth-meta": "/test-auth-meta/"
+  };
+  
+  // Combine all redirects into one map
+  const allRedirects = {
+    ...legacyRedirects,
+    ...structureRedirects
+  };
+  
+  // Generate redirect files for all paths
+  const redirectsConfig = [];
+  
+  // Create redirect pages for each path
+  Object.entries(allRedirects).forEach(([oldPath, newPath]) => {
+    // Handle trailing slash variations
+    const oldPathBase = oldPath.replace(/\/$/, "");
+    const oldPathWithSlash = oldPathBase + "/";
+    const outputPath = oldPathBase + "/index.html";
+    
+    // Add to Netlify _redirects file config
+    redirectsConfig.push(`${oldPathBase} ${newPath} 301`);
+    
+    // Create a redirect HTML file for server that don't support _redirects
     eleventyConfig.addPassthroughCopy({
-      "_redirects/redirect.html": oldPath.replace(/\/$/, "/index.html")
+      "_redirects/redirect.html": outputPath
     });
     
     // Add redirect data
-    eleventyConfig.addGlobalData(`redirect_${oldPath.replace(/[^a-zA-Z0-9]/g, "_")}_data`, {
+    const safeKey = oldPath.replace(/[^a-zA-Z0-9]/g, "_");
+    eleventyConfig.addGlobalData(`redirect_${safeKey}_data`, {
       layout: "layouts/redirect.njk",
       targetUrl: newPath,
       eleventyExcludeFromCollections: true
     });
   });
   
+  // Generate a _redirects file for Netlify
+  eleventyConfig.addPassthroughCopy({
+    "_redirects/_redirects": "_redirects"
+  });
+  
+  // Add the redirects config to global data for use in templates
+  eleventyConfig.addGlobalData("redirectsConfig", redirectsConfig);
+  
   // Add a shortcode for creating meta redirect tags
   eleventyConfig.addShortcode("metaRedirect", function(targetUrl) {
     return `<meta http-equiv="refresh" content="0;url=${targetUrl}">`;
   });
   
-  // Add a filter to convert portal_* paths to dashboard/* paths
+  // Add URL utility filters for consistent URL handling
+  // Convert portal_* paths to dashboard/* paths
   eleventyConfig.addFilter("portalToDashboard", function(url) {
     if (url && url.startsWith("/portal_")) {
       // Replace portal_ with dashboard/ and convert underscores to hyphens in the path
@@ -56,6 +100,28 @@ module.exports = function(eleventyConfig) {
                 .replace(/_/g, "-");
     }
     return url;
+  });
+  
+  // Ensure URL has a trailing slash
+  eleventyConfig.addFilter("ensureTrailingSlash", function(url) {
+    if (!url) return "/";
+    
+    // Don't add trailing slash to URLs with file extensions
+    const hasExtension = /\.[a-zA-Z0-9]+$/.test(url);
+    if (hasExtension) return url;
+    
+    // Remove any existing trailing slash and add it back
+    return url.replace(/\/$/, "") + "/";
+  });
+  
+  // Format dashboard URL
+  eleventyConfig.addFilter("dashboardUrl", function(section) {
+    if (!section) return "/dashboard/";
+    
+    // Remove any leading or trailing slashes from section
+    const cleanSection = section.replace(/^\/|\/$/g, '');
+    
+    return `/dashboard/${cleanSection}/`;
   });
 
   // Return your Object options:

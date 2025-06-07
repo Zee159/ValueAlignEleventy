@@ -1,0 +1,28 @@
+{% extends "base.njk" %}
+
+{% block head %}
+{{ super() }}
+{# Additional head content for public pages #}
+{% endblock %}
+
+{% block content %}
+{% include "public-header.html" %}
+
+<main id="main-content" class="flex-grow">
+  {{ content | safe }}
+  
+  <!-- Accessibility announcement area for screen readers -->
+  <div id="public-status" class="sr-only" role="status" aria-live="polite"></div>
+</main>
+
+{% include "public-footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/js/public-header.js?v={{ '' | cacheBust }}"></script>
+<script src="/js/form-utils.js?v={{ '' | cacheBust }}"></script>
+{% if eleventyNavigation.key == 'Contact' %}
+<script src="/js/contact-form.js?v={{ '' | cacheBust }}"></script>
+{% endif %}
+{% endblock %}

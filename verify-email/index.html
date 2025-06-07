@@ -1,0 +1,300 @@
+---
+layout: layouts/public.njk
+title: Verify Email | ValueAlign
+permalink: /verify-email/
+meta_description: Verify your email address for your ValueAlign account.
+pageTitle: Email Verification
+eleventyNavigation:
+  parent: Login
+---
+
+<section class="py-16 md:py-24">
+  <div class="container mx-auto px-6">
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <div class="p-6">
+        <!-- Heading -->
+        <div class="text-center mb-6">
+          <h1 class="text-2xl font-bold text-va-text dark:text-white font-montserrat">Verify Your Email</h1>
+          <p class="text-gray-600 dark:text-gray-400">Confirm your email to access all ValueAlign features</p>
+        </div>
+        
+        <!-- Message Area -->
+        <div id="verification-message" class="my-4 p-4 rounded-md hidden" role="alert" aria-live="assertive"></div>
+        
+        <!-- Loading State (shown by default) -->
+        <div id="verification-loading" class="text-center py-8">
+          <svg class="animate-spin h-10 w-10 mx-auto text-va-primary dark:text-va-primary-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p class="mt-4 text-va-text dark:text-gray-300">Verifying your email...</p>
+        </div>
+        
+        <!-- No Token State (hidden by default) -->
+        <div id="no-token-state" class="hidden space-y-4">
+          <div class="text-center">
+            <svg class="h-16 w-16 mx-auto text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="text-center">
+            <h2 class="text-xl font-medium text-va-text dark:text-white">Email Not Yet Verified</h2>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">Please check your inbox for a verification link or request a new one below.</p>
+          </div>
+          
+          <div id="resend-form-container" class="pt-4">
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Didn't receive the email? Enter your email address to send a new verification link.</p>
+            <form id="resend-verification-form" class="space-y-4">
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                <input type="email" id="email" name="email" required
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-va-primary focus:border-va-primary">
+              </div>
+              
+              <button type="submit" id="resend-button" 
+                      class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+                <span>Resend Verification Email</span>
+                <span id="resend-spinner" class="ml-2 hidden">
+                  <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Success State (hidden by default) -->
+        <div id="verification-success" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Email Verified Successfully</h2>
+          <p class="text-gray-600 dark:text-gray-400">Your email has been verified. You now have full access to all ValueAlign features.</p>
+          <div class="mt-6">
+            <a href="/dashboard/" 
+               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              Go to Dashboard
+            </a>
+          </div>
+        </div>
+        
+        <!-- Error State (hidden by default) -->
+        <div id="verification-error" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-16 w-16 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Verification Failed</h2>
+          <p id="error-message" class="text-gray-600 dark:text-gray-400">The verification link is invalid or has expired.</p>
+          
+          <div id="error-actions" class="pt-4">
+            <a href="/login/" class="inline-block px-4 py-2 border border-transparent font-medium rounded-md text-va-primary dark:text-va-primary-light hover:underline">
+              Back to Login
+            </a>
+          </div>
+        </div>
+        
+        <!-- Already Verified State (hidden by default) -->
+        <div id="already-verified" class="hidden space-y-4 text-center">
+          <div class="flex justify-center">
+            <svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h2 class="text-xl font-medium text-va-text dark:text-white">Email Already Verified</h2>
+          <p class="text-gray-600 dark:text-gray-400">Your email has already been verified. You have full access to all ValueAlign features.</p>
+          <div class="mt-6">
+            <a href="/dashboard/" 
+               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-va-primary hover:bg-green-700 dark:bg-va-primary-light dark:text-gray-900 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-va-primary">
+              Go to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Status message for screen readers -->
+<div id="verification-status" class="sr-only" role="status" aria-live="polite"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[EmailVerification] Initializing email verification page');
+    
+    // DOM elements
+    const verificationMessage = document.getElementById('verification-message');
+    const verificationLoading = document.getElementById('verification-loading');
+    const noTokenState = document.getElementById('no-token-state');
+    const verificationSuccess = document.getElementById('verification-success');
+    const verificationError = document.getElementById('verification-error');
+    const alreadyVerified = document.getElementById('already-verified');
+    const errorMessage = document.getElementById('error-message');
+    const resendForm = document.getElementById('resend-verification-form');
+    const emailInput = document.getElementById('email');
+    const resendButton = document.getElementById('resend-button');
+    const resendSpinner = document.getElementById('resend-spinner');
+    const statusElement = document.getElementById('verification-status');
+    
+    // Check for token in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const email = urlParams.get('email');
+    
+    // Access auth service
+    const authService = window.authService;
+    
+    // Check if user is already logged in and if email is verified
+    if (authService && authService.authState && authService.authState.isAuthenticated) {
+      if (authService.authState.emailVerified) {
+        // Email already verified
+        showAlreadyVerifiedState();
+        return;
+      }
+      
+      // User logged in but email not verified
+      if (!token || !email) {
+        // No token or email in URL, show resend form
+        showNoTokenState();
+        if (authService.authState.user && authService.authState.user.email) {
+          emailInput.value = authService.authState.user.email;
+        }
+        return;
+      }
+    }
+    
+    // No token or email in URL
+    if (!token || !email) {
+      showNoTokenState();
+      return;
+    }
+    
+    // Process verification
+    verifyEmail(email, token);
+    
+    // Handle resend form submission
+    resendForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const emailValue = emailInput.value.trim();
+      if (!emailValue) {
+        showMessage('Please enter your email address', 'error');
+        return;
+      }
+      
+      // Show loading state
+      resendButton.disabled = true;
+      resendSpinner.classList.remove('hidden');
+      
+      if (authService && typeof authService.resendVerificationEmail === 'function') {
+        // If user is already logged in
+        if (authService.authState.isAuthenticated && authService.authState.user) {
+          if (authService.authState.user.email !== emailValue) {
+            showMessage('The email address does not match your account', 'error');
+            resendButton.disabled = false;
+            resendSpinner.classList.add('hidden');
+            return;
+          }
+          
+          authService.resendVerificationEmail()
+            .then(() => {
+              showMessage('Verification email sent! Please check your inbox.', 'success');
+              resendButton.disabled = false;
+              resendSpinner.classList.add('hidden');
+            })
+            .catch(error => {
+              showMessage('Failed to send verification email. Please try again later.', 'error');
+              console.error('[EmailVerification] Error:', error);
+              resendButton.disabled = false;
+              resendSpinner.classList.add('hidden');
+            });
+        } else {
+          // User not logged in
+          showMessage('To verify your email, please log in first', 'info');
+          setTimeout(() => {
+            window.location.href = `/login/?redirect=${encodeURIComponent('/verify-email/')}`;
+          }, 2000);
+        }
+      } else {
+        // Mock successful email resend for demo
+        setTimeout(() => {
+          showMessage('Verification email sent! Please check your inbox.', 'success');
+          resendButton.disabled = false;
+          resendSpinner.classList.add('hidden');
+          
+          console.log(`[EmailVerification] Would send verification email to: ${emailValue}`);
+        }, 1500);
+      }
+    });
+    
+    // Function to verify email
+    function verifyEmail(email, token) {
+      if (!authService || typeof authService.verifyEmail !== 'function') {
+        // Mock verification for demo
+        console.log(`[EmailVerification] Would verify email: ${email} with token: ${token}`);
+        
+        setTimeout(() => {
+          showVerificationSuccessState();
+        }, 2000);
+        return;
+      }
+      
+      // Verify with auth service
+      authService.verifyEmail(email, token)
+        .then(() => {
+          showVerificationSuccessState();
+        })
+        .catch(error => {
+          console.error('[EmailVerification] Error:', error);
+          showVerificationErrorState(error.message || 'Verification failed. The link may be invalid or expired.');
+        });
+    }
+    
+    // Helper function to show message
+    function showMessage(message, type = 'info') {
+      verificationMessage.textContent = message;
+      verificationMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-blue-100', 'text-blue-800');
+      
+      if (type === 'success') {
+        verificationMessage.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-800', 'dark:text-green-100');
+      } else if (type === 'error') {
+        verificationMessage.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-800', 'dark:text-red-100');
+      } else {
+        verificationMessage.classList.add('bg-blue-100', 'text-blue-800', 'dark:bg-blue-800', 'dark:text-blue-100');
+      }
+      
+      statusElement.textContent = message;
+    }
+    
+    // Helper functions to show different states
+    function showNoTokenState() {
+      verificationLoading.classList.add('hidden');
+      noTokenState.classList.remove('hidden');
+      statusElement.textContent = 'Please enter your email to receive a verification link';
+    }
+    
+    function showVerificationSuccessState() {
+      verificationLoading.classList.add('hidden');
+      verificationSuccess.classList.remove('hidden');
+      statusElement.textContent = 'Email verification successful';
+    }
+    
+    function showVerificationErrorState(errorText) {
+      verificationLoading.classList.add('hidden');
+      verificationError.classList.remove('hidden');
+      errorMessage.textContent = errorText;
+      statusElement.textContent = 'Error: ' + errorText;
+    }
+    
+    function showAlreadyVerifiedState() {
+      verificationLoading.classList.add('hidden');
+      alreadyVerified.classList.remove('hidden');
+      statusElement.textContent = 'Your email is already verified';
+    }
+  });
+</script>
