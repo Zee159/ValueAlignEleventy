@@ -63,9 +63,10 @@ module.exports = function(eleventyConfig) {
     // Add to Netlify _redirects file config
     redirectsConfig.push(`${oldPathBase} ${newPath} 301`);
     
-    // Create a redirect HTML file for server that don't support _redirects
+    // Create a redirect HTML file for servers that don't support _redirects
+    // Use a different directory to prevent file/directory conflicts
     eleventyConfig.addPassthroughCopy({
-      "_redirects/redirect.html": outputPath
+      "_redirect_templates/redirect.html": outputPath
     });
     
     // Add redirect data
@@ -80,6 +81,11 @@ module.exports = function(eleventyConfig) {
   // Generate a _redirects file for Netlify
   eleventyConfig.addPassthroughCopy({
     "_redirects/_redirects": "_redirects"
+  });
+  
+  // Ensure redirects directory is treated as a directory
+  eleventyConfig.addPassthroughCopy({
+    "_redirects/index.html": "redirect-pages/index.html"
   });
   
   // Add the redirects config to global data for use in templates
