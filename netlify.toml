@@ -3,7 +3,7 @@
   command = "npm run build"
   
 [build.environment]
-  NODE_VERSION = "16"
+  NODE_VERSION = "18"
   NODE_ENV = "production"
 
 # Redirect all URLs without trailing slashes to URLs with trailing slashes
