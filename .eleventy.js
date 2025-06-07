@@ -83,10 +83,8 @@ module.exports = function(eleventyConfig) {
     "_redirects/_redirects": "_redirects"
   });
   
-  // Ensure redirects directory is treated as a directory
-  eleventyConfig.addPassthroughCopy({
-    "_redirects/index.html": "redirect-pages/index.html"
-  });
+  // No longer need to create conflict with _redirects directory/file
+  // All redirect templates are now in _redirect_templates
   
   // Add the redirects config to global data for use in templates
   eleventyConfig.addGlobalData("redirectsConfig", redirectsConfig);
